@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "user")
 @Where(clause = "is_deleted=0")
 @NoArgsConstructor(access = PROTECTED)
-public class User {
+public class User extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
