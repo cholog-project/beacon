@@ -42,11 +42,11 @@ public class Task extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
-    private Project project; // Assuming a Project entity exists
+    private Project project;
 
     @ManyToOne
     @JoinColumn(name = "team_member_id", nullable = false)
-    private TeamMember teamMember; // Assuming a TeamMember entity exists
+    private TeamMember teamMember;
 
     @OneToOne(mappedBy = "task")
     private Plan plan;
