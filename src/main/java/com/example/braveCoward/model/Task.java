@@ -49,7 +49,7 @@ public class Task extends BaseEntity{
     private TeamMember teamMember; // Assuming a TeamMember entity exists
 
     @OneToOne(mappedBy = "task")
-    private List<Plan> plans;
+    private Plan plan;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<Do> dos;
