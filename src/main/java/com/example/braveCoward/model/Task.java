@@ -2,17 +2,15 @@ package com.example.braveCoward.model;
 
 import static lombok.AccessLevel.PROTECTED;
 
-import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -53,4 +51,14 @@ public class Task extends BaseEntity{
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<Do> dos;
+
+    @Builder
+    public Task(String title, String description, LocalDate startDate, LocalDate endDate, Project project, TeamMember teamMember) {
+        this.title = title;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.project = project;
+        this.teamMember = teamMember;
+    }
 }
