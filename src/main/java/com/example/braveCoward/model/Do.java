@@ -31,6 +31,6 @@ public class Do extends BaseEntity {
     private Task task;
 
     public enum Status {
-        NOT_STARTED, START, IN_PROGRESS, END
+        NOT_STARTED, IN_PROGRESS, END
     }
 }
