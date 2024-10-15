@@ -12,4 +12,13 @@ public record DoResponse(
         Long taskId
 ) {
 
+    public static DoResponse from(Do doEntity) {
+        return new DoResponse(
+                doEntity.getId(),
+                doEntity.getDate(),
+                doEntity.getStatus(),
+                doEntity.getDescription(),
+                doEntity.getTask().getId()
+        );
+    }
 }

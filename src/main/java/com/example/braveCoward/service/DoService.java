@@ -24,7 +24,7 @@ public class DoService {
 
     public CreateDoResponse createDo(Long taskId, CreateDoRequest request) {
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(()-> new IllegalArgumentException("테스크를 찾을 수 없습니다."));
+                .orElseThrow(()-> new IllegalArgumentException("Task를 찾을 수 없습니다."));
 
         Do doEntity = Do.builder()
                 .date(request.date())
@@ -55,5 +55,12 @@ public class DoService {
 
         int totalCount = doResponses.size();
         return new DosResponse(totalCount, doResponses);
+    }
+
+    public DoResponse getDo(Long doId) {
+        Do doEntity = doRepository.findById(doId)
+                .orElseThrow(() -> new IllegalArgumentException("Do를 찾을 수 없습니다."));
+
+        return DoResponse.from(doEntity);
     }
 }

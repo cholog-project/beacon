@@ -2,6 +2,7 @@ package com.example.braveCoward.controller;
 
 import com.example.braveCoward.dto.Do.CreateDoRequest;
 import com.example.braveCoward.dto.Do.CreateDoResponse;
+import com.example.braveCoward.dto.Do.DoResponse;
 import com.example.braveCoward.dto.Do.DosResponse;
 import com.example.braveCoward.service.DoService;
 import com.example.braveCoward.swagger.DoApi;
@@ -37,6 +38,12 @@ public class DoController implements DoApi {
     @GetMapping("/{taskId}/dos")
     public ResponseEntity<DosResponse> getDoList(@PathVariable Long taskId) {
         DosResponse response = doService.getDos(taskId);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("dos/{doId}")
+    public ResponseEntity<DoResponse> getDo(@PathVariable Long doId) {
+        DoResponse response = doService.getDo(doId);
         return ResponseEntity.ok(response);
     }
 
