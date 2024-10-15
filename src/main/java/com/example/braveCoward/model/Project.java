@@ -1,5 +1,7 @@
 package com.example.braveCoward.model;
 
+import static lombok.AccessLevel.PROTECTED;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,8 +21,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @Table(name = "project")
-@NoArgsConstructor
-public class Project {
+@NoArgsConstructor(access = PROTECTED)
+public class Project extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,12 +39,6 @@ public class Project {
 
     @Column(name = "end_date")
     private LocalDateTime endDate;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "team_id", nullable = false)

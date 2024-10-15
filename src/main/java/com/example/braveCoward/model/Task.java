@@ -1,63 +1,42 @@
 package com.example.braveCoward.model;
 
-import java.time.LocalDateTime;
+import static lombok.AccessLevel.PROTECTED;
+
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import jakarta.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
+
 @Getter
 @Entity
-@Table(name = "task")
-@NoArgsConstructor
-public class Task {
-
-    public enum TaskType {
-        PLAN, DO
-    }
-
-    public enum TaskStatus {
-        PENDING, COMPLETED, IN_PROGRESS, ERROR
-    }
-
+@NoArgsConstructor(access = PROTECTED)
+public class Task extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
-    private TaskType type;
-
-    @Column(name = "title", nullable = false)
+    @Column(nullable = false, length = 255)
     private String title;
 
-    @Column(name = "description")
+    @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private TaskStatus status;
+    @Column(nullable = false)
+    private LocalDate startDate;
 
-    @Column(name = "start_date")
-    private LocalDateTime startDate;
-
-    @Column(name = "end_date")
-    private LocalDateTime endDate;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @Column
+    private LocalDate endDate;
 
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
@@ -66,4 +45,20 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "team_member_id", nullable = false)
     private TeamMember teamMember;
+
+    @OneToOne(mappedBy = "task")
+    private Plan plan;
+
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+    private List<Do> dos;
+
+    @Builder
+    public Task(String title, String description, LocalDate startDate, LocalDate endDate, Project project, TeamMember teamMember) {
+        this.title = title;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.project = project;
+        this.teamMember = teamMember;
+    }
 }

@@ -2,6 +2,9 @@ package com.example.braveCoward.model;
 
 import static lombok.AccessLevel.PROTECTED;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,33 +12,25 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "team_member")
 @NoArgsConstructor(access = PROTECTED)
-public class TeamMember extends BaseEntity{
-
+public class Plan extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @NotNull
-    @Column(name = "role", nullable = false)
-    private String role;
+    @Column(nullable = false)
+    private LocalDate startDate;
 
-    @Column(name = "position", nullable = false)
-    private String position;
+    @Column
+    private LocalDate endDate;
 
-    @ManyToOne
-    @JoinColumn(name = "team_id", nullable = false)
-    private Team team;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @OneToOne
+    @JoinColumn(name = "task_id", nullable = false)
+    private Task task;
 }
