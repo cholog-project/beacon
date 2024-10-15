@@ -1,4 +1,4 @@
-package com.example.braveCoward.swagger;
+package com.example.braveCoward.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

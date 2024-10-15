@@ -1,10 +1,6 @@
 package com.example.braveCoward.controller;
 
 import com.example.braveCoward.dto.*;
-import com.example.braveCoward.dto.Do.CreateDoRequest;
-import com.example.braveCoward.dto.Do.CreateDoResponse;
-import com.example.braveCoward.service.DoService;
-import com.example.braveCoward.swagger.TaskApi;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 public class TaskController implements TaskApi {
 
     private final TaskService taskService;
-    private final DoService doService;
 
     @PostMapping("/{projectId}/tasks")
     public ResponseEntity<CreateTaskResponse> createTask(
