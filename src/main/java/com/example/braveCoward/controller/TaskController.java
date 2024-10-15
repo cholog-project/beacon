@@ -56,12 +56,4 @@ public class TaskController implements TaskApi {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/tasks/{taskId}/dos")
-    public ResponseEntity<CreateDoResponse> createDo(
-            @PathVariable Long taskId,
-            @Valid @RequestBody CreateDoRequest request
-    ) {
-        CreateDoResponse response = doService.createDo(taskId, request);
-        return ResponseEntity.ok(response);
-    }
 }

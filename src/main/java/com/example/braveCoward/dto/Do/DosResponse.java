@@ -1,4 +1,9 @@
 package com.example.braveCoward.dto.Do;
 
-public record DosResponse() {
+import java.util.List;
+
+public record DosResponse(
+        int totalCount,
+        List<DoResponse> dos
+) {
 }
