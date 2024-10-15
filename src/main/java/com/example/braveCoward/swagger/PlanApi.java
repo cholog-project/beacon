@@ -2,6 +2,7 @@ package com.example.braveCoward.swagger;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.braveCoward.dto.plan.CreatePlanRequest;
 import com.example.braveCoward.dto.plan.CreatePlanResponse;
+import com.example.braveCoward.dto.plan.PlanResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -41,22 +43,11 @@ public interface PlanApi {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         }
     )
-    @Operation(summary = "Task 추가")
+    @Operation(summary = "Plan 추가")
     @DeleteMapping("/plans/{planId}")
     ResponseEntity<Void> deletePlan(
         @PathVariable Long planId
     );
-
-
-    /*@ApiResponses(
-        value = {
-            @ApiResponse(responseCode = "200"),
-            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
-        }
-    )
-    @Operation(summary = "Task 목록 조회")
-    @GetMapping("/tasks")
-    ResponseEntity<TasksResponse> getTaskList();
 
     @ApiResponses(
         value = {
@@ -64,9 +55,9 @@ public interface PlanApi {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         }
     )
-    @Operation(summary = "Task 단일 조회")
-    @GetMapping("/tasks/{taskId}")
-    ResponseEntity<TaskResponse> getTask(
-        @PathVariable Long taskId
-    );*/
+    @Operation(summary = "Plan 단일 조회")
+    @GetMapping("/plans/{planId}")
+    ResponseEntity<PlanResponse> getPlan(
+        @PathVariable Long planId
+    );
 }
