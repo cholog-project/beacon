@@ -1,4 +1,4 @@
-package com.example.braveCoward.controller;
+package com.example.braveCoward.swagger;
 
 import com.example.braveCoward.dto.CreateDoRequest;
 import com.example.braveCoward.dto.CreateDoResponse;

@@ -2,6 +2,7 @@ package com.example.braveCoward.controller;
 
 import com.example.braveCoward.dto.*;
 import com.example.braveCoward.service.DoService;
+import com.example.braveCoward.swagger.TaskApi;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/project")
+@RequestMapping("/projects")
 public class TaskController implements TaskApi {
 
     private final TaskService taskService;
@@ -53,12 +54,4 @@ public class TaskController implements TaskApi {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/tasks/{taskId}/dos")
-    public ResponseEntity<CreateDoResponse> createDo(
-            @PathVariable Long taskId,
-            @Valid @RequestBody CreateDoRequest request
-    ) {
-        CreateDoResponse response = doService.createDo(taskId, request);
-        return ResponseEntity.ok(response);
-    }
 }
