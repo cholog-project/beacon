@@ -2,6 +2,7 @@ package com.example.braveCoward.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.braveCoward.dto.plan.CreatePlanRequest;
 import com.example.braveCoward.dto.plan.CreatePlanResponse;
+import com.example.braveCoward.dto.plan.PlanResponse;
 import com.example.braveCoward.service.PlanService;
 import com.example.braveCoward.swagger.PlanApi;
 
@@ -38,5 +40,13 @@ public class PlanController implements PlanApi {
     ){
         planService.deletePlan(planId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/plans/{planId}")
+    public ResponseEntity<PlanResponse> getPlan(
+        @PathVariable Long planId
+    ){
+        PlanResponse response = planService.getPlan(planId);
+        return ResponseEntity.ok(response);
     }
 }

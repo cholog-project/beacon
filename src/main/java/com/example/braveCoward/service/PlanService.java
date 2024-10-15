@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.braveCoward.dto.plan.CreatePlanRequest;
 import com.example.braveCoward.dto.plan.CreatePlanResponse;
+import com.example.braveCoward.dto.plan.PlanResponse;
 import com.example.braveCoward.model.Plan;
 import com.example.braveCoward.model.Task;
 import com.example.braveCoward.repository.PlanRepository;
@@ -37,5 +38,12 @@ public class PlanService {
 
     public void deletePlan(Long planId) {
         planRepository.deleteById(planId);
+    }
+
+    public PlanResponse getPlan(Long planId){
+        Plan plan = planRepository.findById(planId)
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Plan입니다"));
+
+        return PlanResponse.from(plan);
     }
 }
