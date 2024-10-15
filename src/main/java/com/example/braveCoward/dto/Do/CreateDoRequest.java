@@ -1,4 +1,4 @@
-package com.example.braveCoward.dto;
+package com.example.braveCoward.dto.Do;
 
 import com.example.braveCoward.model.Do;
 
