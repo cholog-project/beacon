@@ -1,7 +1,7 @@
-package com.example.braveCoward.controller;
+package com.example.braveCoward.swagger;
 
-import com.example.braveCoward.dto.CreateDoRequest;
-import com.example.braveCoward.dto.CreateDoResponse;
+import com.example.braveCoward.dto.Do.CreateDoRequest;
+import com.example.braveCoward.dto.Do.CreateDoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

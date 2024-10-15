@@ -1,7 +1,7 @@
 package com.example.braveCoward.service;
 
-import com.example.braveCoward.dto.CreateDoRequest;
-import com.example.braveCoward.dto.CreateDoResponse;
+import com.example.braveCoward.dto.Do.CreateDoRequest;
+import com.example.braveCoward.dto.Do.CreateDoResponse;
 import com.example.braveCoward.model.Do;
 import com.example.braveCoward.model.Task;
 import com.example.braveCoward.repository.DoRepository;
