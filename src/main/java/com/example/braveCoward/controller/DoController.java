@@ -1,8 +1,8 @@
 package com.example.braveCoward.controller;
 
-import com.example.braveCoward.dto.CreateDoRequest;
-import com.example.braveCoward.dto.CreateDoResponse;
-import com.example.braveCoward.dto.TasksResponse;
+import com.example.braveCoward.dto.Do.CreateDoRequest;
+import com.example.braveCoward.dto.Do.CreateDoResponse;
+import com.example.braveCoward.dto.Do.DosResponse;
 import com.example.braveCoward.service.DoService;
 import com.example.braveCoward.swagger.DoApi;
 import jakarta.validation.Valid;
@@ -32,6 +32,12 @@ public class DoController implements DoApi {
     ) {
         doService.deleteDo(doId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{taskId}/dos")
+    public ResponseEntity<DosResponse> getDoList(@PathVariable Long taskId) {
+        DosResponse response = doService.getDos(taskId);
+        return ResponseEntity.ok(response);
     }
 
 }

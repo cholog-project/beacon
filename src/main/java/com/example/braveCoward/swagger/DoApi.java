@@ -1,7 +1,8 @@
 package com.example.braveCoward.swagger;
 
-import com.example.braveCoward.dto.CreateDoRequest;
-import com.example.braveCoward.dto.CreateDoResponse;
+import com.example.braveCoward.dto.Do.CreateDoRequest;
+import com.example.braveCoward.dto.Do.CreateDoResponse;
+import com.example.braveCoward.dto.Do.DosResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -39,4 +40,15 @@ public interface DoApi {
     ResponseEntity<Void> deleteDo(
             @PathVariable Long doId
     );
+
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200"),
+                    @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+            }
+    )
+    @Operation(summary = "Do 목록 조회")
+    @GetMapping("/{taskId}/dos")
+    ResponseEntity<DosResponse> getDoList(
+            @PathVariable Long taskId);
 }
