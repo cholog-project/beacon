@@ -14,7 +14,6 @@ import com.example.braveCoward.dto.CreateTaskResponse;
 import com.example.braveCoward.dto.TaskResponse;
 import com.example.braveCoward.dto.TasksResponse;
 import com.example.braveCoward.service.TaskService;
-import com.example.braveCoward.swagger.TaskApi;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
