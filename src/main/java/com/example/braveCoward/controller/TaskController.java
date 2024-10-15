@@ -25,7 +25,7 @@ public class TaskController implements TaskApi {
 
     private final TaskService taskService;
 
-    @PostMapping("/{projectId}/tasks")
+    @PostMapping("/tasks/{projectId}")
     public ResponseEntity<CreateTaskResponse> createTask(
         @PathVariable Long projectId,
         @Valid @RequestBody CreateTaskRequest request

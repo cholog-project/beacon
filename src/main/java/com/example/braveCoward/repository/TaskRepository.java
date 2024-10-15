@@ -1,6 +1,5 @@
 package com.example.braveCoward.repository;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,5 +14,5 @@ public interface TaskRepository extends Repository<Task, Long> {
 
     List<Task> findAll();
 
-    Optional<Task> findById(Long taskId);
+    Optional<Task> getById(Long taskId);
 }

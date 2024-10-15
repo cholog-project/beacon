@@ -69,7 +69,7 @@ public class TaskService {
     }
 
     public TaskResponse getTask(Long taskId) {
-        Task task = taskRepository.findById(taskId)
+        Task task = taskRepository.getById(taskId)
             .orElseThrow(() -> new IllegalArgumentException("Task를 찾을 수 없습니다."));
 
         return TaskResponse.from(task);

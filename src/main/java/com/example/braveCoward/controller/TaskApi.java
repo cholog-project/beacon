@@ -32,7 +32,7 @@ public interface TaskApi {
         }
     )
     @Operation(summary = "Task 추가")
-    @PostMapping("/{projectId}/tasks")
+    @PostMapping("/tasks/{projectId}")
     ResponseEntity<CreateTaskResponse> createTask(
         @PathVariable Long projectId,
         @Valid @RequestBody CreateTaskRequest request
