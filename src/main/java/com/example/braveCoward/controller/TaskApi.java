@@ -21,7 +21,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@RequestMapping("/project")
+@RequestMapping("/projects")
 @Tag(name = "(Normal) Task", description = "Task 관련 API")
 public interface TaskApi {
 
