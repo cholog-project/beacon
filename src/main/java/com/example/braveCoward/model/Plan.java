@@ -13,13 +13,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = PROTECTED)
-public class Plan extends BaseEntity{
+public class Plan extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,4 +34,11 @@ public class Plan extends BaseEntity{
     @OneToOne
     @JoinColumn(name = "task_id", nullable = false)
     private Task task;
+
+    @Builder
+    public Plan(LocalDate startDate, LocalDate endDate, Task task) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.task = task;
+    }
 }
