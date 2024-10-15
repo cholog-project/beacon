@@ -44,7 +44,7 @@ public interface TaskApi {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         }
     )
-    @Operation(summary = "Task 추가")
+    @Operation(summary = "Task 삭제")
     @DeleteMapping("/tasks/{taskId}")
     ResponseEntity<Void> deleteTask(
         @PathVariable Long taskId

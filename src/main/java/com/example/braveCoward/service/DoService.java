@@ -34,4 +34,7 @@ public class DoService {
         return CreateDoResponse.from(savedDo);
     }
 
+    public void deleteDo(Long doId) {
+        doRepository.deleteById(doId);
+    }
 }

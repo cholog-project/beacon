@@ -10,10 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/projects/tasks")
 @Tag(name = "(Normal) Do", description = "Do 관련 API")
@@ -29,5 +26,17 @@ public interface DoApi {
     ResponseEntity<CreateDoResponse> createDo(
             @PathVariable Long taskId,
             @Valid @RequestBody CreateDoRequest request
+    );
+
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204"),
+                    @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+            }
+    )
+    @Operation(summary = "Do 삭제")
+    @DeleteMapping("/dos/{doId}")
+    ResponseEntity<Void> deleteDo(
+            @PathVariable Long doId
     );
 }
