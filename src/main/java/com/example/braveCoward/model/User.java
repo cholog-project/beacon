@@ -17,6 +17,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -46,6 +47,18 @@ public class User extends BaseEntity{
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted = false;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<TeamMember> teamMembers;
+
+    @Builder
+    public User(
+        String password,
+        String name,
+        String email,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt
+    ){
+        this.password = password;
+        this.name = name;
+        this.email = email;
+        this.isDeleted = false;
+    }
 }
