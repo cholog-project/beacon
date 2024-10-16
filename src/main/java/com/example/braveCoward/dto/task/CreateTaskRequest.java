@@ -1,4 +1,4 @@
-package com.example.braveCoward.dto;
+package com.example.braveCoward.dto.task;
 
 import java.time.LocalDate;
 

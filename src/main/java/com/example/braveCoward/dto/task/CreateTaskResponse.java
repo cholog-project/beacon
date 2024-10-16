@@ -1,25 +1,23 @@
-package com.example.braveCoward.dto;
+package com.example.braveCoward.dto.task;
 
 import java.time.LocalDate;
 
 import com.example.braveCoward.model.Task;
 
-public record TaskResponse(
-    Long id,
+public record CreateTaskResponse(
+    Long taskId,
     String title,
     String description,
     LocalDate startDate,
-    LocalDate endDate,
-    Integer teamMemberId
+    LocalDate endDate
 ) {
-    public static TaskResponse from(Task task) {
-        return new TaskResponse(
+    public static CreateTaskResponse from(Task task) {
+        return new CreateTaskResponse(
             task.getId(),
             task.getTitle(),
             task.getDescription(),
             task.getStartDate(),
-            task.getEndDate(),
-            task.getTeamMember().getId()
+            task.getEndDate()
         );
     }
 }
