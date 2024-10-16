@@ -8,7 +8,7 @@ public record MembersResponse (
     List<InnerMembersResponse> projectMembers
 ) {
     public record InnerMembersResponse(
-        Integer memberId,
+        Long memberId,
         String name
     ) {
 

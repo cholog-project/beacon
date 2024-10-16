@@ -10,7 +10,7 @@ public record TaskResponse(
     String description,
     LocalDate startDate,
     LocalDate endDate,
-    Integer teamMemberId
+    Long teamMemberId
 ) {
     public static TaskResponse from(Task task) {
         return new TaskResponse(
