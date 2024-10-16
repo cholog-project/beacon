@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.braveCoward.dto.CreateTaskRequest;
-import com.example.braveCoward.dto.CreateTaskResponse;
-import com.example.braveCoward.dto.TaskResponse;
-import com.example.braveCoward.dto.TasksResponse;
+import com.example.braveCoward.dto.task.CreateTaskRequest;
+import com.example.braveCoward.dto.task.CreateTaskResponse;
+import com.example.braveCoward.dto.task.TaskResponse;
+import com.example.braveCoward.dto.task.TasksResponse;
 import com.example.braveCoward.model.Project;
 import com.example.braveCoward.model.Task;
 import com.example.braveCoward.model.TeamMember;
