@@ -47,6 +47,16 @@ public class TaskService {
                 return userRepository.save(newUser);
             });
 
+        User user2 = userRepository.findByEmail("gjwnsrl1012@gmail.com")
+            .orElseGet(() -> {
+                User newUser = User.builder()
+                    .password("1234")
+                    .name("준기2")
+                    .email("gjwnsrl1012@gmail.com")
+                    .build();
+                return userRepository.save(newUser);
+            });
+
         Team team = teamRepository.findByName("준기팀")
             .orElseGet(() -> {
                 Team newTeam = Team.builder()
@@ -65,6 +75,17 @@ public class TaskService {
                     .position("팀장")
                     .team(team)
                     .user(user)
+                    .build();
+                return teamMemberRepository.save(newTeamMember);
+            });
+
+        TeamMember teamMember2 = teamMemberRepository.findByTeamAndUser(team, user)
+            .orElseGet(() -> {
+                TeamMember newTeamMember = TeamMember.builder()
+                    .role("프론트엔드")
+                    .position("팀원")
+                    .team(team)
+                    .user(user2)
                     .build();
                 return teamMemberRepository.save(newTeamMember);
             });
