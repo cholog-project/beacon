@@ -36,41 +36,50 @@ public class TaskService {
 
     @Transactional(readOnly = false)
     public CreateTaskResponse createTask(Long projectId, CreateTaskRequest request) {
-        User user = User.builder()
-            .password("123")
-            .name("준기")
-            .email("gjwnsrl1012@naver.com")
-            .build();
 
-        userRepository.save(user);
+        User user = userRepository.findByEmail("gjwnsrl1012@naver.com")
+            .orElseGet(() -> {
+                User newUser = User.builder()
+                    .password("123")
+                    .name("준기")
+                    .email("gjwnsrl1012@naver.com")
+                    .build();
+                return userRepository.save(newUser);
+            });
 
-        Team team = Team.builder()
-            .name("준기팀")
-            .description("허준기의 팀입니다.")
-            .createdAt(LocalDateTime.now())
-            .updatedAt(LocalDateTime.now())
-            .build();
+        Team team = teamRepository.findByName("준기팀")
+            .orElseGet(() -> {
+                Team newTeam = Team.builder()
+                    .name("준기팀")
+                    .description("허준기의 팀입니다.")
+                    .createdAt(LocalDateTime.now())
+                    .updatedAt(LocalDateTime.now())
+                    .build();
+                return teamRepository.save(newTeam);
+            });
 
-        teamRepository.save(team);
+        TeamMember teamMember = teamMemberRepository.findByTeamAndUser(team, user)
+            .orElseGet(() -> {
+                TeamMember newTeamMember = TeamMember.builder()
+                    .role("백엔드")
+                    .position("팀장")
+                    .team(team)
+                    .user(user)
+                    .build();
+                return teamMemberRepository.save(newTeamMember);
+            });
 
-        TeamMember teamMember = TeamMember.builder()
-            .role("백엔드")
-            .position("팀장")
-            .team(team)
-            .user(user)
-            .build();
-
-        teamMemberRepository.save(teamMember);
-
-        Project project = Project.builder()
-            .title("테스트 프로젝트")
-            .description("테스트입니다")
-            .startDate(LocalDateTime.now())
-            .endDate(LocalDateTime.now())
-            .team(team)
-            .build();
-
-        projectRepository.save(project);
+        Project project = projectRepository.findById(projectId)
+            .orElseGet(() -> {
+                Project newProject = Project.builder()
+                    .title("테스트 프로젝트")
+                    .description("테스트입니다")
+                    .startDate(LocalDateTime.now())
+                    .endDate(LocalDateTime.now())
+                    .team(team)
+                    .build();
+                return projectRepository.save(newProject);
+            });
 
         /*Project project = projectRepository.findById(projectId)
             .orElseThrow(() -> new IllegalArgumentException("프로젝트를 찾을 수 없습니다."));
