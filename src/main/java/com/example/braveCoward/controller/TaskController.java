@@ -1,6 +1,5 @@
 package com.example.braveCoward.controller;
 
-import com.example.braveCoward.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.braveCoward.dto.task.CreateTaskRequest;
+import com.example.braveCoward.dto.task.CreateTaskResponse;
+import com.example.braveCoward.dto.task.TaskResponse;
+import com.example.braveCoward.dto.task.TasksResponse;
 import com.example.braveCoward.service.TaskService;
 import com.example.braveCoward.swagger.TaskApi;
 

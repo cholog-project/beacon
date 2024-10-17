@@ -47,7 +47,6 @@ public class User extends BaseEntity{
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted = false;
 
-
     @Builder
     public User(
         String password,

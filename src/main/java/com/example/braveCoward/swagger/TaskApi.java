@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.braveCoward.dto.CreateTaskRequest;
-import com.example.braveCoward.dto.CreateTaskResponse;
-import com.example.braveCoward.dto.TaskResponse;
-import com.example.braveCoward.dto.TasksResponse;
+import com.example.braveCoward.dto.task.CreateTaskRequest;
+import com.example.braveCoward.dto.task.CreateTaskResponse;
+import com.example.braveCoward.dto.task.TaskResponse;
+import com.example.braveCoward.dto.task.TasksResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
