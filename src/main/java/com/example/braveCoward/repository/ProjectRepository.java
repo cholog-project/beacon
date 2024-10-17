@@ -8,4 +8,6 @@ import com.example.braveCoward.model.Project;
 
 public interface ProjectRepository extends Repository<Project, Long> {
     Optional<Project> findById(Long projectId);
+
+    Project save(Project project);
 }
