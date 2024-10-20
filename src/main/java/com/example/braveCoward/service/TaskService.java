@@ -10,11 +10,13 @@ import com.example.braveCoward.dto.task.CreateTaskRequest;
 import com.example.braveCoward.dto.task.CreateTaskResponse;
 import com.example.braveCoward.dto.task.TaskResponse;
 import com.example.braveCoward.dto.task.TasksResponse;
+import com.example.braveCoward.model.Plan;
 import com.example.braveCoward.model.Project;
 import com.example.braveCoward.model.Task;
 import com.example.braveCoward.model.Team;
 import com.example.braveCoward.model.TeamMember;
 import com.example.braveCoward.model.User;
+import com.example.braveCoward.repository.PlanRepository;
 import com.example.braveCoward.repository.ProjectRepository;
 import com.example.braveCoward.repository.TaskRepository;
 import com.example.braveCoward.repository.TeamMemberRepository;
@@ -33,6 +35,7 @@ public class TaskService {
     private final TeamMemberRepository teamMemberRepository;
     private final UserRepository userRepository;
     private final TeamRepository teamRepository;
+    private final PlanRepository planRepository;
 
     @Transactional(readOnly = false)
     public CreateTaskResponse createTask(Long projectId, CreateTaskRequest request) {
@@ -118,6 +121,13 @@ public class TaskService {
             .build();
 
         Task savedTask = taskRepository.save(task);
+
+        Plan plan = Plan.builder()
+            .task(task)
+            .startDate(task.getStartDate())
+            .endDate(task.getEndDate())
+            .build();
+        planRepository.save(plan);
 
         return CreateTaskResponse.from(savedTask);
     }
