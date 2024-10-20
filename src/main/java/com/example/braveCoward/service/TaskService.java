@@ -79,7 +79,7 @@ public class TaskService {
                 return teamMemberRepository.save(newTeamMember);
             });
 
-        TeamMember teamMember2 = teamMemberRepository.findByTeamAndUser(team, user)
+        TeamMember teamMember2 = teamMemberRepository.findByTeamAndUser(team, user2)
             .orElseGet(() -> {
                 TeamMember newTeamMember = TeamMember.builder()
                     .role("프론트엔드")
