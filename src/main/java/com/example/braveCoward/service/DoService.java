@@ -1,20 +1,25 @@
 package com.example.braveCoward.service;
 
-import com.example.braveCoward.dto.Do.CreateDoRequest;
-import com.example.braveCoward.dto.Do.CreateDoResponse;
-import com.example.braveCoward.dto.Do.DoResponse;
-import com.example.braveCoward.dto.Do.DosResponse;
-import com.example.braveCoward.model.*;
-import com.example.braveCoward.repository.*;
-
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
+import com.example.braveCoward.dto.Do.CreateDoRequest;
+import com.example.braveCoward.dto.Do.CreateDoResponse;
+import com.example.braveCoward.dto.Do.DoResponse;
+import com.example.braveCoward.dto.Do.DosResponse;
+import com.example.braveCoward.model.Do;
+import com.example.braveCoward.model.Task;
+import com.example.braveCoward.repository.DoRepository;
+import com.example.braveCoward.repository.ProjectRepository;
+import com.example.braveCoward.repository.TaskRepository;
+import com.example.braveCoward.repository.TeamMemberRepository;
+import com.example.braveCoward.repository.TeamRepository;
+import com.example.braveCoward.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -34,8 +39,9 @@ public class DoService {
         Task task = taskRepository.findById(taskId)
             .orElseThrow(() -> new IllegalArgumentException("Task를 찾을 수 없습니다."));
 
+        System.out.println(request.startDate() + "날짜 로깅");
         Do doEntity = Do.builder()
-            .date(LocalDate.now())
+            .date(request.startDate())
             .status(request.status())
             .description(request.description())
             .task(task)

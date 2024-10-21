@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public record CreateDoRequest(
-    LocalDate date,
+    LocalDate startDate,
     @JsonFormat(shape = JsonFormat.Shape.STRING)Do.Status status,
     String description,
     Long taskId
