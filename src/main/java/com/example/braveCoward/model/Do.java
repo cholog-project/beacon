@@ -2,6 +2,7 @@ package com.example.braveCoward.model;
 
 import static lombok.AccessLevel.PROTECTED;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,7 +33,21 @@ public class Do extends BaseEntity {
     private Task task;
 
     public enum Status {
-        NOT_STARTED, IN_PROGRESS, END
+        NOT_STARTED, IN_PROGRESS, END;
+
+        @JsonCreator
+        public static Status fromString(String value) {
+            switch (value.toLowerCase()) {
+                case "not started":
+                    return NOT_STARTED;
+                case "in progress":
+                    return IN_PROGRESS;
+                case "end":
+                    return END;
+                default:
+                    throw new IllegalArgumentException("Unknown status: " + value);
+            }
+        }
     }
 
     @Builder

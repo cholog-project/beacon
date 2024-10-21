@@ -4,6 +4,7 @@ import com.example.braveCoward.dto.Do.CreateDoRequest;
 import com.example.braveCoward.dto.Do.CreateDoResponse;
 import com.example.braveCoward.dto.Do.DoResponse;
 import com.example.braveCoward.dto.Do.DosResponse;
+import com.example.braveCoward.dto.project.ProjectRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -8,9 +8,12 @@ import com.example.braveCoward.service.DoService;
 import com.example.braveCoward.swagger.DoApi;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+@Slf4j  // Lombok을 사용한 로깅
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/project/tasks")
@@ -23,7 +26,14 @@ public class DoController implements DoApi {
             @PathVariable Long taskId,
             @Valid @RequestBody CreateDoRequest request
     ) {
+        log.info("Creating 'Do' for taskId: {}, with request: {}", taskId, request);
+
+        // 서비스 호출
         CreateDoResponse response = doService.createDo(taskId, request);
+
+        // 결과 로깅
+        log.info("Created 'Do' for taskId: {}, response: {}", taskId, response);
+
         return ResponseEntity.ok(response);
     }
 
