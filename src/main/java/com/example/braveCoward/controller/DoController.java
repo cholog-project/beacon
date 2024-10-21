@@ -26,13 +26,7 @@ public class DoController implements DoApi {
             @PathVariable Long taskId,
             @Valid @RequestBody CreateDoRequest request
     ) {
-        log.info("Creating 'Do' for taskId: {}, with request: {}", taskId, request);
-
-        // 서비스 호출
         CreateDoResponse response = doService.createDo(taskId, request);
-
-        // 결과 로깅
-        log.info("Created 'Do' for taskId: {}, response: {}", taskId, response);
 
         return ResponseEntity.ok(response);
     }
