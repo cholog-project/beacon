@@ -13,4 +13,6 @@ public interface PlanRepository extends Repository<Plan, Long> {
     void deleteById(Long planId);
 
     Optional<Plan> findById(Long planId);
+
+    void delete(Plan plan);
 }

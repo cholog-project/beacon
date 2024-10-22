@@ -3,6 +3,7 @@ package com.example.braveCoward.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.example.braveCoward.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +17,6 @@ import com.example.braveCoward.model.Task;
 import com.example.braveCoward.model.Team;
 import com.example.braveCoward.model.TeamMember;
 import com.example.braveCoward.model.User;
-import com.example.braveCoward.repository.PlanRepository;
-import com.example.braveCoward.repository.ProjectRepository;
-import com.example.braveCoward.repository.TaskRepository;
-import com.example.braveCoward.repository.TeamMemberRepository;
-import com.example.braveCoward.repository.TeamRepository;
-import com.example.braveCoward.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,6 +31,7 @@ public class TaskService {
     private final UserRepository userRepository;
     private final TeamRepository teamRepository;
     private final PlanRepository planRepository;
+    private final DoRepository doRepository;
 
     @Transactional(readOnly = false)
     public CreateTaskResponse createTask(Long projectId, CreateTaskRequest request) {
@@ -132,7 +128,14 @@ public class TaskService {
         return CreateTaskResponse.from(savedTask);
     }
 
+    @Transactional
     public void deleteTask(Long taskId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new IllegalArgumentException("Task not found with id: " + taskId));
+
+        // 연결된 Do 레코드 삭제
+        doRepository.deleteByTaskId(taskId);
+        // Task 삭제
         taskRepository.deleteById(taskId);
     }
 
