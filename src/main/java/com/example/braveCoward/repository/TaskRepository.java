@@ -17,4 +17,6 @@ public interface TaskRepository extends Repository<Task, Long> {
     Optional<Task> getById(Long taskId);
 
     Optional<Task> findById(Long taskId);
+
+    void delete(Task task);
 }

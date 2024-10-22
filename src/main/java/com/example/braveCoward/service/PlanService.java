@@ -37,7 +37,15 @@ public class PlanService {
     }
 
     public void deletePlan(Long planId) {
-        planRepository.deleteById(planId);
+        Plan plan = planRepository.findById(planId)
+                .orElseThrow(() -> new IllegalArgumentException("Plan not found with id: " + planId));
+
+        // Plan과 연결된 Task 삭제
+        Task task = plan.getTask();
+        taskRepository.delete(task);
+
+        // Plan 삭제
+        planRepository.delete(plan);
     }
 
     public PlanResponse getPlan(Long planId){
