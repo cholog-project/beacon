@@ -13,4 +13,6 @@ public interface DoRepository extends Repository<Do, Long> {
     List<Do> findAll();
 
     Optional<Do> findById(Long doId);
+
+    List<Do> findAllByTaskId(Long taskId);
 }
