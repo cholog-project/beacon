@@ -3,6 +3,7 @@ package com.example.braveCoward.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.example.braveCoward.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +17,6 @@ import com.example.braveCoward.model.Task;
 import com.example.braveCoward.model.Team;
 import com.example.braveCoward.model.TeamMember;
 import com.example.braveCoward.model.User;
-import com.example.braveCoward.repository.PlanRepository;
-import com.example.braveCoward.repository.ProjectRepository;
-import com.example.braveCoward.repository.TaskRepository;
-import com.example.braveCoward.repository.TeamMemberRepository;
-import com.example.braveCoward.repository.TeamRepository;
-import com.example.braveCoward.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,6 +31,7 @@ public class TaskService {
     private final UserRepository userRepository;
     private final TeamRepository teamRepository;
     private final PlanRepository planRepository;
+    private final DoRepository doRepository;
 
     @Transactional(readOnly = false)
     public CreateTaskResponse createTask(Long projectId, CreateTaskRequest request) {
@@ -108,8 +104,8 @@ public class TaskService {
         /*Project project = projectRepository.findById(projectId)
             .orElseThrow(() -> new IllegalArgumentException("프로젝트를 찾을 수 없습니다."));
 */
-        TeamMember teamMember3 = teamMemberRepository.findById(request.teamMemberId())
-            .orElseThrow(() -> new IllegalArgumentException("팀 멤버를 찾을 수 없습니다."));
+        TeamMember assignee = teamMemberRepository.findById(request.teamMemberId())
+           .orElseThrow(() -> new IllegalArgumentException("팀 멤버를 찾을 수 없습니다."));
 
         Task task = Task.builder()
             .title(request.title())
@@ -117,7 +113,7 @@ public class TaskService {
             .startDate(request.startDate())
             .endDate(request.endDate())
             .project(project)
-            .teamMember(teamMember3)
+            .teamMember(assignee)
             .build();
 
         Task savedTask = taskRepository.save(task);
@@ -132,7 +128,14 @@ public class TaskService {
         return CreateTaskResponse.from(savedTask);
     }
 
+    @Transactional
     public void deleteTask(Long taskId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new IllegalArgumentException("Task not found with id: " + taskId));
+
+        // 연결된 Do 레코드 삭제
+        doRepository.deleteByTaskId(taskId);
+        // Task 삭제
         taskRepository.deleteById(taskId);
     }
 
