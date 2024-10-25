@@ -108,16 +108,16 @@ public class TaskService {
         /*Project project = projectRepository.findById(projectId)
             .orElseThrow(() -> new IllegalArgumentException("프로젝트를 찾을 수 없습니다."));
 */
-        /*TeamMember teamMember = teamMemberRepository.findById(request.teamMemberId())
+        TeamMember teamMember3 = teamMemberRepository.findById(request.teamMemberId())
             .orElseThrow(() -> new IllegalArgumentException("팀 멤버를 찾을 수 없습니다."));
-*/
+
         Task task = Task.builder()
             .title(request.title())
             .description(request.description())
             .startDate(request.startDate())
             .endDate(request.endDate())
             .project(project)
-            .teamMember(teamMember)
+            .teamMember(teamMember3)
             .build();
 
         Task savedTask = taskRepository.save(task);

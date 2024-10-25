@@ -4,6 +4,7 @@ import com.example.braveCoward.dto.Do.CreateDoRequest;
 import com.example.braveCoward.dto.Do.CreateDoResponse;
 import com.example.braveCoward.dto.Do.DoResponse;
 import com.example.braveCoward.dto.Do.DosResponse;
+import com.example.braveCoward.model.Do;
 import com.example.braveCoward.service.DoService;
 import com.example.braveCoward.swagger.DoApi;
 import jakarta.validation.Valid;
@@ -45,10 +46,16 @@ public class DoController implements DoApi {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("dos/{doId}")
+    @GetMapping("/dos/{doId}")
     public ResponseEntity<DoResponse> getDo(@PathVariable Long doId) {
         DoResponse response = doService.getDo(doId);
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/dos")
+    public ResponseEntity<DosResponse> getAllDo(){
+        DosResponse response = doService.getAllDo();
+
+        return ResponseEntity.ok(response);
+    }
 }
