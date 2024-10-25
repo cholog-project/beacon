@@ -22,4 +22,7 @@ public interface DoRepository extends JpaRepository<Do, Long> {
     @Modifying
     @Query("DELETE FROM Do d WHERE d.task.id = :taskId")
     void deleteByTaskId(@Param("taskId") Long taskId);
+
+    List<Do> findAllByTaskId(Long taskId);
+
 }

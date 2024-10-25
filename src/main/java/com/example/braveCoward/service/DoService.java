@@ -56,7 +56,7 @@ public class DoService {
     }
 
     public DosResponse getDos(Long taskId) {
-        List<DoResponse> doResponses = doRepository.findAll().stream()
+        List<DoResponse> doResponses = doRepository.findAllByTaskId(taskId).stream()
             .map(doEntity -> new DoResponse(
                 doEntity.getId(),
                 doEntity.getDate(),
@@ -75,5 +75,20 @@ public class DoService {
             .orElseThrow(() -> new IllegalArgumentException("Do를 찾을 수 없습니다."));
 
         return DoResponse.from(doEntity);
+    }
+
+    public DosResponse getAllDo(){
+        List<DoResponse> doResponses = doRepository.findAll().stream()
+            .map(doEntity -> new DoResponse(
+                doEntity.getId(),
+                doEntity.getDate(),
+                doEntity.getStatus(),
+                doEntity.getDescription(),
+                doEntity.getTask().getId()
+            ))
+            .toList();
+
+        int totalCount = doResponses.size();
+        return new DosResponse(totalCount, doResponses);
     }
 }
