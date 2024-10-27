@@ -51,6 +51,7 @@ public class DoService {
         return CreateDoResponse.from(savedDo);
     }
 
+    @Transactional
     public void deleteDo(Long doId) {
         doRepository.deleteById(doId);
     }
