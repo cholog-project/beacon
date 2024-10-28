@@ -60,14 +60,4 @@ public class User extends BaseEntity{
         this.email = email;
         this.isDeleted = false;
     }
-
-    public User(
-        String password,
-        String name,
-        String email
-    ) {
-        this.password = password;
-        this.name = name;
-        this.email = email;
-    }
 }
