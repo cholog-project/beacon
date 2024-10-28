@@ -33,7 +33,7 @@ public class Do extends BaseEntity {
     private Task task;
 
     public enum Status {
-        NOT_STARTED, IN_PROGRESS, END;
+        NOT_STARTED, IN_PROGRESS, COMPLETED;
 
         @JsonCreator
         public static Status fromString(String value) {
@@ -42,8 +42,8 @@ public class Do extends BaseEntity {
                     return NOT_STARTED;
                 case "in progress":
                     return IN_PROGRESS;
-                case "end":
-                    return END;
+                case "completed":
+                    return COMPLETED;
                 default:
                     throw new IllegalArgumentException("Unknown status: " + value);
             }

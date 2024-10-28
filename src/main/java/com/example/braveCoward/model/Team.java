@@ -54,4 +54,12 @@ public class Team extends BaseEntity{
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
+    public Team(
+        String name,
+        String description
+    ) {
+        this.name = name;
+        this.description = description;
+    }
 }
