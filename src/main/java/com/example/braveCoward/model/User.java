@@ -3,17 +3,15 @@ package com.example.braveCoward.model;
 import static lombok.AccessLevel.PROTECTED;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.hibernate.annotations.Where;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -59,5 +57,9 @@ public class User extends BaseEntity{
         this.name = name;
         this.email = email;
         this.isDeleted = false;
+    }
+
+    public boolean isSamePassword(PasswordEncoder passwordEncoder, String password) {
+        return passwordEncoder.matches(password, this.password);
     }
 }
