@@ -33,6 +33,14 @@ public class UserController implements UserApi {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("user/register")
+    public ResponseEntity<Void> userRegister(
+        @Valid @RequestBody UserRegisterRequest request
+    ) {
+        userService.userRegister(request);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/user/login")
     public ResponseEntity<UserLoginResponse> login(
         @RequestBody @Valid UserLoginRequest request
@@ -40,13 +48,5 @@ public class UserController implements UserApi {
         UserLoginResponse response = userService.login(request);
         return ResponseEntity.created(URI.create("/"))
             .body(response);
-    }
-
-    @PostMapping("user/register")
-    public ResponseEntity<Void> userRegister(
-        @Valid @RequestBody UserRegisterRequest request
-    ) {
-        userService.userRegister(request);
-        return ResponseEntity.ok().build();
     }
 }

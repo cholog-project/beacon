@@ -36,6 +36,7 @@ public class UserService {
         return MembersResponse.from(teamMembers);
     }
 
+    @Transactional
     public void userRegister(UserRegisterRequest request) {
         if (userRepository.findByEmail(request.email()).isPresent()) {
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
@@ -49,7 +50,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-
+    @Transactional
     public UserLoginResponse login(UserLoginRequest request) {
         User user = userRepository.findByEmail(request.email()).get();
 
