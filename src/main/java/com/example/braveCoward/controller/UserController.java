@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.braveCoward.dto.MembersResponse;
+import com.example.braveCoward.dto.UserRegisterRequest;
 import com.example.braveCoward.dto.UserLoginRequest;
 import com.example.braveCoward.dto.UserLoginResponse;
 import com.example.braveCoward.service.UserService;
@@ -39,5 +40,13 @@ public class UserController implements UserApi {
         UserLoginResponse response = userService.login(request);
         return ResponseEntity.created(URI.create("/"))
             .body(response);
+    }
+
+    @PostMapping("user/register")
+    public ResponseEntity<Void> userRegister(
+        @Valid @RequestBody UserRegisterRequest request
+    ) {
+        userService.userRegister(request);
+        return ResponseEntity.ok().build();
     }
 }
