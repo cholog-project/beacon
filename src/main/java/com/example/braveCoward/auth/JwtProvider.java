@@ -3,6 +3,8 @@ package com.example.braveCoward.auth;
 import java.security.Key;
 import java.sql.Date;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Base64;
 
 import javax.crypto.SecretKey;
@@ -43,6 +45,10 @@ public class JwtProvider {
             .claim("id", user.getId())
             .expiration(Date.from(Instant.now().plusMillis(expirationTime)))
             .compact();
+    }
+
+    public LocalDateTime getExpirationTime() {
+        return LocalDateTime.ofInstant(Instant.now().plusMillis(expirationTime), ZoneId.systemDefault());
     }
 
     private SecretKey getSecretKey() {

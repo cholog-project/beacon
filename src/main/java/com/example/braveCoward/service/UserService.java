@@ -1,5 +1,6 @@
 package com.example.braveCoward.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,8 +15,10 @@ import com.example.braveCoward.dto.UserRegisterRequest;
 import com.example.braveCoward.model.Project;
 import com.example.braveCoward.model.TeamMember;
 import com.example.braveCoward.model.User;
+import com.example.braveCoward.model.UserToken;
 import com.example.braveCoward.repository.ProjectRepository;
 import com.example.braveCoward.repository.UserRepository;
+import com.example.braveCoward.repository.UserTokenRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +29,7 @@ public class UserService {
 
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final UserTokenRepository userTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
 
@@ -59,6 +63,14 @@ public class UserService {
         }
 
         String accessToken = jwtProvider.createToken(user);
+        LocalDateTime expirationTime = jwtProvider.getExpirationTime();
+
+        userTokenRepository.save(UserToken.builder()
+            .user(user)
+            .accessToken(accessToken)
+            .expirationTime(expirationTime)
+            .build()
+        );
 
         return new UserLoginResponse(accessToken);
     }
