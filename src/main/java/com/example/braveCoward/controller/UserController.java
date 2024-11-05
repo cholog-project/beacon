@@ -1,5 +1,7 @@
 package com.example.braveCoward.controller;
 
+import java.net.URI;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.braveCoward.dto.MembersResponse;
 import com.example.braveCoward.dto.UserRegisterRequest;
+import com.example.braveCoward.dto.UserLoginRequest;
+import com.example.braveCoward.dto.UserLoginResponse;
 import com.example.braveCoward.service.UserService;
 import com.example.braveCoward.swagger.UserApi;
 
@@ -35,5 +39,14 @@ public class UserController implements UserApi {
     ) {
         userService.userRegister(request);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/user/login")
+    public ResponseEntity<UserLoginResponse> login(
+        @RequestBody @Valid UserLoginRequest request
+    ) {
+        UserLoginResponse response = userService.login(request);
+        return ResponseEntity.created(URI.create("/"))
+            .body(response);
     }
 }
