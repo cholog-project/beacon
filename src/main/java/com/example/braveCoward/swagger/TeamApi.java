@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/teams")
-@Tag(name = "(Normal) Team", description = "Team 관련 API")
+@Tag(name = "(Normal) Team", description = "Team 생성 API")
 public interface TeamApi {
 
     @Operation(summary = "팀 생성", description = "새로운 팀을 생성합니다.")
