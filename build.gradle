@@ -39,6 +39,8 @@ dependencies {
 
 	// security
 	implementation 'org.springframework.security:spring-security-crypto:6.2.2'
+
+	implementation 'org.springframework.security:spring-security-oauth2-jose'
 }
 
 tasks.named('test') {
