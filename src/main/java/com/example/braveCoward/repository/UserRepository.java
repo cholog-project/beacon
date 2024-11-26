@@ -2,13 +2,12 @@ package com.example.braveCoward.repository;
 
 import java.util.Optional;
 
-import org.springframework.data.repository.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.braveCoward.exception.UserNotFoundException;
 import com.example.braveCoward.model.User;
 
-public interface UserRepository extends Repository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
     User save(User user);
 
-    Optional<User> findByEmail(String mail);
+    Optional<User> findByEmail(String email);
 }
