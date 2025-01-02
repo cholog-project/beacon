@@ -59,7 +59,12 @@ public class User extends BaseEntity{
         this.isDeleted = false;
     }
 
+    public User(String email, LocalDateTime now) {
+        super();
+    }
+
     public boolean isSamePassword(PasswordEncoder passwordEncoder, String password) {
         return passwordEncoder.matches(password, this.password);
     }
+
 }
