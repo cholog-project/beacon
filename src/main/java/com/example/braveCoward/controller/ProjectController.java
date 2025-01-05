@@ -2,13 +2,16 @@ package com.example.braveCoward.controller;
 
 import com.example.braveCoward.dto.project.ProjectCreateRequest;
 import com.example.braveCoward.dto.project.ProjectCreateResponse;
+import com.example.braveCoward.global.UserId;
 import com.example.braveCoward.service.ProjectService;
+import com.example.braveCoward.swagger.ProjectApi;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/teams/{teamId}/projects")
-public class ProjectController {
+public class ProjectController implements ProjectApi {
 
     private final ProjectService projectService;
 
@@ -18,8 +21,10 @@ public class ProjectController {
 
     @PostMapping
     public ResponseEntity<ProjectCreateResponse> createProject(
-            @PathVariable Long teamId,
-            @RequestBody ProjectCreateRequest request) {
+        @PathVariable Long teamId,
+        @RequestBody ProjectCreateRequest request,
+        @UserId Integer userId
+    ) {
         ProjectCreateResponse response = projectService.createProject(teamId, request);
         return ResponseEntity.status(201).body(response);
     }

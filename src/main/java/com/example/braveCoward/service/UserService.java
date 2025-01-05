@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.braveCoward.auth.JwtProvider;
+import com.example.braveCoward.global.JwtProvider;
 import com.example.braveCoward.dto.MembersResponse;
 import com.example.braveCoward.dto.UserLoginRequest;
 import com.example.braveCoward.dto.UserLoginResponse;
