@@ -45,8 +45,8 @@ public class SwaggerConfig {
 
     private Info apiInfo() {
         return new Info()
-            .title("KOIN API")
-            .description("KOIN API 문서입니다.")
+            .title("BEACON API")
+            .description("BEACON API 문서입니다.")
             .version("0.0.1");
     }
 }
