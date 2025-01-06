@@ -6,5 +6,6 @@ public record ProjectCreateRequest(
         String title,
         String description,
         LocalDateTime startDate,
-        LocalDateTime endDate
+        LocalDateTime endDate,
+        Double progress
 ) {}

@@ -42,6 +42,10 @@ public class Project extends BaseEntity{
     @Column(name = "end_date")
     private LocalDateTime endDate;
 
+//    @Column(name = "progress", nullable = false)
+    @Column(name = "progress")
+    private Double progress = 0.0; // 초기값은 0.0 (0%)
+
     @ManyToOne
     @JoinColumn(name = "team_id", nullable = false)
     private Team team;
@@ -55,12 +59,14 @@ public class Project extends BaseEntity{
         String description,
         LocalDateTime startDate,
         LocalDateTime endDate,
-        Team team
+        Team team,
+        Double progress
     ){
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.team = team;
+        this.progress=progress;
     }
 }

@@ -29,6 +29,7 @@ public class ProjectService {
                 .startDate(request.startDate())
                 .endDate(request.endDate())
                 .team(team)
+                .progress(request.progress())
                 .build();
 
         Project savedProject = projectRepository.save(project);
@@ -40,7 +41,8 @@ public class ProjectService {
                 savedProject.getStartDate(),
                 savedProject.getEndDate(),
                 savedProject.getCreatedAt(),
-                savedProject.getUpdatedAt()
+                savedProject.getUpdatedAt(),
+                savedProject.getProgress()
         );
     }
 }
