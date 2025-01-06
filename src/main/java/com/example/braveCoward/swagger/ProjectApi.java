@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@RequestMapping(value = "/teams/{teamId}/projects")
+@RequestMapping(value = "/projects/{teamId}")
 @Tag(name = "(Normal) Project", description = "Project 생성 API")
 public interface ProjectApi {
 
