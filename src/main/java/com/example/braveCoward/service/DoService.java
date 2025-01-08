@@ -44,7 +44,6 @@ public class DoService {
         System.out.println(request.startDate() + "날짜 로깅");
         Do doEntity = Do.builder()
             .date(request.startDate())
-            .status(request.status())
             .description(request.description())
             .plan(plan)
             .build();
@@ -64,7 +63,6 @@ public class DoService {
             .map(doEntity -> new DoResponse(
                 doEntity.getId(),
                 doEntity.getDate(),
-                doEntity.getStatus(),
                 doEntity.getDescription(),
                 taskId
             ))
@@ -86,7 +84,6 @@ public class DoService {
             .map(doEntity -> new DoResponse(
                 doEntity.getId(),
                 doEntity.getDate(),
-                doEntity.getStatus(),
                 doEntity.getDescription(),
                 doEntity.getPlan().getId()
             ))

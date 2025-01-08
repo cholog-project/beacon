@@ -6,9 +6,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -40,6 +44,10 @@ public class Plan extends BaseEntity {
     @Column
     private LocalDate endDate;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Status status;
+
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
@@ -51,12 +59,39 @@ public class Plan extends BaseEntity {
     @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Do> dos = new ArrayList<>();
 
+    public enum Status {
+        NOT_STARTED, IN_PROGRESS, COMPLETED;
+
+        @JsonCreator
+        public static Plan.Status fromString(String value) {
+            switch (value.toLowerCase()) {
+                case "not started":
+                    return NOT_STARTED;
+                case "in progress":
+                    return IN_PROGRESS;
+                case "completed":
+                    return COMPLETED;
+                default:
+                    throw new IllegalArgumentException("Unknown status: " + value);
+            }
+        }
+    }
+
     @Builder
-    public Plan(String title, String description, LocalDate startDate, LocalDate endDate, Project project, TeamMember teamMember) {
+    public Plan(
+        String title,
+        String description,
+        LocalDate startDate,
+        LocalDate endDate,
+        Status status,
+        Project project,
+        TeamMember teamMember
+    ) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.status = status;
         this.project = project;
         this.teamMember = teamMember;
     }

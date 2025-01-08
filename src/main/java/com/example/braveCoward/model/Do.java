@@ -21,10 +21,6 @@ public class Do extends BaseEntity {
     @Column(nullable = false)
     private LocalDate date;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Status status;
-
     @Column(columnDefinition = "TEXT")
     private String description;
 
@@ -32,28 +28,9 @@ public class Do extends BaseEntity {
     @JoinColumn(name = "plan_id", nullable = false)
     private Plan plan;
 
-    public enum Status {
-        NOT_STARTED, IN_PROGRESS, COMPLETED;
-
-        @JsonCreator
-        public static Status fromString(String value) {
-            switch (value.toLowerCase()) {
-                case "not started":
-                    return NOT_STARTED;
-                case "in progress":
-                    return IN_PROGRESS;
-                case "completed":
-                    return COMPLETED;
-                default:
-                    throw new IllegalArgumentException("Unknown status: " + value);
-            }
-        }
-    }
-
     @Builder
-    public Do(LocalDate date, Status status, String description, Plan plan) {
+    public Do(LocalDate date,  String description, Plan plan) {
         this.date = date;
-        this.status = status;
         this.description = description;
         this.plan = plan;
     }
