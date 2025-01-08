@@ -1,15 +1,21 @@
 package com.example.braveCoward.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.braveCoward.dto.plan.CreatePlanRequest;
 import com.example.braveCoward.dto.plan.CreatePlanResponse;
 import com.example.braveCoward.dto.plan.PlanResponse;
+import com.example.braveCoward.dto.plan.PlansResponse;
 import com.example.braveCoward.model.Plan;
-import com.example.braveCoward.model.Task;
+import com.example.braveCoward.model.Project;
+import com.example.braveCoward.model.TeamMember;
+import com.example.braveCoward.repository.DoRepository;
 import com.example.braveCoward.repository.PlanRepository;
-import com.example.braveCoward.repository.TaskRepository;
+import com.example.braveCoward.repository.ProjectRepository;
+import com.example.braveCoward.repository.TeamMemberRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,17 +24,26 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class PlanService {
 
-    private final TaskRepository taskRepository;
     private final PlanRepository planRepository;
+    private final ProjectRepository projectRepository;
+    private final TeamMemberRepository teamMemberRepository;
+    private final DoRepository doRepository;
 
-    public CreatePlanResponse createPlan(Long taskId, CreatePlanRequest request) {
-        Task task = taskRepository.findById(taskId)
-            .orElseThrow(() -> new IllegalArgumentException("태스크를 찾을 수 없습니다."));
+    public CreatePlanResponse createPlan(Long projectId, CreatePlanRequest request) {
+        Project project = projectRepository.findById(projectId)
+            .orElseThrow(() -> new IllegalArgumentException("프로젝트를 찾을 수 없습니다."));
+
+        TeamMember assignee = teamMemberRepository.findById(request.teamMemberId())
+            .orElseThrow(() -> new IllegalArgumentException("팀 멤버를 찾을 수 없습니다."));
 
         Plan plan = Plan.builder()
+            .title(request.title())
+            .description(request.description())
             .startDate(request.startDate())
             .endDate(request.endDate())
-            .task(task)
+            .project(project)
+            .teamMember(assignee)
+            .status(request.status())
             .build();
 
         Plan savedPlan = planRepository.save(plan);
@@ -38,20 +53,33 @@ public class PlanService {
 
     public void deletePlan(Long planId) {
         Plan plan = planRepository.findById(planId)
-                .orElseThrow(() -> new IllegalArgumentException("Plan not found with id: " + planId));
+            .orElseThrow(() -> new IllegalArgumentException("Plan not found with id: " + planId));
 
-        // Plan과 연결된 Task 삭제
-        Task task = plan.getTask();
-        taskRepository.delete(task);
+        doRepository.deleteByPlanId(planId);
 
-        // Plan 삭제
         planRepository.delete(plan);
     }
 
-    public PlanResponse getPlan(Long planId){
+    public PlanResponse getPlan(Long planId) {
         Plan plan = planRepository.findById(planId)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Plan입니다"));
 
         return PlanResponse.from(plan);
+    }
+
+    public PlansResponse getPlansByProjectId(Long projectId) {
+        List<PlanResponse> plansResponses = planRepository.findAllByProjectId(projectId).stream()
+            .map(plan -> new PlanResponse(
+                plan.getId(),
+                plan.getTitle(),
+                plan.getDescription(),
+                plan.getStartDate(),
+                plan.getEndDate(),
+                plan.getStatus(),
+                plan.getTeamMember().getId()
+            ))
+            .toList();
+
+        return new PlansResponse(plansResponses.size(), plansResponses);
     }
 }

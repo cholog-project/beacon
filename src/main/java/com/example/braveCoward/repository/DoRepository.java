@@ -20,8 +20,8 @@ public interface DoRepository extends JpaRepository<Do, Long> {
     Optional<Do> findById(Long doId);
 
     @Modifying
-    @Query("DELETE FROM Do d WHERE d.task.id = :taskId")
-    void deleteByTaskId(@Param("taskId") Long taskId);
+    @Query("DELETE FROM Do d WHERE d.plan.id = :planId")
+    void deleteByPlanId(@Param("planId") Long planId);
 
     List<Do> findAllByTaskId(Long taskId);
 

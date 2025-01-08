@@ -51,7 +51,7 @@ public class Project extends BaseEntity{
     private Team team;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<Task> tasks;
+    private List<Plan> plans;
 
     @Builder
     public Project(

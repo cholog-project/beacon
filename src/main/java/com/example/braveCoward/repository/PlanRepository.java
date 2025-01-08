@@ -1,5 +1,6 @@
 package com.example.braveCoward.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.repository.Repository;
@@ -15,4 +16,6 @@ public interface PlanRepository extends Repository<Plan, Long> {
     Optional<Plan> findById(Long planId);
 
     void delete(Plan plan);
+
+    List<Plan> findAllByProjectId(Long projectId);
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.braveCoward.dto.plan.CreatePlanRequest;
 import com.example.braveCoward.dto.plan.CreatePlanResponse;
 import com.example.braveCoward.dto.plan.PlanResponse;
+import com.example.braveCoward.dto.plan.PlansResponse;
 import com.example.braveCoward.service.PlanService;
 import com.example.braveCoward.swagger.PlanApi;
 
@@ -47,6 +48,14 @@ public class PlanController implements PlanApi {
         @PathVariable Long planId
     ){
         PlanResponse response = planService.getPlan(planId);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/plans/{projectId}")
+    public ResponseEntity<PlansResponse> getAllPlansByProject(
+        @PathVariable Long projectId
+    ){
+        PlansResponse response = planService.getPlansByProjectId(projectId);
         return ResponseEntity.ok(response);
     }
 }

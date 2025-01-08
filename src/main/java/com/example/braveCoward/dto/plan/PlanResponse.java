@@ -7,21 +7,23 @@ import com.example.braveCoward.model.Plan;
 
 public record PlanResponse(
     Long id,
+    String title,
+    String description,
     LocalDate startDate,
     LocalDate endDate,
-    Long taskId,
-    LocalDateTime createdAt,
-    LocalDateTime updatedAt) {
+    Plan.Status status,
+    Long teamMemberId
+) {
 
     public static PlanResponse from(Plan plan) {
         return new PlanResponse(
             plan.getId(),
+            plan.getTitle(),
+            plan.getDescription(),
             plan.getStartDate(),
             plan.getEndDate(),
-            plan.getTask().getId(),
-            plan.getCreatedAt(),
-            plan.getUpdatedAt()
+            plan.getStatus(),
+            plan.getTeamMember().getId()
         );
     }
-
 }
