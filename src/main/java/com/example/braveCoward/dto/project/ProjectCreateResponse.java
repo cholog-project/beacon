@@ -9,5 +9,6 @@ public record ProjectCreateResponse(
         LocalDateTime startDate,
         LocalDateTime endDate,
         LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        LocalDateTime updatedAt,
+        Double progress
 ) {}

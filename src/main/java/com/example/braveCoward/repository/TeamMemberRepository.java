@@ -1,5 +1,6 @@
 package com.example.braveCoward.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.repository.Repository;
@@ -14,4 +15,6 @@ public interface TeamMemberRepository extends Repository<TeamMember, Integer> {
     TeamMember save(TeamMember teamMember);
 
     Optional<TeamMember> findByTeamAndUser(Team team, User user);
+
+    void saveAll(List<TeamMember> teamMembers);
 }
