@@ -25,5 +25,4 @@ public class JwtTokenUtil {
             throw new IllegalArgumentException("Invalid or expired token", e);
         }
     }
-
 }

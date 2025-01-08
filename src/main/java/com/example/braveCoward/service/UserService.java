@@ -3,19 +3,15 @@ package com.example.braveCoward.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.example.braveCoward.dto.*;
+import com.example.braveCoward.model.*;
+import com.example.braveCoward.repository.RefreshTokenRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.braveCoward.auth.JwtProvider;
-import com.example.braveCoward.dto.MembersResponse;
-import com.example.braveCoward.dto.UserLoginRequest;
-import com.example.braveCoward.dto.UserLoginResponse;
-import com.example.braveCoward.dto.UserRegisterRequest;
-import com.example.braveCoward.model.Project;
-import com.example.braveCoward.model.TeamMember;
-import com.example.braveCoward.model.User;
-import com.example.braveCoward.model.UserToken;
 import com.example.braveCoward.repository.ProjectRepository;
 import com.example.braveCoward.repository.UserRepository;
 import com.example.braveCoward.repository.UserTokenRepository;
@@ -30,8 +26,12 @@ public class UserService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final UserTokenRepository userTokenRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    // application.yml에서 비밀 키를 주입받음
+    @Value("${jwt.secret-key}")
+    private String secretKey;
 
     public MembersResponse getTeamMembers(Long projectId) {
         Project project = projectRepository.findById(projectId).get();
@@ -63,7 +63,11 @@ public class UserService {
         }
 
         String accessToken = jwtProvider.createToken(user);
+        String refreshToken = jwtProvider.createRefreshToken(secretKey);
         LocalDateTime expirationTime = jwtProvider.getExpirationTime();
+
+        //레디스에 저장 Refresh 토큰을 저장한다. (사용자 기본키 Id, refresh 토큰, access 토큰 저장)
+        refreshTokenRepository.save(new RefreshToken(user.getId(), accessToken, refreshToken));
 
         userTokenRepository.save(UserToken.builder()
             .user(user)

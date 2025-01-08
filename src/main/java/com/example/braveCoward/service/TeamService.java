@@ -37,7 +37,7 @@ public class TeamService {
                 .map(email -> {
                     User user = userRepository.findByEmail(email)
                             .orElseGet(() -> userRepository.save(new User(email, LocalDateTime.now())));
-                    return new MemberResponse(user.getId(), user.getEmail(), user.getCreatedAt());
+                    return new MemberResponse(Math.toIntExact(user.getId()), user.getEmail(), user.getCreatedAt());
                 })
                 .toList();
 
