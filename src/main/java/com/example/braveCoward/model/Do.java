@@ -29,8 +29,8 @@ public class Do extends BaseEntity {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "task_id", nullable = false)
-    private Task task;
+    @JoinColumn(name = "plan_id", nullable = false)
+    private Plan plan;
 
     public enum Status {
         NOT_STARTED, IN_PROGRESS, COMPLETED;
@@ -51,10 +51,10 @@ public class Do extends BaseEntity {
     }
 
     @Builder
-    public Do(LocalDate date, Status status, String description, Task task) {
+    public Do(LocalDate date, Status status, String description, Plan plan) {
         this.date = date;
         this.status = status;
         this.description = description;
-        this.task = task;
+        this.plan = plan;
     }
 }

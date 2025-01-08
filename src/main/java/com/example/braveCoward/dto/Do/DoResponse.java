@@ -18,7 +18,7 @@ public record DoResponse(
                 doEntity.getDate(),
                 doEntity.getStatus(),
                 doEntity.getDescription(),
-                doEntity.getTask().getId()
+                doEntity.getPlan().getId()
         );
     }
 }

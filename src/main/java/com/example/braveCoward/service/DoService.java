@@ -10,8 +10,10 @@ import com.example.braveCoward.dto.Do.CreateDoResponse;
 import com.example.braveCoward.dto.Do.DoResponse;
 import com.example.braveCoward.dto.Do.DosResponse;
 import com.example.braveCoward.model.Do;
+import com.example.braveCoward.model.Plan;
 import com.example.braveCoward.model.Task;
 import com.example.braveCoward.repository.DoRepository;
+import com.example.braveCoward.repository.PlanRepository;
 import com.example.braveCoward.repository.ProjectRepository;
 import com.example.braveCoward.repository.TaskRepository;
 import com.example.braveCoward.repository.TeamMemberRepository;
@@ -31,19 +33,20 @@ public class DoService {
     private final UserRepository userRepository;
     private final TeamRepository teamRepository;
     private final DoRepository doRepository;
+    private final PlanRepository planRepository;
 
     @Transactional(readOnly = false)
-    public CreateDoResponse createDo(Long taskId, CreateDoRequest request) {
+    public CreateDoResponse createDo(Long planId, CreateDoRequest request) {
 
-        Task task = taskRepository.findById(taskId)
-            .orElseThrow(() -> new IllegalArgumentException("Task를 찾을 수 없습니다."));
+        Plan plan = planRepository.findById(planId)
+            .orElseThrow(() -> new IllegalArgumentException("Plan을 찾을 수 없습니다."));
 
         System.out.println(request.startDate() + "날짜 로깅");
         Do doEntity = Do.builder()
             .date(request.startDate())
             .status(request.status())
             .description(request.description())
-            .task(task)
+            .plan(plan)
             .build();
 
         Do savedDo = doRepository.save(doEntity);
@@ -85,7 +88,7 @@ public class DoService {
                 doEntity.getDate(),
                 doEntity.getStatus(),
                 doEntity.getDescription(),
-                doEntity.getTask().getId()
+                doEntity.getPlan().getId()
             ))
             .toList();
 
