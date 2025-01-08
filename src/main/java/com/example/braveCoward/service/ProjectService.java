@@ -1,7 +1,9 @@
 package com.example.braveCoward.service;
 
+import com.example.braveCoward.dto.plan.PlanResponse;
 import com.example.braveCoward.dto.project.ProjectCreateRequest;
 import com.example.braveCoward.dto.project.ProjectCreateResponse;
+import com.example.braveCoward.dto.project.ProjectResponse;
 import com.example.braveCoward.model.Project;
 import com.example.braveCoward.model.Team;
 import com.example.braveCoward.repository.ProjectRepository;
@@ -44,5 +46,11 @@ public class ProjectService {
                 savedProject.getUpdatedAt(),
                 savedProject.getProgress()
         );
+    }
+
+    public ProjectResponse getProject(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Project입니다"));
+        return ProjectResponse.from(project);
     }
 }

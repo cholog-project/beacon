@@ -59,14 +59,14 @@ public class Project extends BaseEntity{
         String description,
         LocalDateTime startDate,
         LocalDateTime endDate,
-        Team team,
-        Double progress
+        Double progress,
+        Team team
     ){
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.team = team;
         this.progress=progress;
+        this.team = team;
     }
 }
