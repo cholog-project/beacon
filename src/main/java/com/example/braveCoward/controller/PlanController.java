@@ -53,7 +53,7 @@ public class PlanController implements PlanApi {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/plans/{projectId}")
+    @GetMapping("/project/{projectId}")
     public ResponseEntity<PlansResponse> getAllPlansByProject(
         @PathVariable Long projectId
     ){

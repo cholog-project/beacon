@@ -17,7 +17,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/projects/tasks")
+@RequestMapping("/dos")
 @Tag(name = "(Normal) Do", description = "Do 관련 API")
 public interface DoApi {
 
@@ -28,7 +28,7 @@ public interface DoApi {
         }
     )
     @Operation(summary = "Do 추가")
-    @PostMapping("/{planId}/dos")
+    @PostMapping("/new/{planId}")
     ResponseEntity<CreateDoResponse> createDo(
         @PathVariable Long planId,
         @Valid @RequestBody CreateDoRequest request
@@ -41,7 +41,7 @@ public interface DoApi {
         }
     )
     @Operation(summary = "Do 삭제")
-    @DeleteMapping("/dos/{doId}")
+    @DeleteMapping("/{doId}")
     ResponseEntity<Void> deleteDo(
         @PathVariable Long doId
     );
@@ -53,7 +53,7 @@ public interface DoApi {
         }
     )
     @Operation(summary = "Do 목록 조회")
-    @GetMapping("/{planId}/dos")
+    @GetMapping("/plan/{planId}")
     ResponseEntity<DosResponse> getDoList(
         @PathVariable Long planId
     );
@@ -65,7 +65,7 @@ public interface DoApi {
         }
     )
     @Operation(summary = "Do 단일 조회")
-    @GetMapping("/dos/{doId}")
+    @GetMapping("/{doId}")
     ResponseEntity<DoResponse> getDo(
         @PathVariable Long doId
     );
@@ -87,6 +87,6 @@ public interface DoApi {
         }
     )
     @Operation(summary = "Do 수정")
-    @PatchMapping("/dos/{doId}")
+    @PatchMapping("/{doId}")
     ResponseEntity<Void> changeDo(Long doId, ChangeDoRequest request);
 }

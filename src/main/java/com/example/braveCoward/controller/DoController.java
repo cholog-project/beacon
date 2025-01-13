@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j  // Lombok을 사용한 로깅
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/project/tasks")
+@RequestMapping("/dos")
 public class DoController implements DoApi {
 
     private final DoService doService;
 
-    @PostMapping("/{planId}/dos")
+    @PostMapping("/new/{planId}")
     public ResponseEntity<CreateDoResponse> createDo(
         @PathVariable Long planId,
         @Valid @RequestBody CreateDoRequest request
@@ -33,7 +33,7 @@ public class DoController implements DoApi {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/dos/{doId}")
+    @DeleteMapping("/{doId}")
     public ResponseEntity<Void> deleteDo(
         @PathVariable Long doId
     ) {
@@ -41,7 +41,7 @@ public class DoController implements DoApi {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{planId}/dos")
+    @GetMapping("/plan/{planId}/")
     public ResponseEntity<DosResponse> getDoList(
         @PathVariable Long planId
     ) {
@@ -49,7 +49,7 @@ public class DoController implements DoApi {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/dos/{doId}")
+    @GetMapping("/{doId}")
     public ResponseEntity<DoResponse> getDo(
         @PathVariable Long doId
     ) {
@@ -64,11 +64,11 @@ public class DoController implements DoApi {
         return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/dos/{doId}")
+    @PatchMapping("/{doId}")
     public ResponseEntity<Void> changeDo(
         @PathVariable Long doId,
         ChangeDoRequest request
-    ){
+    ) {
         doService.changeDo(doId, request);
 
         return ResponseEntity.ok().build();

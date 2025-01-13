@@ -73,7 +73,7 @@ public interface PlanApi {
         }
     )
     @Operation(summary = "Project내에 있는 모든 Plan 가져오기")
-    @GetMapping("/plans/{projectId}")
+    @GetMapping("/project/{projectId}")
     ResponseEntity<PlansResponse> getAllPlansByProject(
         @PathVariable Long projectId
     );
