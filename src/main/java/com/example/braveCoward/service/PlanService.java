@@ -29,6 +29,7 @@ public class PlanService {
     private final TeamMemberRepository teamMemberRepository;
     private final DoRepository doRepository;
 
+    @Transactional(readOnly = false)
     public CreatePlanResponse createPlan(Long projectId, CreatePlanRequest request) {
         Project project = projectRepository.findById(projectId)
             .orElseThrow(() -> new IllegalArgumentException("프로젝트를 찾을 수 없습니다."));
@@ -51,6 +52,7 @@ public class PlanService {
         return CreatePlanResponse.from(savedPlan);
     }
 
+    @Transactional(readOnly = false)
     public void deletePlan(Long planId) {
         Plan plan = planRepository.findById(planId)
             .orElseThrow(() -> new IllegalArgumentException("Plan not found with id: " + planId));
@@ -81,5 +83,13 @@ public class PlanService {
             .toList();
 
         return new PlansResponse(plansResponses.size(), plansResponses);
+    }
+
+    @Transactional(readOnly = false)
+    public void changePlanStatus(Long planId, Plan.Status status){
+        Plan plan = planRepository.findById(planId)
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Plan입니다"));
+
+        plan.setStatus(status);
     }
 }

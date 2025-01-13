@@ -60,20 +60,28 @@ public class Plan extends BaseEntity {
     private List<Do> dos = new ArrayList<>();
 
     public enum Status {
-        NOT_STARTED, IN_PROGRESS, COMPLETED;
+        NOT_STARTED("not started"),
+        IN_PROGRESS("in progress"),
+        COMPLETED("completed");
+
+        private final String jsonValue;
+
+        Status(String jsonValue) {
+            this.jsonValue = jsonValue;
+        }
+
+        public String getJsonValue() {
+            return jsonValue;
+        }
 
         @JsonCreator
-        public static Plan.Status fromString(String value) {
-            switch (value.toLowerCase()) {
-                case "not started":
-                    return NOT_STARTED;
-                case "in progress":
-                    return IN_PROGRESS;
-                case "completed":
-                    return COMPLETED;
-                default:
-                    throw new IllegalArgumentException("Unknown status: " + value);
+        public static Status fromString(String value) {
+            for (Status status : values()) {
+                if (status.jsonValue.equalsIgnoreCase(value)) {
+                    return status;
+                }
             }
+            throw new IllegalArgumentException("형식에 맞지 않는 Status 입니다! : " + value);
         }
     }
 
@@ -94,5 +102,9 @@ public class Plan extends BaseEntity {
         this.status = status;
         this.project = project;
         this.teamMember = teamMember;
+    }
+
+    public void setStatus(Status status){
+        this.status = status;
     }
 }
