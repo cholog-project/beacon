@@ -34,4 +34,12 @@ public class Do extends BaseEntity {
         this.description = description;
         this.plan = plan;
     }
+
+    public void setDate(LocalDate date){
+        this.date = date;
+    }
+
+    public void setDescription(String description){
+        this.description = description;
+    }
 }

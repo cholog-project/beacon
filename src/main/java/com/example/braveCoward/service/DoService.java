@@ -5,13 +5,13 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.braveCoward.dto.Do.ChangeDoRequest;
 import com.example.braveCoward.dto.Do.CreateDoRequest;
 import com.example.braveCoward.dto.Do.CreateDoResponse;
 import com.example.braveCoward.dto.Do.DoResponse;
 import com.example.braveCoward.dto.Do.DosResponse;
 import com.example.braveCoward.model.Do;
 import com.example.braveCoward.model.Plan;
-import com.example.braveCoward.model.Task;
 import com.example.braveCoward.repository.DoRepository;
 import com.example.braveCoward.repository.PlanRepository;
 import com.example.braveCoward.repository.ProjectRepository;
@@ -58,13 +58,13 @@ public class DoService {
         doRepository.deleteById(doId);
     }
 
-    public DosResponse getDos(Long taskId) {
-        List<DoResponse> doResponses = doRepository.findAllByTaskId(taskId).stream()
+    public DosResponse getDos(Long planId) {
+        List<DoResponse> doResponses = doRepository.findAllByPlanId(planId).stream()
             .map(doEntity -> new DoResponse(
                 doEntity.getId(),
                 doEntity.getDate(),
                 doEntity.getDescription(),
-                taskId
+                planId
             ))
             .toList();
 
@@ -79,7 +79,7 @@ public class DoService {
         return DoResponse.from(doEntity);
     }
 
-    public DosResponse getAllDo(){
+    public DosResponse getAllDo() {
         List<DoResponse> doResponses = doRepository.findAll().stream()
             .map(doEntity -> new DoResponse(
                 doEntity.getId(),
@@ -91,5 +91,14 @@ public class DoService {
 
         int totalCount = doResponses.size();
         return new DosResponse(totalCount, doResponses);
+    }
+
+    @Transactional(readOnly = false)
+    public void changeDo(Long doId, ChangeDoRequest request) {
+        Do doEntity = doRepository.findById(doId)
+            .orElseThrow(() -> new IllegalArgumentException("Do를 찾을 수 없습니다."));
+
+        doEntity.setDescription(request.description());
+        doEntity.setDate(request.date());
     }
 }

@@ -1,10 +1,10 @@
 package com.example.braveCoward.swagger;
 
+import com.example.braveCoward.dto.Do.ChangeDoRequest;
 import com.example.braveCoward.dto.Do.CreateDoRequest;
 import com.example.braveCoward.dto.Do.CreateDoResponse;
 import com.example.braveCoward.dto.Do.DoResponse;
 import com.example.braveCoward.dto.Do.DosResponse;
-import com.example.braveCoward.dto.project.ProjectRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/projects/tasks")
 @Tag(name = "(Normal) Do", description = "Do 관련 API")
 public interface DoApi {
+
     @ApiResponses(
         value = {
             @ApiResponse(responseCode = "200"),
@@ -27,9 +28,9 @@ public interface DoApi {
         }
     )
     @Operation(summary = "Do 추가")
-    @PostMapping("/{taskId}/dos")
+    @PostMapping("/{planId}/dos")
     ResponseEntity<CreateDoResponse> createDo(
-        @PathVariable Long taskId,
+        @PathVariable Long planId,
         @Valid @RequestBody CreateDoRequest request
     );
 
@@ -52,9 +53,9 @@ public interface DoApi {
         }
     )
     @Operation(summary = "Do 목록 조회")
-    @GetMapping("/{taskId}/dos")
+    @GetMapping("/{planId}/dos")
     ResponseEntity<DosResponse> getDoList(
-        @PathVariable Long taskId
+        @PathVariable Long planId
     );
 
     @ApiResponses(
@@ -75,6 +76,17 @@ public interface DoApi {
             @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
         }
     )
+    @Operation(summary = "모든 Do 조회")
     @GetMapping("/dos")
     ResponseEntity<DosResponse> getAllDo();
+
+    @ApiResponses(
+        value = {
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+        }
+    )
+    @Operation(summary = "Do 수정")
+    @PatchMapping("/dos/{doId}")
+    ResponseEntity<Void> changeDo(Long doId, ChangeDoRequest request);
 }
