@@ -66,5 +66,4 @@ public class User extends BaseEntity{
     public boolean isSamePassword(PasswordEncoder passwordEncoder, String password) {
         return passwordEncoder.matches(password, this.password);
     }
-
 }
