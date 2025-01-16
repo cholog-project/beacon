@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.example.braveCoward.dto.*;
 import com.example.braveCoward.model.*;
-import com.example.braveCoward.repository.RefreshTokenRepository;
+import com.example.braveCoward.repository.TokenRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class UserService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final UserTokenRepository userTokenRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final TokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     // application.yml에서 비밀 키를 주입받음
@@ -66,8 +66,8 @@ public class UserService {
         String refreshToken = jwtProvider.createRefreshToken(secretKey);
         LocalDateTime expirationTime = jwtProvider.getExpirationTime();
 
-        //레디스에 저장 Refresh 토큰을 저장한다. (사용자 기본키 Id, refresh 토큰, access 토큰 저장)
-        refreshTokenRepository.save(new RefreshToken(user.getId(), accessToken, refreshToken));
+        //레디스에 저장 Refresh 토큰을 저장한다. (사용자 기본키 Id, refresh 토큰)
+        refreshTokenRepository.save(new Token(user.getId(), refreshToken));
 
         userTokenRepository.save(UserToken.builder()
             .user(user)

@@ -1,0 +1,27 @@
+services:
+  redis:
+    image: redis
+    volumes:
+      - "C:/Program Files/Redis/redis.windows.conf:/usr/local/etc/redis/redis.conf"
+    restart: unless-stopped
+    networks:
+      - test_network
+
+  beacon-bravecoward:  # 이미지 이름을 소문자로 변경
+    container_name: beacon-bravecoward
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - redis
+    networks:
+      - test_network
+    restart: unless-stopped
+
+networks:
+  test_network:

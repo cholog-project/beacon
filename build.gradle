@@ -13,6 +13,11 @@ configurations {
 	}
 }
 
+java {
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
+}
+
 repositories {
 	mavenCentral()
 }
@@ -45,8 +50,15 @@ dependencies {
 
 	// redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	// jwt
+	implementation 'com.auth0:java-jwt:4.4.0' // 최신 버전 확인 필요
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+jar {
+	enabled=false
 }
