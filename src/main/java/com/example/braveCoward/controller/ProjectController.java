@@ -30,4 +30,15 @@ public class ProjectController {
         ProjectResponse response = projectService.getProject(projectId);
         return ResponseEntity.status(201).body(response);
     }
+
+    @DeleteMapping("/{projectId}")
+    public ResponseEntity<Void> deleteProject (
+            @PathVariable Long projectId
+    ){
+        projectService.deleteProject(projectId);
+        return ResponseEntity.noContent().build();
+    }
+
+
+
 }
