@@ -36,7 +36,6 @@ public class TaskService {
     @Transactional(readOnly = false)
     public CreateTaskResponse createTask(Long projectId, CreateTaskRequest request) {
 
-
         Project project = projectRepository.findById(projectId)
             .orElseThrow(() -> new IllegalArgumentException("프로젝트를 찾을 수 없습니다."));
 
@@ -54,12 +53,12 @@ public class TaskService {
 
         Task savedTask = taskRepository.save(task);
 
-        Plan plan = Plan.builder()
+        /*Plan plan = Plan.builder()
             .task(task)
             .startDate(task.getStartDate())
             .endDate(task.getEndDate())
             .build();
-        planRepository.save(plan);
+        planRepository.save(plan);*/
 
         return CreateTaskResponse.from(savedTask);
     }
@@ -70,7 +69,8 @@ public class TaskService {
                 .orElseThrow(() -> new IllegalArgumentException("Task not found with id: " + taskId));
 
         // 연결된 Do 레코드 삭제
-        doRepository.deleteByTaskId(taskId);
+        //doRepository.deleteByTaskId(taskId);
+        
         // Task 삭제
         taskRepository.deleteById(taskId);
     }

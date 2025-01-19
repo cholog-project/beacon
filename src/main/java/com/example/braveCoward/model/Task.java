@@ -47,11 +47,11 @@ public class Task extends BaseEntity{
     @JoinColumn(name = "team_member_id", nullable = false)
     private TeamMember teamMember;
 
-    @OneToOne(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+   /* @OneToOne(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     private Plan plan;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Do> dos = new ArrayList<>();
+    private List<Do> dos = new ArrayList<>();*/
 
     @Builder
     public Task(String title, String description, LocalDate startDate, LocalDate endDate, Project project, TeamMember teamMember) {

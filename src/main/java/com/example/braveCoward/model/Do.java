@@ -21,40 +21,25 @@ public class Do extends BaseEntity {
     @Column(nullable = false)
     private LocalDate date;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Status status;
-
     @Column(columnDefinition = "TEXT")
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "task_id", nullable = false)
-    private Task task;
-
-    public enum Status {
-        NOT_STARTED, IN_PROGRESS, COMPLETED;
-
-        @JsonCreator
-        public static Status fromString(String value) {
-            switch (value.toLowerCase()) {
-                case "not started":
-                    return NOT_STARTED;
-                case "in progress":
-                    return IN_PROGRESS;
-                case "completed":
-                    return COMPLETED;
-                default:
-                    throw new IllegalArgumentException("Unknown status: " + value);
-            }
-        }
-    }
+    @JoinColumn(name = "plan_id", nullable = false)
+    private Plan plan;
 
     @Builder
-    public Do(LocalDate date, Status status, String description, Task task) {
+    public Do(LocalDate date,  String description, Plan plan) {
         this.date = date;
-        this.status = status;
         this.description = description;
-        this.task = task;
+        this.plan = plan;
+    }
+
+    public void setDate(LocalDate date){
+        this.date = date;
+    }
+
+    public void setDescription(String description){
+        this.description = description;
     }
 }

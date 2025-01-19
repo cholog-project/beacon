@@ -1,4 +1,4 @@
-package com.example.braveCoward.auth;
+package com.example.braveCoward.global;
 
 import java.security.Key;
 import java.sql.Date;
@@ -9,7 +9,7 @@ import java.util.Base64;
 
 import javax.crypto.SecretKey;
 
-import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,15 +51,20 @@ public class JwtProvider {
         return LocalDateTime.ofInstant(Instant.now().plusMillis(expirationTime), ZoneId.systemDefault());
     }
 
-    public Long getUserIdFromToken(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(getSecretKey())
+    public Integer getUserId(String token) {
+        try {
+            String userId = Jwts.parser()
+                .verifyWith(getSecretKey())
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
-        return claims.get("id", Long.class);
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("id")
+                .toString();
+            return Integer.parseInt(userId);
+        } catch (JwtException e) {
+            throw new IllegalArgumentException("Invalid token: " + token, e);
+        }
     }
-
 
     private SecretKey getSecretKey() {
         String encoded = Base64.getEncoder().encodeToString(secretKey.getBytes());
