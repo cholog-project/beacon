@@ -35,12 +35,7 @@ public interface ProjectApi {
         @RequestBody ProjectCreateRequest request,
         @UserId Integer userId
     );
-}
 
-    @PostMapping("/{teamId}")
-    ResponseEntity<ProjectCreateResponse> createProject(
-            @PathVariable Long teamId,
-            @RequestBody ProjectCreateRequest request);
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "프로젝트 단일 조회 성공"),
