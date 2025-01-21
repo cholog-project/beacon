@@ -37,32 +37,32 @@ public interface ProjectApi {
             @UserId Integer userId
     );
 
-@PostMapping("/{teamId}")
-ResponseEntity<ProjectCreateResponse> createProject(
-        @PathVariable Long teamId,
-        @RequestBody ProjectCreateRequest request);
+    @PostMapping("/{teamId}")
+    ResponseEntity<ProjectCreateResponse> createProject(
+            @PathVariable Long teamId,
+            @RequestBody ProjectCreateRequest request);
 
-@ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "프로젝트 단일 조회 성공"),
-        @ApiResponse(responseCode = "400", description = "잘못된 요청"),
-        @ApiResponse(responseCode = "404", description = "프로젝트를 찾을 수 없음")
-})
-@Operation(summary = "Project 단일 조회")
-@GetMapping("/{projectId}")
-ResponseEntity<ProjectResponse> getProject(
-        @PathVariable Long projectId
-);
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "프로젝트 단일 조회 성공"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "404", description = "프로젝트를 찾을 수 없음")
+    })
+    @Operation(summary = "Project 단일 조회")
+    @GetMapping("/{projectId}")
+    ResponseEntity<ProjectResponse> getProject(
+            @PathVariable Long projectId
+    );
 
-@ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "프로젝트 단일 조회 성공"),
-        @ApiResponse(responseCode = "400", description = "잘못된 요청"),
-        @ApiResponse(responseCode = "404", description = "프로젝트를 찾을 수 없음")
-})
-@Operation(summary = "Project 삭제")
-@DeleteMapping("/{projectId}")
-ResponseEntity<Void> deleteProject(
-        @PathVariable Long projectId
-);
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "프로젝트 단일 조회 성공"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(responseCode = "404", description = "프로젝트를 찾을 수 없음")
+    })
+    @Operation(summary = "Project 삭제")
+    @DeleteMapping("/{projectId}")
+    ResponseEntity<Void> deleteProject(
+            @PathVariable Long projectId
+    );
 
 
 }
