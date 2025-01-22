@@ -31,9 +31,6 @@ public class TeamService {
 
     @Transactional
     public CreateTeamResponse createTeam(CreateTeamRequest request) {
-        // 프로젝트 확인
-        Project project = projectRepository.findById(request.projectId())
-            .orElseThrow(() -> new IllegalArgumentException("Project not found with id: " + request.projectId()));
 
         // 팀 생성
         Team team = Team.builder()
@@ -60,6 +57,6 @@ public class TeamService {
 
         teamMemberRepository.saveAll(teamMembers);
 
-        return CreateTeamResponse.from(savedTeam, project, teamMembers);
+        return CreateTeamResponse.from(savedTeam, teamMembers);
     }
 }
