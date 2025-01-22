@@ -53,4 +53,12 @@ public class ProjectService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Project입니다"));
         return ProjectResponse.from(project);
     }
+
+    public void deleteProject(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new IllegalArgumentException("해당projectid는 찾아지지 않습니다" + projectId));
+
+        projectRepository.deleteById(projectId);
+    }
+
 }
