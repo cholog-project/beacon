@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 
@@ -25,7 +24,6 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         String jwt = "Jwt Authentication";
-        SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwt);
         Components components = new Components().addSecuritySchemes(jwt, new SecurityScheme()
             .name(jwt)
             .type(SecurityScheme.Type.HTTP)
@@ -33,12 +31,13 @@ public class SwaggerConfig {
             .description("토큰값을 입력하여 인증을 활성화할 수 있습니다.")
             .bearerFormat("JWT")
         );
+
         Server server = new Server();
         server.setUrl(serverUrl);
+
         return new OpenAPI()
             .openapi("3.1.0")
             .info(apiInfo())
-            .addSecurityItem(securityRequirement)
             .components(components)
             .addServersItem(server);
     }

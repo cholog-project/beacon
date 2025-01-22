@@ -1,8 +1,10 @@
 package com.example.braveCoward.global;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,14 @@ public class ExtractAuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        if (handler instanceof HandlerMethod handlerMethod) {
+            SecurityRequirement securityRequirement = handlerMethod.getMethodAnnotation(SecurityRequirement.class);
+
+            if (securityRequirement == null) {
+                return true;
+            }
+        }
+
         String token = extractAccessToken(request);
         if (token == null) {
             throw new IllegalArgumentException("Access token is required.");
