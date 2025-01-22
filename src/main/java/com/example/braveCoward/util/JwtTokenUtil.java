@@ -1,7 +1,7 @@
 package com.example.braveCoward.util;
 
 import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.example.braveCoward.model.Token;
+import com.example.braveCoward.model.RefreshToken;
 import com.example.braveCoward.repository.TokenRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
@@ -18,12 +18,8 @@ import java.time.Instant;
 public class JwtTokenUtil {
     @Value("${jwt.secret-key}")
     private String secret;
-
-    private final int expirationTimeMillis = 864_000_000; // 10일(밀리 초 단위)
-
     @Value("${jwt.refresh-token-expiration-mills}")
     private Long refreshTokenExpirationMillis;  // int → Long 변경
-
     private final String tokenPrefix = "Bearer ";
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final TokenRepository tokenRepository;
@@ -35,17 +31,13 @@ public class JwtTokenUtil {
     }
 
     public String createRefreshToken(Long id, Instant issuedAt) {
-        if (secret == null || refreshTokenExpirationMillis == null) {
-            throw new IllegalStateException("JWT 설정 값이 주입되지 않았습니다.");
-        }
-
         String refreshToken = JWT.create()
                 .withClaim("id", id)
                 .withIssuedAt(issuedAt)
                 .withExpiresAt(issuedAt.plusMillis(refreshTokenExpirationMillis))
                 .sign(Algorithm.HMAC512(secret));
 
-        Token token = new Token(id, refreshToken);
+        RefreshToken token = new RefreshToken(id, refreshToken);
         tokenRepository.save(token);
         return refreshToken;
     }

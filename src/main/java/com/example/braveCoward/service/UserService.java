@@ -67,7 +67,7 @@ public class UserService {
         LocalDateTime expirationTime = jwtProvider.getExpirationTime();
 
         //레디스에 저장 Refresh 토큰을 저장한다. (사용자 기본키 Id, refresh 토큰)
-        refreshTokenRepository.save(new Token(user.getId(), refreshToken));
+        refreshTokenRepository.save(new RefreshToken(user.getId(), refreshToken));
 
         userTokenRepository.save(UserToken.builder()
             .user(user)

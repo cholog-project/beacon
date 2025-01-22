@@ -45,14 +45,13 @@ dependencies {
 
 	// security
 	implementation 'org.springframework.security:spring-security-crypto:6.2.2'
-
 	implementation 'org.springframework.security:spring-security-oauth2-jose'
 
 	// redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
 	// jwt
-	implementation 'com.auth0:java-jwt:4.4.0' // 최신 버전 확인 필요
+	implementation 'com.auth0:java-jwt:4.4.0'
 }
 
 tasks.named('test') {

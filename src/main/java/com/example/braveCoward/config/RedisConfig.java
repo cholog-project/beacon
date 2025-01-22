@@ -22,16 +22,13 @@ public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
-        config.setHostName(host);
-        config.setPort(port);
-
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration(host, port);
         return new LettuceConnectionFactory(config);
     }
 
     @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+    public RedisTemplate<String, String> redisTemplate() {
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
 
         // 일반적인 key:value의 경우 시리얼라이저
@@ -41,9 +38,9 @@ public class RedisConfig {
 //        // Hash를 사용할 경우 시리얼라이저
 //        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
 //        redisTemplate.setHashValueSerializer(new StringRedisSerializer());
-
-        // 모든 경우
-        redisTemplate.setDefaultSerializer(new StringRedisSerializer());
+//
+//        // 모든 경우
+//        redisTemplate.setDefaultSerializer(new StringRedisSerializer());
 
         return redisTemplate;
     }
