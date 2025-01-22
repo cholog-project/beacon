@@ -10,12 +10,11 @@ import com.example.braveCoward.model.TeamMember;
 public record CreateTeamResponse(
     Integer teamId,
     String name,
-    Long projectId,
     List<TeamMemberResponse> members,
     LocalDateTime createdAt,
     LocalDateTime updatedAt
 ) {
-    public static CreateTeamResponse from(Team team, Project project, List<TeamMember> teamMembers) {
+    public static CreateTeamResponse from(Team team, List<TeamMember> teamMembers) {
         List<TeamMemberResponse> memberResponses = teamMembers.stream()
             .map(TeamMemberResponse::from)
             .toList();
@@ -23,7 +22,6 @@ public record CreateTeamResponse(
         return new CreateTeamResponse(
             team.getId(),
             team.getName(),
-            project.getId(),
             memberResponses,
             team.getCreatedAt(),
             team.getUpdatedAt()
