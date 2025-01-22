@@ -1,7 +1,5 @@
 package com.example.braveCoward.swagger;
 
-import com.example.braveCoward.dto.plan.PlanResponse;
-
 import com.example.braveCoward.dto.project.ProjectCreateRequest;
 import com.example.braveCoward.dto.project.ProjectCreateResponse;
 import com.example.braveCoward.global.UserId;
@@ -30,17 +28,12 @@ public interface ProjectApi {
             @ApiResponse(responseCode = "404", description = "팀을 찾을 수 없음")
     })
     @SecurityRequirement(name = "Jwt Authentication")
-    @PostMapping("/teams/{teamId}/projects")
+    @PostMapping("/{teamId}")
     ResponseEntity<ProjectCreateResponse> createProject(
             @PathVariable Long teamId,
             @RequestBody ProjectCreateRequest request,
             @UserId Integer userId
     );
-
-    @PostMapping("/{teamId}")
-    ResponseEntity<ProjectCreateResponse> createProject(
-            @PathVariable Long teamId,
-            @RequestBody ProjectCreateRequest request);
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "프로젝트 단일 조회 성공"),
