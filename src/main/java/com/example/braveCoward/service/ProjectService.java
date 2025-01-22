@@ -57,7 +57,6 @@ public class ProjectService {
     public void deleteProject(Long projectId) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new IllegalArgumentException("해당projectid는 찾아지지 않습니다" + projectId));
-
         projectRepository.deleteById(projectId);
     }
 
