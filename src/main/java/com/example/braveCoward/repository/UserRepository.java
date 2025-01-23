@@ -8,6 +8,5 @@ import com.example.braveCoward.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     User save(User user);
-
     Optional<User> findByEmail(String email);
 }
