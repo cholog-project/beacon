@@ -1,14 +1,15 @@
 package com.example.braveCoward.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.braveCoward.dto.plan.CreatePlanRequest;
 import com.example.braveCoward.dto.plan.CreatePlanResponse;
+import com.example.braveCoward.dto.plan.PageDTO;
 import com.example.braveCoward.dto.plan.PlanResponse;
-import com.example.braveCoward.dto.plan.PlansResponse;
 import com.example.braveCoward.model.Plan;
 import com.example.braveCoward.model.Project;
 import com.example.braveCoward.model.TeamMember;
@@ -69,24 +70,18 @@ public class PlanService {
         return PlanResponse.from(plan);
     }
 
-    public PlansResponse getPlansByProjectId(Long projectId) {
-        List<PlanResponse> plansResponses = planRepository.findAllByProjectId(projectId).stream()
-            .map(plan -> new PlanResponse(
-                plan.getId(),
-                plan.getTitle(),
-                plan.getDescription(),
-                plan.getStartDate(),
-                plan.getEndDate(),
-                plan.getStatus(),
-                plan.getTeamMember().getId()
-            ))
-            .toList();
+    public Page<PlanResponse> getPlansByProjectId(Long projectId, PageDTO pageDTO) {
+        PageRequest pageRequest = PageRequest.of(pageDTO.page(), pageDTO.pageSize(),
+            Sort.by(Sort.Direction.DESC, "id"));
+        Page<Plan> plans = planRepository.findAllByProjectId(projectId, pageRequest);
 
-        return new PlansResponse(plansResponses.size(), plansResponses);
+        Page<PlanResponse> planResponses = plans.map(plan -> PlanResponse.from(plan));
+
+        return planResponses;
     }
 
     @Transactional(readOnly = false)
-    public void changePlanStatus(Long planId, Plan.Status status){
+    public void changePlanStatus(Long planId, Plan.Status status) {
         Plan plan = planRepository.findById(planId)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Plan입니다"));
 
