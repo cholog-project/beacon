@@ -9,7 +9,6 @@ import lombok.Setter;
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
-@Setter
 @Entity
 @Table(name = "alarm")
 @NoArgsConstructor(access = PROTECTED)

@@ -18,7 +18,10 @@ public class AlarmService {
     private final UserRepository userRepository;
     private final AlarmRepository alarmRepository;
 
-    public AlarmService(JavaMailSender mailSender, UserRepository userRepository, AlarmRepository alarmRepository) {
+    public AlarmService
+            (JavaMailSender mailSender,
+             UserRepository userRepository,
+             AlarmRepository alarmRepository) {
         this.mailSender = mailSender;
         this.userRepository = userRepository;
         this.alarmRepository = alarmRepository;
@@ -29,14 +32,14 @@ public class AlarmService {
         Optional<User> optionalUser = userRepository.findById(userId);
 
         if (optionalUser.isEmpty()) {
-            return "User not found for ID: " + userId;
+            return "User not found";
         }
 
         User user = optionalUser.get();
 
         // 이메일 주소 확인
         if (user.getEmail() == null || user.getEmail().isEmpty()) {
-            return "Email not found for User ID: " + userId;
+            return "Email not found";
         }
 
         String email = user.getEmail();
