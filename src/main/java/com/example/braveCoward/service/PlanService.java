@@ -2,13 +2,14 @@ package com.example.braveCoward.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.braveCoward.dto.plan.CreatePlanRequest;
 import com.example.braveCoward.dto.plan.CreatePlanResponse;
-import com.example.braveCoward.dto.plan.PageDTO;
+import com.example.braveCoward.dto.PageDTO;
 import com.example.braveCoward.dto.plan.PlanResponse;
 import com.example.braveCoward.model.Plan;
 import com.example.braveCoward.model.Project;
@@ -71,9 +72,9 @@ public class PlanService {
     }
 
     public Page<PlanResponse> getPlansByProjectId(Long projectId, PageDTO pageDTO) {
-        PageRequest pageRequest = PageRequest.of(pageDTO.page(), pageDTO.pageSize(),
+        Pageable pageable = PageRequest.of(pageDTO.page(), pageDTO.pageSize(),
             Sort.by(Sort.Direction.DESC, "id"));
-        Page<Plan> plans = planRepository.findAllByProjectId(projectId, pageRequest);
+        Page<Plan> plans = planRepository.findAllByProjectId(projectId, pageable);
 
         Page<PlanResponse> planResponses = plans.map(plan -> PlanResponse.from(plan));
 
