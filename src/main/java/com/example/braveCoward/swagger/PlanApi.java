@@ -1,5 +1,6 @@
 package com.example.braveCoward.swagger;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.braveCoward.dto.plan.CreatePlanRequest;
 import com.example.braveCoward.dto.plan.CreatePlanResponse;
+import com.example.braveCoward.dto.PageDTO;
 import com.example.braveCoward.dto.plan.PlanResponse;
-import com.example.braveCoward.dto.plan.PlansResponse;
 import com.example.braveCoward.model.Plan;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -74,8 +74,9 @@ public interface PlanApi {
     )
     @Operation(summary = "Project내에 있는 모든 Plan 가져오기")
     @GetMapping("/project/{projectId}")
-    ResponseEntity<PlansResponse> getAllPlansByProject(
-        @PathVariable Long projectId
+    ResponseEntity<Page<PlanResponse>> getAllPlansByProject(
+        @PathVariable Long projectId,
+        PageDTO pageDTO
     );
 
     @ApiResponses(
