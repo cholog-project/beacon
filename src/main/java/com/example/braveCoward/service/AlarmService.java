@@ -18,56 +18,65 @@ public class AlarmService {
     private final UserRepository userRepository;
     private final AlarmRepository alarmRepository;
 
-    public AlarmService
-            (JavaMailSender mailSender,
-             UserRepository userRepository,
-             AlarmRepository alarmRepository) {
+    public AlarmService(JavaMailSender mailSender,
+                        UserRepository userRepository,
+                        AlarmRepository alarmRepository) {
         this.mailSender = mailSender;
         this.userRepository = userRepository;
         this.alarmRepository = alarmRepository;
     }
 
+    //검증 및 보내기
     public String sendEmailToUser(Long userId, String description) {
-        // userId로 User 조회
+        // 사용자 조회 및 이메일 검증
         Optional<User> optionalUser = userRepository.findById(userId);
-
         if (optionalUser.isEmpty()) {
             return "User not found";
         }
 
         User user = optionalUser.get();
-
-        // 이메일 주소 확인
-        if (user.getEmail() == null || user.getEmail().isEmpty()) {
+        if (!isValidEmail(user.getEmail())) {
             return "Email not found";
         }
 
-        String email = user.getEmail();
+        // 이메일 발송
+        if (!sendEmail(user, description)) {
+            return "Failed to send email to: " + user.getEmail();
+        }
 
+        // 알림 저장
+        saveAlarm(user, description);
+        return "Email sent to: " + user.getEmail() + " and alarm saved with description: " + description;
+    }
+
+    //세부적인 검증 내용
+    private boolean isValidEmail(String email) {
+        return email != null && !email.isEmpty();
+    }
+
+    private boolean sendEmail(User user, String description) {
         try {
-            //  이메일 발송
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
 
-            helper.setTo(email);
+            helper.setTo(user.getEmail());
             helper.setSubject("알림: " + description);
             helper.setText("안녕하세요, " + user.getName() + "님!\n\n" + description);
 
             mailSender.send(message);
-
-            //  정보 저장
-            Alarm alarm = Alarm.builder()
-                    .description(description)
-                    .user(user)
-                    .build();
-
-            alarmRepository.save(alarm);
-
-            return "Email sent to: " + email + " and alarm saved with description: " + description;
-
+            return true;
         } catch (MessagingException e) {
             e.printStackTrace();
-            return "Failed to send email to: " + email;
+            return false;
         }
+    }
+
+    private void saveAlarm(User user, String description) {
+        Alarm alarm = Alarm.builder()
+                .description(description)
+                .user(user)
+                .build();
+
+        alarmRepository.save(alarm);
     }
 }
