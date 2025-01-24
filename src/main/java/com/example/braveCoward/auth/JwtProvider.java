@@ -6,9 +6,12 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Base64;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.crypto.SecretKey;
 
+import com.example.braveCoward.util.JwtTokenUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,14 +25,20 @@ import com.example.braveCoward.model.User;
 public class JwtProvider {
 
     private final String secretKey;
-    private final Long expirationTime;
+    private final Long accessExpiration;
+    private final Long refreshExpiration;
+    private final JwtTokenUtil redisUtil;
 
     public JwtProvider(
             @Value("${jwt.secret-key}") String secretKey,
-            @Value("${jwt.access-token.expiration-time}") Long expirationTime
+            @Value("${jwt.access-token-expiration-time}") Long accessExpiration,
+            @Value("${jwt.refresh-token-expiration-mills}") Long refreshExpiration,
+            JwtTokenUtil redisUtil
     ) {
         this.secretKey = secretKey;
-        this.expirationTime = expirationTime;
+        this.accessExpiration = accessExpiration;
+        this.refreshExpiration = refreshExpiration;
+        this.redisUtil = redisUtil;
     }
 
     public String createToken(User user) {
@@ -44,12 +53,12 @@ public class JwtProvider {
                 .add("alg", key.getAlgorithm())
                 .and()
                 .claim("id", user.getId())
-                .expiration(Date.from(Instant.now().plusMillis(expirationTime)))
+                .expiration(Date.from(Instant.now().plusMillis(accessExpiration)))
                 .compact();
     }
 
     public LocalDateTime getExpirationTime() {
-        return LocalDateTime.ofInstant(Instant.now().plusMillis(expirationTime), ZoneId.systemDefault());
+        return LocalDateTime.ofInstant(Instant.now().plusMillis(accessExpiration), ZoneId.systemDefault());
     }
 
     public Long getUserIdFromToken(String token) {
@@ -67,16 +76,26 @@ public class JwtProvider {
         return Keys.hmacShaKeyFor(encoded.getBytes());
     }
 
-    public static String createRefreshToken(String key) {
-        Claims claims = (Claims) Jwts
-                .claims();
+    public String createRefreshToken(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("유저가 존재하지 않습니다.");
+        }
 
-        return Jwts
-                .builder()
-                .setClaims(claims)
-                .setIssuedAt(new java.util.Date(System.currentTimeMillis()))
-                .setExpiration(new java.util.Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 3))//유효시간 (3일)
-                .signWith(SignatureAlgorithm.HS256, key) //HS256알고리즘으로 key를 암호화 해줄것이다.
+        Key key = getSecretKey();
+
+        String refreshToken = Jwts.builder()
+                .signWith(key)
+                .header()
+                .add("typ", "JWT")
+                .add("alg", key.getAlgorithm())
+                .and()
+                .claim("id", user.getId())
+                .expiration(Date.from(Instant.now().plusMillis(refreshExpiration)))
                 .compact();
+
+        redisUtil.set(user.getEmail(), refreshToken);
+        redisUtil.expire(user.getEmail(), refreshExpiration, TimeUnit.MILLISECONDS);
+
+        return refreshToken;
     }
 }

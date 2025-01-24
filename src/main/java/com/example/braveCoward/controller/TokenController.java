@@ -11,21 +11,21 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 
-@RestController
-@RequiredArgsConstructor
-public class TokenController implements RedisApi {
-    private final RedisService redisService;
-    private final JwtTokenUtil jwtTokenUtil;
-
-    @PostMapping("/refresh")
-    public ResponseEntity<RefreshTokenResponse> createRefreshToken(@RequestBody RefreshTokenRequest request) {
-        Long userId = request.userId(); // 클라이언트에서 전달된 사용자 ID
-        String refreshToken = jwtTokenUtil.createRefreshToken(userId, Instant.now());
-
-        // Redis에 저장
-        redisService.saveRefreshToken(userId, refreshToken);
-
-        return ResponseEntity.ok(new RefreshTokenResponse(refreshToken));
-    }
-
-}
+//@RestController
+//@RequiredArgsConstructor
+//public class TokenController implements RedisApi {
+//    private final RedisService redisService;
+//    private final JwtTokenUtil jwtTokenUtil;
+//
+//    @PostMapping("/refresh")
+//    public ResponseEntity<RefreshTokenResponse> createRefreshToken(@RequestBody RefreshTokenRequest request) {
+//        Long userId = request.userId(); // 클라이언트에서 전달된 사용자 ID
+//        String refreshToken = jwtTokenUtil.createRefreshToken(userId, Instant.now());
+//
+//        // Redis에 저장
+//        redisService.saveRefreshToken(userId, refreshToken);
+//
+//        return ResponseEntity.ok(new RefreshTokenResponse(refreshToken));
+//    }
+//
+//}
