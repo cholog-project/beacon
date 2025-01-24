@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.example.braveCoward.dto.*;
 import com.example.braveCoward.model.*;
-import com.example.braveCoward.repository.TokenRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,6 @@ public class UserService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final UserTokenRepository userTokenRepository;
-    private final TokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     // application.yml에서 비밀 키를 주입받음
