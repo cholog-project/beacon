@@ -9,7 +9,6 @@ import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 @Service
@@ -29,19 +28,16 @@ public class AlarmService {
     //검증 및 보내기
     public String sendEmailToUser(Long userId, String description) {
         // 사용자 조회 및 이메일 검증
-        Optional<User> optionalUser = userRepository.findById(userId);
-        if (optionalUser.isEmpty()) {
-            return "User not found";
-        }
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found "));
 
-        User user = optionalUser.get();
         if (!isValidEmail(user.getEmail())) {
-            return "Email not found";
+            throw new RuntimeException("Email not found " );
         }
 
         // 이메일 발송
         if (!sendEmail(user, description)) {
-            return "Failed to send email to: " + user.getEmail();
+            throw new RuntimeException("Failed to send email");
         }
 
         // 알림 저장
