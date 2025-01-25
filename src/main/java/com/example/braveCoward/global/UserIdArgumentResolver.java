@@ -24,6 +24,12 @@ public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
         NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 
+        Integer userId = userIdContext.getUserId();
+
+        if (userId == null) {
+            throw new IllegalArgumentException("Authentication is required to access this resource.");
+        }
+
         return userIdContext.getUserId();
     }
 }
