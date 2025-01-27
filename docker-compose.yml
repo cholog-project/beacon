@@ -1,19 +1,10 @@
+version: '3.8'
 services:
   redis:
     image: redis:latest
-    volumes:
-      - C:/Program Files/Redis/redis.windows.conf:/usr/local/etc/redis/redis.conf
-    restart: unless-stopped
-
-  beacon-bravecoward:  # 이미지 이름을 소문자로 변경
-    container_name: beacon-bravecoward
-    build:
-      context: ./
-      dockerfile: ./Dockerfile
+    container_name: redis
     ports:
       - "6379:6379"
-    environment:
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-    depends_on:
-      - redis
+    volumes:
+      - ./redis/data:/data
+      - C:/Program Files/Redis/redis.windows.conf:/usr/local/etc/redis/redis.conf

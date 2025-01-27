@@ -96,6 +96,14 @@ public class JwtProvider {
         redisUtil.set(user.getEmail(), refreshToken);
         redisUtil.expire(user.getEmail(), refreshExpiration, TimeUnit.MILLISECONDS);
 
+        // Redis에 저장된 값 확인을 위한 로그 출력
+        String storedToken = (String) redisUtil.get(user.getEmail());
+        if (storedToken != null) {
+            System.out.println("Redis에 저장된 refreshToken: " + storedToken);
+        } else {
+            System.out.println("Redis에 refreshToken이 저장되지 않았습니다.");
+        }
+
         return refreshToken;
     }
 }
