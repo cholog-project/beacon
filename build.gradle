@@ -44,8 +44,18 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'com.sun.mail:jakarta.mail:2.0.1'
 
+	// redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	// jwt
+	implementation 'com.auth0:java-jwt:4.4.0'
+
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+jar {
+	enabled=false
 }
