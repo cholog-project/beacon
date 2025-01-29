@@ -1,53 +1,32 @@
 package com.example.braveCoward.service;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.mail.javamail.JavaMailSender;
+import com.example.braveCoward.repository.AlarmRepository;
 import com.example.braveCoward.model.Alarm;
 import com.example.braveCoward.model.User;
-import com.example.braveCoward.repository.AlarmRepository;
-import com.example.braveCoward.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AlarmService {
     private final JavaMailSender mailSender;
-    private final UserRepository userRepository;
     private final AlarmRepository alarmRepository;
 
-    public AlarmService(JavaMailSender mailSender,
-                        UserRepository userRepository,
-                        AlarmRepository alarmRepository) {
-        this.mailSender = mailSender;
-        this.userRepository = userRepository;
-        this.alarmRepository = alarmRepository;
-    }
-
-    //검증 및 보내기
-    public String sendEmailToUser(Long userId, String description) {
-        // 사용자 조회 및 이메일 검증
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found "));
-
-        if (!isValidEmail(user.getEmail())) {
-            throw new RuntimeException("Email not found " );
+    public String sendEmailToUser(User user, String description) {
+        if (user.getEmail() == null || user.getEmail().isEmpty()) {
+            return "이메일이 없습니다.";
         }
 
-        // 이메일 발송
-        if (!sendEmail(user, description)) {
-            throw new RuntimeException("Failed to send email");
+        if (sendEmail(user, description)) {
+            saveAlarm(user, description);
+            return "이메일이 성공적으로 전송되었습니다.";
+        } else {
+            return "이메일 발송 실패";
         }
-
-        // 알림 저장
-        saveAlarm(user, description);
-        return "Email sent to: " + user.getEmail() + " and alarm saved with description: " + description;
-    }
-
-    //세부적인 검증 내용
-    private boolean isValidEmail(String email) {
-        return email != null && !email.isEmpty();
     }
 
     private boolean sendEmail(User user, String description) {
@@ -56,8 +35,10 @@ public class AlarmService {
             MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
 
             helper.setTo(user.getEmail());
-            helper.setSubject("알림: " + description);
-            helper.setText("안녕하세요, " + user.getName() + "님!\n\n" + description);
+            helper.setSubject("📢 Plan 마감 알림");
+            helper.setText("안녕하세요, " + user.getName() + "님!\n\n" +
+                    "Plan '" + description + "' 이(가) 내일 마감됩니다. \n\n" +
+                    "기한 내에 확인해주세요!");
 
             mailSender.send(message);
             return true;
@@ -72,7 +53,6 @@ public class AlarmService {
                 .description(description)
                 .user(user)
                 .build();
-
         alarmRepository.save(alarm);
     }
 }
