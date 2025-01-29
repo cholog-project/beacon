@@ -24,4 +24,5 @@ public interface PlanRepository extends Repository<Plan, Long> {
 
     Page<Plan> findAllByProjectId(Long projectId, Pageable pageable);
 
+    List<Plan> findByEndDate(LocalDate endDate);
 }
