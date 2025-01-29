@@ -41,7 +41,7 @@ public class DoController implements DoApi {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/plan/{planId}/")
+    @GetMapping("/plan/{planId}")
     public ResponseEntity<DosResponse> getDoList(
         @PathVariable Long planId
     ) {
@@ -57,7 +57,7 @@ public class DoController implements DoApi {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/dos")
+    @GetMapping("")
     public ResponseEntity<DosResponse> getAllDo() {
         DosResponse response = doService.getAllDo();
 
