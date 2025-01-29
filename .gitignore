@@ -37,3 +37,6 @@ out/
 .vscode/
 
 application.yml
+
+# 로그 파일 무시
+logs/
