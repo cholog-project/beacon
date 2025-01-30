@@ -25,7 +25,7 @@ public interface TeamApi {
             @ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     })
-    @PostMapping("/teams")
+    @PostMapping("")
     ResponseEntity<CreateTeamResponse> createTeams(
         @Valid @RequestBody CreateTeamRequest request
     );
