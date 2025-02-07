@@ -8,7 +8,7 @@ public record DoResponse(
     Long id,
     LocalDate date,
     String description,
-    Long taskId
+    Long planId
 ) {
 
     public static DoResponse from(Do doEntity) {
