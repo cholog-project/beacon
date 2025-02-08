@@ -1,6 +1,10 @@
 package com.example.braveCoward.repository;
 
 import com.example.braveCoward.model.Do;
+import com.example.braveCoward.model.Plan;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +28,5 @@ public interface DoRepository extends JpaRepository<Do, Long> {
 
     List<Do> findAllByPlanId(Long planId);
 
+    Page<Do> findAllByDescriptionContains(String keyword, Pageable pageable);
 }
