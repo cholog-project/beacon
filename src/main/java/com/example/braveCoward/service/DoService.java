@@ -15,7 +15,6 @@ import com.example.braveCoward.dto.Do.CreateDoResponse;
 import com.example.braveCoward.dto.Do.DoResponse;
 import com.example.braveCoward.dto.Do.DosResponse;
 import com.example.braveCoward.dto.PageDTO;
-import com.example.braveCoward.dto.plan.PlanResponse;
 import com.example.braveCoward.model.Do;
 import com.example.braveCoward.model.Plan;
 import com.example.braveCoward.repository.DoRepository;
@@ -25,7 +24,6 @@ import com.example.braveCoward.repository.TaskRepository;
 import com.example.braveCoward.repository.TeamMemberRepository;
 import com.example.braveCoward.repository.TeamRepository;
 import com.example.braveCoward.repository.UserRepository;
-import com.example.braveCoward.util.enums.plan.PlanSearchFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,11 +32,6 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class DoService {
 
-    private final TaskRepository taskRepository;
-    private final ProjectRepository projectRepository;
-    private final TeamMemberRepository teamMemberRepository;
-    private final UserRepository userRepository;
-    private final TeamRepository teamRepository;
     private final DoRepository doRepository;
     private final PlanRepository planRepository;
 

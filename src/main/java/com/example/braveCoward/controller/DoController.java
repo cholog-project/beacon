@@ -1,23 +1,29 @@
 package com.example.braveCoward.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.example.braveCoward.dto.Do.ChangeDoRequest;
 import com.example.braveCoward.dto.Do.CreateDoRequest;
 import com.example.braveCoward.dto.Do.CreateDoResponse;
 import com.example.braveCoward.dto.Do.DoResponse;
 import com.example.braveCoward.dto.Do.DosResponse;
 import com.example.braveCoward.dto.PageDTO;
-import com.example.braveCoward.dto.plan.PlanResponse;
 import com.example.braveCoward.service.DoService;
 import com.example.braveCoward.swagger.DoApi;
-import com.example.braveCoward.util.enums.plan.PlanSearchFilter;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @Slf4j  // Lombok을 사용한 로깅
 @RestController
