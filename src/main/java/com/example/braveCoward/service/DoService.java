@@ -2,6 +2,10 @@ package com.example.braveCoward.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +14,8 @@ import com.example.braveCoward.dto.Do.CreateDoRequest;
 import com.example.braveCoward.dto.Do.CreateDoResponse;
 import com.example.braveCoward.dto.Do.DoResponse;
 import com.example.braveCoward.dto.Do.DosResponse;
+import com.example.braveCoward.dto.PageDTO;
+import com.example.braveCoward.dto.plan.PlanResponse;
 import com.example.braveCoward.model.Do;
 import com.example.braveCoward.model.Plan;
 import com.example.braveCoward.repository.DoRepository;
@@ -19,6 +25,7 @@ import com.example.braveCoward.repository.TaskRepository;
 import com.example.braveCoward.repository.TeamMemberRepository;
 import com.example.braveCoward.repository.TeamRepository;
 import com.example.braveCoward.repository.UserRepository;
+import com.example.braveCoward.util.enums.plan.PlanSearchFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -100,5 +107,15 @@ public class DoService {
 
         doEntity.setDescription(request.description());
         doEntity.setDate(request.date());
+    }
+
+    @Transactional
+    public Page<DoResponse> searchPlan(String keyword, PageDTO pageDTO) {
+        Pageable pageable = PageRequest.of(pageDTO.page(), pageDTO.pageSize(),
+            Sort.by(Sort.Direction.DESC, "id"));
+
+        Page<Do> searchedPlans = doRepository.findAllByDescriptionContains(keyword, pageable);
+
+        return searchedPlans.map(DoResponse::from);
     }
 }
