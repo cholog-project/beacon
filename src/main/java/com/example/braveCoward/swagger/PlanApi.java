@@ -16,6 +16,7 @@ import com.example.braveCoward.dto.plan.CreatePlanResponse;
 import com.example.braveCoward.dto.PageDTO;
 import com.example.braveCoward.dto.plan.PlanResponse;
 import com.example.braveCoward.model.Plan;
+import com.example.braveCoward.util.enums.plan.PlanSearchFilter;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -91,5 +92,19 @@ public interface PlanApi {
         @PathVariable Long planId,
         @RequestParam
         @Schema(description = "변경할 Plan 상태(NOT_STARTED, IN_PROGRESS, COMPLETED)") Plan.Status status
+    );
+
+    @ApiResponses(
+        value = {
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+        }
+    )
+    @Operation(summary = "Plan 검색")
+    @PatchMapping("/search")
+    ResponseEntity<Page<PlanResponse>> searchPlan(
+        @RequestParam String keyword,
+        PlanSearchFilter filter,
+        PageDTO pageDTO
     );
 }

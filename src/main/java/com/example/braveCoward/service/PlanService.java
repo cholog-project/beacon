@@ -1,5 +1,7 @@
 package com.example.braveCoward.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,7 @@ import com.example.braveCoward.repository.DoRepository;
 import com.example.braveCoward.repository.PlanRepository;
 import com.example.braveCoward.repository.ProjectRepository;
 import com.example.braveCoward.repository.TeamMemberRepository;
+import com.example.braveCoward.util.enums.plan.PlanSearchFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -76,9 +79,7 @@ public class PlanService {
             Sort.by(Sort.Direction.DESC, "id"));
         Page<Plan> plans = planRepository.findAllByProjectId(projectId, pageable);
 
-        Page<PlanResponse> planResponses = plans.map(plan -> PlanResponse.from(plan));
-
-        return planResponses;
+        return plans.map(PlanResponse::from);
     }
 
     @Transactional(readOnly = false)
@@ -87,5 +88,20 @@ public class PlanService {
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Plan입니다"));
 
         plan.setStatus(status);
+    }
+
+    @Transactional
+    public Page<PlanResponse> searchPlan(String keyword, PlanSearchFilter filter, PageDTO pageDTO) {
+        Pageable pageable = PageRequest.of(pageDTO.page(), pageDTO.pageSize(),
+            Sort.by(Sort.Direction.DESC, "id"));
+
+        Page<Plan> searchedPlans = switch (filter) {
+            case TITLE -> planRepository.findAllByTitleContains(keyword, pageable);
+            case DESCRIPTION -> planRepository.findAllByDescriptionContains(keyword, pageable);
+            case TITLE_AND_DESCRIPTION ->
+                planRepository.findAllByTitleContainsOrDescriptionContains(keyword, keyword, pageable);
+        };
+
+        return searchedPlans.map(PlanResponse::from);
     }
 }
