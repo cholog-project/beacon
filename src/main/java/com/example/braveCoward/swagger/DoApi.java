@@ -5,6 +5,7 @@ import com.example.braveCoward.dto.Do.CreateDoRequest;
 import com.example.braveCoward.dto.Do.CreateDoResponse;
 import com.example.braveCoward.dto.Do.DoResponse;
 import com.example.braveCoward.dto.Do.DosResponse;
+import com.example.braveCoward.dto.PageDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -89,4 +91,17 @@ public interface DoApi {
     @Operation(summary = "Do 수정")
     @PatchMapping("/{doId}")
     ResponseEntity<Void> changeDo(Long doId, ChangeDoRequest request);
+
+    @ApiResponses(
+        value = {
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+        }
+    )
+    @Operation(summary = "Do 검색")
+    @GetMapping("/search")
+    ResponseEntity<Page<DoResponse>> searchDo(
+        @RequestParam String keyword,
+        PageDTO pageDTO
+    );
 }

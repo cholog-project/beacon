@@ -5,13 +5,17 @@ import com.example.braveCoward.dto.Do.CreateDoRequest;
 import com.example.braveCoward.dto.Do.CreateDoResponse;
 import com.example.braveCoward.dto.Do.DoResponse;
 import com.example.braveCoward.dto.Do.DosResponse;
+import com.example.braveCoward.dto.PageDTO;
+import com.example.braveCoward.dto.plan.PlanResponse;
 import com.example.braveCoward.service.DoService;
 import com.example.braveCoward.swagger.DoApi;
+import com.example.braveCoward.util.enums.plan.PlanSearchFilter;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,5 +76,14 @@ public class DoController implements DoApi {
         doService.changeDo(doId, request);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<DoResponse>> searchDo(
+        @RequestParam String keyword,
+        PageDTO pageDTO
+    ) {
+        Page<DoResponse> responses = doService.searchPlan(keyword, pageDTO);
+        return ResponseEntity.ok(responses);
     }
 }
