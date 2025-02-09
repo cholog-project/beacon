@@ -18,46 +18,45 @@ public class PlanNotificationScheduler {
     private final AlarmService alarmService;
 
     private static final List<Plan.Status> VALID_STATUSES = Arrays.asList(Plan.Status.NOT_STARTED, Plan.Status.IN_PROGRESS);
-    //24:00에 plan조회해서 원하는 마감 조건, 상태일 경우 plan등록 유저의 이메일로 전송
-    //마감일 하루 전 알림
-    @Scheduled(cron = "0 00 24 * * ?")
-    public void sendPlanReminderEmails() {
-        LocalDate tomorrow = LocalDate.now().plusDays(1);
-        // 마감일이 내일인 Plan 조회
-        List<Plan> plansDueTomorrow = planRepository.findByEndDateAndStatusIn(tomorrow, VALID_STATUSES);
-        for (Plan plan : plansDueTomorrow) {
+    // 알림 규칙을 정의한 내부 클래스를 사용하여 날짜 + 메시지를 한 번에 처리
+    private static class NotificationRule {
+        private final int daysOffset;
+        private final String messageTemplate;
+
+        public NotificationRule(int daysOffset, String messageTemplate) {
+            this.daysOffset = daysOffset;
+            this.messageTemplate = messageTemplate;
+        }
+    }
+
+    // 알림 규칙 리스트 (하루 전, 당일, 하루 후)
+    private static final List<NotificationRule> NOTIFICATION_RULES = Arrays.asList(
+            new NotificationRule(1, "🚨 Plan '{title}' 이(가) {date} 마감됩니다."), // 하루 전
+            new NotificationRule(0, "🚨 오늘이 Plan '{title}' 마감일입니다! 기한 내에 처리해주세요."), // 당일
+            new NotificationRule(-1, "⚠️ Plan '{title}' 마감일이 **지났습니다**. 빠르게 처리해주세요!") // 하루 후
+    );
+
+    // plan 마감 알림 전송 공통 메서드
+    private void sendEmailNotification(LocalDate date, String messageTemplate) {
+        List<Plan> plans = planRepository.findByEndDateAndStatusIn(date, VALID_STATUSES);
+
+        for (Plan plan : plans) {
             User user = plan.getTeamMember().getUser();
-            String description = "🚨 Plan '" + plan.getTitle() + "' 이(가) " + plan.getEndDate() + " 마감됩니다.";
+            String description = messageTemplate
+                    .replace("{title}", plan.getTitle())
+                    .replace("{date}", plan.getEndDate().toString());
+
             alarmService.sendEmailToUser(user, description);
         }
     }
 
-    // 마감일 당일 알림
-    @Scheduled(cron = "0 00 24 * * ?")
-    public void sendPlanDueTodayEmails() {
+    // 하루 전, 당일, 하루 후 알림을 한 번의 Scheduled Task로 처리
+    @Scheduled(cron = "0 35 21 * * ?") // 매일 24:00 실행
+    public void sendPlanNotifications() {
         LocalDate today = LocalDate.now();
-        List<Plan> plansDueToday = planRepository.findByEndDateAndStatusIn(today, VALID_STATUSES);
 
-        for (Plan plan : plansDueToday) {
-            User user = plan.getTeamMember().getUser();
-            String description = "🚨 오늘이 Plan '" + plan.getTitle() + "' 마감일입니다! 기한 내에 처리해주세요.";
-            alarmService.sendEmailToUser(user, description);
+        for (NotificationRule rule : NOTIFICATION_RULES) {
+            sendEmailNotification(today.plusDays(rule.daysOffset), rule.messageTemplate);
         }
     }
-
-    //마감 하루 후
-    @Scheduled(cron = "0 00 24 * * ?")
-    public void sendPlanOverdueEmails() {
-        LocalDate yesterday = LocalDate.now().minusDays(1);
-        List<Plan> overduePlans = planRepository.findByEndDateAndStatusIn(yesterday, VALID_STATUSES);
-
-        for (Plan plan : overduePlans) {
-            User user = plan.getTeamMember().getUser();
-            String description = "⚠️ Plan '" + plan.getTitle() + "' 마감일이 **지났습니다**. 빠르게 처리해주세요!";
-            alarmService.sendEmailToUser(user, description);
-        }
-    }
-
-
-
 }
