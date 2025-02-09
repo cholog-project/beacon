@@ -19,6 +19,7 @@ public class PlanNotificationScheduler {
 
     private static final List<Plan.Status> VALID_STATUSES = Arrays.asList(Plan.Status.NOT_STARTED, Plan.Status.IN_PROGRESS);
     //24:00에 plan조회해서 원하는 마감 조건, 상태일 경우 plan등록 유저의 이메일로 전송
+    //마감일 하루 전 알림
     @Scheduled(cron = "0 00 24 * * ?")
     public void sendPlanReminderEmails() {
         LocalDate tomorrow = LocalDate.now().plusDays(1);
