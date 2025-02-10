@@ -4,6 +4,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,10 @@ public class Do extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @NotNull
+    @Column(name = "is_completed", nullable = false)
+    private boolean isCompleted = false;
+
     @ManyToOne
     @JoinColumn(name = "plan_id", nullable = false)
     private Plan plan;
@@ -41,5 +46,9 @@ public class Do extends BaseEntity {
 
     public void setDescription(String description){
         this.description = description;
+    }
+
+    public void setCompleted(boolean iscompleted){
+        this.isCompleted = iscompleted;
     }
 }

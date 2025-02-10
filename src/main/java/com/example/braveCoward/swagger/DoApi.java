@@ -111,4 +111,16 @@ public interface DoApi {
         @RequestParam String keyword,
         PageDTO pageDTO
     );
+
+    @ApiResponses(
+        value = {
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+        }
+    )
+    @Operation(summary = "Do 완료 여부 변경", description = "모든 Do가 완료되면 해당 Plan의 상태 COMPLETED로 변경")
+    @PatchMapping("/complete/{doId}")
+     ResponseEntity<Void> completeDo(
+        @PathVariable Long doId
+    );
 }
