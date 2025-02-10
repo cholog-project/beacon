@@ -111,4 +111,20 @@ public class DoService {
 
         return searchedPlans.map(DoResponse::from);
     }
+
+    @Transactional
+    public void completeDo(Long doId) {
+        Do completeDo = doRepository.findById(doId)
+            .orElseThrow(() -> new IllegalArgumentException("Do를 찾을 수 없습니다."));
+
+        completeDo.setCompleted(!completeDo.isCompleted());
+        doRepository.save(completeDo);
+
+        Plan plan = completeDo.getPlan();
+        List<Do> dos = plan.getDos();
+
+        if (dos.stream().allMatch(Do::isCompleted)) {
+            plan.setStatus(Plan.Status.COMPLETED);
+        }
+    }
 }
