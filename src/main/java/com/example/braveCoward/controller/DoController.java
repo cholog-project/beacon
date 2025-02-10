@@ -92,4 +92,12 @@ public class DoController implements DoApi {
         Page<DoResponse> responses = doService.searchPlan(keyword, pageDTO);
         return ResponseEntity.ok(responses);
     }
+
+    @PatchMapping("/complete/{doId}")
+    public ResponseEntity<Void> completeDo(
+        @PathVariable Long doId
+    ){
+        doService.completeDo(doId);
+        return ResponseEntity.ok().build();
+    }
 }
