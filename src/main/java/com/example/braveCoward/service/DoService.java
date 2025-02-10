@@ -58,8 +58,11 @@ public class DoService {
         doRepository.deleteById(doId);
     }
 
-    public DosResponse getDos(Long planId) {
-        List<DoResponse> doResponses = doRepository.findAllByPlanId(planId).stream()
+    public DosResponse getDos(Long planId, PageDTO pageDTO) {
+        Pageable pageable = PageRequest.of(pageDTO.page(), pageDTO.pageSize(),
+            Sort.by(Sort.Direction.DESC, "id"));
+
+        List<DoResponse> doResponses = doRepository.findAllByPlanId(planId, pageable).stream()
             .map(doEntity -> new DoResponse(
                 doEntity.getId(),
                 doEntity.getDate(),
