@@ -25,7 +25,7 @@ public interface DoRepository extends JpaRepository<Do, Long> {
     @Query("DELETE FROM Do d WHERE d.plan.id = :planId")
     void deleteByPlanId(@Param("planId") Long planId);
 
-    List<Do> findAllByPlanId(Long planId);
+    Page<Do> findAllByPlanId(Long planId, Pageable pageable);
 
     Page<Do> findAllByDescriptionContains(String keyword, Pageable pageable);
 }
