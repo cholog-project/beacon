@@ -64,7 +64,8 @@ public interface DoApi {
     @Operation(summary = "Do 목록 조회")
     @GetMapping("/plan/{planId}")
     ResponseEntity<DosResponse> getDoList(
-        @PathVariable Long planId
+        @PathVariable Long planId,
+        PageDTO pageDTO
     );
 
     @ApiResponses(
