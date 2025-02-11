@@ -29,4 +29,14 @@ public interface TeamApi {
     ResponseEntity<CreateTeamResponse> createTeams(
         @Valid @RequestBody CreateTeamRequest request
     );
+
+    @Operation(summary = "팀 삭제", description = "팀을 삭제합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Team deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Team not found", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
+    })
+    @DeleteMapping("/{teamId}")
+    ResponseEntity<Void> deleteTeam(@PathVariable Long teamId);
+
 }
