@@ -4,7 +4,7 @@ import java.util.List;
 
 public record PlansResponse(
     int totalCount,
-    List<PlanResponse> tasks
+    List<PlanResponse> plans
 ) {
 
 }

@@ -19,11 +19,6 @@ import com.example.braveCoward.model.Do;
 import com.example.braveCoward.model.Plan;
 import com.example.braveCoward.repository.DoRepository;
 import com.example.braveCoward.repository.PlanRepository;
-import com.example.braveCoward.repository.ProjectRepository;
-import com.example.braveCoward.repository.TaskRepository;
-import com.example.braveCoward.repository.TeamMemberRepository;
-import com.example.braveCoward.repository.TeamRepository;
-import com.example.braveCoward.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
