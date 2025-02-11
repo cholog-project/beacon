@@ -39,7 +39,7 @@ public interface PlanApi {
     @Operation(summary = "Plan 추가")
     @PostMapping("/{projectId}")
     ResponseEntity<CreatePlanResponse> createPlan(
-        @PathVariable Long taskId,
+        @PathVariable Long projectId,
         @Valid @RequestBody CreatePlanRequest request
     );
 
