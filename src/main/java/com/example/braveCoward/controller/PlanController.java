@@ -79,8 +79,8 @@ public class PlanController implements PlanApi {
     @GetMapping("/search")
     public ResponseEntity<Page<PlanResponse>> searchPlan(
         @RequestParam String keyword,
-        PlanSearchFilter filter,
-        PageDTO pageDTO
+        @RequestParam PlanSearchFilter filter,
+        @Valid PageDTO pageDTO
     ) {
         Page<PlanResponse> responses = planService.searchPlan(keyword, filter, pageDTO);
         return ResponseEntity.ok(responses);
