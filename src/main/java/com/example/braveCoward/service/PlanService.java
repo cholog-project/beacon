@@ -34,7 +34,7 @@ public class PlanService {
     private final TeamMemberRepository teamMemberRepository;
     private final DoRepository doRepository;
 
-    @Transactional(readOnly = false)
+    @Transactional
     public CreatePlanResponse createPlan(Long projectId, CreatePlanRequest request) {
         Project project = projectRepository.findById(projectId)
             .orElseThrow(() -> new IllegalArgumentException("프로젝트를 찾을 수 없습니다."));
@@ -57,10 +57,10 @@ public class PlanService {
         return CreatePlanResponse.from(savedPlan);
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     public void deletePlan(Long planId) {
         Plan plan = planRepository.findById(planId)
-            .orElseThrow(() -> new IllegalArgumentException("Plan not found with id: " + planId));
+            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Plan입니다.: " + planId));
 
         doRepository.deleteByPlanId(planId);
 
@@ -75,6 +75,9 @@ public class PlanService {
     }
 
     public Page<PlanResponse> getPlansByProjectId(Long projectId, PageDTO pageDTO) {
+        Project project = projectRepository.findById(projectId)
+            .orElseThrow(() -> new IllegalArgumentException("프로젝트를 찾을 수 없습니다."));
+
         Pageable pageable = PageRequest.of(pageDTO.page(), pageDTO.pageSize(),
             Sort.by(Sort.Direction.DESC, "id"));
         Page<Plan> plans = planRepository.findAllByProjectId(projectId, pageable);
@@ -82,7 +85,7 @@ public class PlanService {
         return plans.map(PlanResponse::from);
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     public void changePlanStatus(Long planId, Plan.Status status) {
         Plan plan = planRepository.findById(planId)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Plan입니다"));
