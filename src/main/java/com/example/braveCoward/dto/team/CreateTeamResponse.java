@@ -8,7 +8,7 @@ import com.example.braveCoward.model.Team;
 import com.example.braveCoward.model.TeamMember;
 
 public record CreateTeamResponse(
-    Integer teamId,
+    Long teamId,
     String name,
     List<TeamMemberResponse> members,
     LocalDateTime createdAt,
