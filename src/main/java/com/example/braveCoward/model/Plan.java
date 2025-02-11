@@ -60,8 +60,8 @@ public class Plan extends BaseEntity {
     private List<Do> dos = new ArrayList<>();
 
     public enum Status {
-        NOT_STARTED("not started"),
-        IN_PROGRESS("in progress"),
+        NOT_STARTED("not_started"),
+        IN_PROGRESS("in_progress"),
         COMPLETED("completed");
 
         private final String jsonValue;
