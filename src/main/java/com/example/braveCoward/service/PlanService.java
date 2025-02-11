@@ -1,7 +1,5 @@
 package com.example.braveCoward.service;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -93,9 +91,8 @@ public class PlanService {
         plan.setStatus(status);
     }
 
-    @Transactional
     public Page<PlanResponse> searchPlan(String keyword, PlanSearchFilter filter, PageDTO pageDTO) {
-        Pageable pageable = PageRequest.of(pageDTO.page(), pageDTO.pageSize(),
+        Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(),
             Sort.by(Sort.Direction.DESC, "id"));
 
         Page<Plan> searchedPlans = switch (filter) {
