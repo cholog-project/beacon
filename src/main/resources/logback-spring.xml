@@ -6,11 +6,11 @@
         </encoder>
     </appender>
 
-    <!-- 로그 파일 저장 (한 시간마다 새로운 파일 생성) -->
+    <!-- 로그 파일 저장 -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- 파일 이름을 시간 단위로 변경 -->
-            <fileNamePattern>logs/application-%d{yyyy-MM-dd_HH}.log</fileNamePattern>
+            <!-- 하루 단위로 로그 파일을 분리 -->
+            <fileNamePattern>logs/application-%d{yyyy-MM-dd}.log</fileNamePattern>
 
             <!-- 로그 파일을 최대 7일간 유지 -->
             <maxHistory>7</maxHistory>
