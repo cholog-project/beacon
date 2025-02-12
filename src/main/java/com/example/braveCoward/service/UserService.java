@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.braveCoward.repository.ProjectRepository;
 import com.example.braveCoward.repository.UserRepository;
 import com.example.braveCoward.repository.UserTokenRepository;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -32,7 +31,8 @@ public class UserService {
     private String secretKey;
 
     public MembersResponse getTeamMembers(Long projectId) {
-        Project project = projectRepository.findById(projectId).get();
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new IllegalArgumentException("프로젝트를 찾을 수 없습니다: "));
         List<TeamMember> teamMembers = project.getTeam().getTeamMembers();
 
         return MembersResponse.from(teamMembers);

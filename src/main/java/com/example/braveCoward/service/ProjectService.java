@@ -22,7 +22,7 @@ public class ProjectService {
 
     public ProjectCreateResponse createProject(Long teamId, ProjectCreateRequest request) {
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new IllegalArgumentException("Team not found"));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 팀입니다."));
 
         Project project = Project.builder()
                 .title(request.title())
@@ -55,7 +55,7 @@ public class ProjectService {
 
     public void deleteProject(Long projectId) {
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new IllegalArgumentException("해당projectid는 찾아지지 않습니다" + projectId));
+                .orElseThrow(() -> new IllegalArgumentException("해당projectid는 찾아지지 않습니다" ));
         projectRepository.deleteById(projectId);
     }
 
