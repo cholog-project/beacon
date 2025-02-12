@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/teams")
 public class TeamController implements TeamApi {
 
     private final TeamService teamService;
