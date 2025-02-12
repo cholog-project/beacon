@@ -69,4 +69,8 @@ public class Project extends BaseEntity{
         this.progress=progress;
         this.team = team;
     }
+
+    public void updateProgress(double progress) {
+        this.progress = progress;
+    }
 }
