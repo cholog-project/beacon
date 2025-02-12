@@ -1,5 +1,6 @@
 package com.example.braveCoward;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Component;
@@ -110,8 +111,8 @@ public class DataInitializer {
                 Project newProject = Project.builder()
                     .title("테스트 프로젝트")
                     .description("테스트입니다")
-                    .startDate(LocalDateTime.now())
-                    .endDate(LocalDateTime.now())
+                    .startDate(LocalDate.now())
+                    .endDate(LocalDate.now())
                     .team(team)
                     .build();
                 return projectRepository.save(newProject);

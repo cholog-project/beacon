@@ -1,6 +1,5 @@
 package com.example.braveCoward.service;
 
-import com.example.braveCoward.dto.plan.PlanResponse;
 import com.example.braveCoward.dto.project.ProjectCreateRequest;
 import com.example.braveCoward.dto.project.ProjectCreateResponse;
 import com.example.braveCoward.dto.project.ProjectResponse;
@@ -30,8 +29,8 @@ public class ProjectService {
                 .description(request.description())
                 .startDate(request.startDate())
                 .endDate(request.endDate())
+                .progress(0.0)
                 .team(team)
-                .progress(request.progress())
                 .build();
 
         Project savedProject = projectRepository.save(project);
