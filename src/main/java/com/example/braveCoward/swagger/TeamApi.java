@@ -1,8 +1,6 @@
 package com.example.braveCoward.swagger;
 
-import com.example.braveCoward.dto.team.CreateTeamRequest;
-import com.example.braveCoward.dto.team.CreateTeamResponse;
-import com.example.braveCoward.dto.team.TeamCreateResponse;
+import com.example.braveCoward.dto.team.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,5 +26,27 @@ public interface TeamApi {
     @PostMapping("")
     ResponseEntity<CreateTeamResponse> createTeams(
         @Valid @RequestBody CreateTeamRequest request
+    );
+
+    @Operation(summary = "팀 삭제", description = "팀을 삭제합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Team deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Team not found", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
+    })
+    @DeleteMapping("/{teamId}")
+    ResponseEntity<Void> deleteTeam(@PathVariable Long teamId);
+
+    @Operation(summary = "팀원 추가", description = "팀원을 추가합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "TeamMember added successfully",
+                content = @Content(schema = @Schema(implementation = AddMemberResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Team not found", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
+    })
+    @PostMapping("/{teamId}/members")
+    public ResponseEntity<AddMemberResponse> addMemberToTeam(
+            @Valid @RequestBody AddMemberRequest request
     );
 }

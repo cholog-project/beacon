@@ -3,6 +3,10 @@ package com.example.braveCoward.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.example.braveCoward.dto.team.AddMemberRequest;
+import com.example.braveCoward.dto.team.AddMemberResponse;
+import com.example.braveCoward.exception.CustomException;
+import com.example.braveCoward.exception.ErrorStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +29,6 @@ import lombok.RequiredArgsConstructor;
 public class TeamService {
 
     private final TeamRepository teamRepository;
-    private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final TeamMemberRepository teamMemberRepository;
 
@@ -59,4 +62,18 @@ public class TeamService {
 
         return CreateTeamResponse.from(savedTeam, teamMembers);
     }
+
+    @Transactional
+    // 팀 삭제
+    public void deleteTeam(Long teamId) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new CustomException(ErrorStatus.TEAM_NOT_FOUND));
+
+        // 팀원 먼저 삭제
+        teamMemberRepository.deleteByTeamId(teamId);
+
+        // 팀 삭제
+        teamRepository.delete(team);
+    }
+
 }
