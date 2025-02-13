@@ -23,3 +23,4 @@ public class AlarmController {
         return "스케줄링된 이메일이 즉시 실행되었습니다.";
     }
 }
+
