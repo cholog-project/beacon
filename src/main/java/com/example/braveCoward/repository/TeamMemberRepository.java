@@ -1,5 +1,6 @@
 package com.example.braveCoward.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
@@ -13,7 +14,7 @@ public interface TeamMemberRepository extends CrudRepository<TeamMember, Long> {
 
     TeamMember save(TeamMember teamMember);
 
-    Optional<TeamMember> findByTeamAndUser(Team team, User user);
+    List<TeamMember> findByTeamAndUser(Team team, User user);
 
     void deleteByTeamId(Long teamId);
 }
