@@ -34,4 +34,7 @@ public interface PlanRepository extends Repository<Plan, Long> {
     Page<Plan> findAllByTitleContains(String keyword, Pageable pageable);
 
     Page<Plan> findAllByDescriptionContains(String keyword, Pageable pageable);
+
+    long countByProjectId(Long projectId);
+    long countByProjectIdAndStatus(Long projectId, Plan.Status status);
 }

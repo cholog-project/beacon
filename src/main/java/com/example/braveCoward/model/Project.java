@@ -37,10 +37,10 @@ public class Project extends BaseEntity{
     private String description;
 
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
 //    @Column(name = "progress", nullable = false)
     @Column(name = "progress")
@@ -57,8 +57,8 @@ public class Project extends BaseEntity{
     public Project(
         String title,
         String description,
-        LocalDateTime startDate,
-        LocalDateTime endDate,
+        LocalDate startDate,
+        LocalDate endDate,
         Double progress,
         Team team
     ){
@@ -68,5 +68,9 @@ public class Project extends BaseEntity{
         this.endDate = endDate;
         this.progress=progress;
         this.team = team;
+    }
+
+    public void updateProgress(double progress) {
+        this.progress = progress;
     }
 }

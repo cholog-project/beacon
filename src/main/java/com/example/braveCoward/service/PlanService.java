@@ -31,6 +31,7 @@ public class PlanService {
     private final ProjectRepository projectRepository;
     private final TeamMemberRepository teamMemberRepository;
     private final DoRepository doRepository;
+    private final ProjectService projectService;
 
     @Transactional
     public CreatePlanResponse createPlan(Long projectId, CreatePlanRequest request) {
@@ -52,6 +53,8 @@ public class PlanService {
 
         Plan savedPlan = planRepository.save(plan);
 
+        projectService.updateProjectProgress(plan.getProject().getId()); // 전체 plan수 변경
+
         return CreatePlanResponse.from(savedPlan);
     }
 
@@ -63,6 +66,7 @@ public class PlanService {
         doRepository.deleteByPlanId(planId);
 
         planRepository.delete(plan);
+        projectService.updateProjectProgress(plan.getProject().getId()); // 전체 plan수 변경
     }
 
     public PlanResponse getPlan(Long planId) {
@@ -89,6 +93,7 @@ public class PlanService {
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 Plan입니다"));
 
         plan.setStatus(status);
+        projectService.updateProjectProgress(plan.getProject().getId()); // project 진척도 업데이트
     }
 
     public Page<PlanResponse> searchPlan(String keyword, PlanSearchFilter filter, PageDTO pageDTO) {

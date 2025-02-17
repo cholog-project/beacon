@@ -1,13 +1,14 @@
 package com.example.braveCoward.dto.project;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record ProjectCreateResponse(
         Long projectId,
         String title,
         String description,
-        LocalDateTime startDate,
-        LocalDateTime endDate,
+        LocalDate startDate,
+        LocalDate endDate,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
         Double progress
