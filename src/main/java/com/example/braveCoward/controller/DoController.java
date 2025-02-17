@@ -22,6 +22,7 @@ import com.example.braveCoward.service.DoService;
 import com.example.braveCoward.swagger.DoApi;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -88,8 +89,10 @@ public class DoController implements DoApi {
     @GetMapping("/search")
     public ResponseEntity<Page<DoResponse>> searchDo(
         @RequestParam String keyword,
-        PageDTO pageDTO
+        @RequestParam(defaultValue = "1") @Min(1) int page,
+        @RequestParam(defaultValue = "10") @Min(1) int size
     ) {
+        PageDTO pageDTO = new PageDTO(page, size);
         Page<DoResponse> responses = doService.searchPlan(keyword, pageDTO);
         return ResponseEntity.ok(responses);
     }
