@@ -80,13 +80,14 @@ public class PlanController implements PlanApi {
     @GetMapping("/search")
     public ResponseEntity<Page<PlanResponse>> searchPlan(
         @RequestParam String keyword,
+        @RequestParam Long projectId,
         @RequestParam PlanSearchFilter filter,
         @RequestParam(defaultValue = "1") @Min(1) int page,
         @RequestParam(defaultValue = "10") @Min(1) int size
     ) {
-        PageDTO pageDTO = new PageDTO(page, size); // PageDTO 객체 생성
+        PageDTO pageDTO = new PageDTO(page, size);
 
-        Page<PlanResponse> responses = planService.searchPlan(keyword, filter, pageDTO);
+        Page<PlanResponse> responses = planService.searchPlan(keyword, projectId, filter, pageDTO);
         return ResponseEntity.ok(responses);
     }
 }

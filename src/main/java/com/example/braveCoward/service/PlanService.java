@@ -96,15 +96,15 @@ public class PlanService {
         projectService.updateProjectProgress(plan.getProject().getId()); // project 진척도 업데이트
     }
 
-    public Page<PlanResponse> searchPlan(String keyword, PlanSearchFilter filter, PageDTO pageDTO) {
+    public Page<PlanResponse> searchPlan(String keyword, Long projectId, PlanSearchFilter filter, PageDTO pageDTO) {
         Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(),
             Sort.by(Sort.Direction.DESC, "id"));
 
         Page<Plan> searchedPlans = switch (filter) {
-            case TITLE -> planRepository.findAllByTitleContains(keyword, pageable);
-            case DESCRIPTION -> planRepository.findAllByDescriptionContains(keyword, pageable);
+            case TITLE -> planRepository.findAllByTitleContainsAndProjectId(keyword, projectId, pageable);
+            case DESCRIPTION -> planRepository.findAllByDescriptionContainsAndProjectId(keyword, projectId, pageable);
             case TITLE_AND_DESCRIPTION ->
-                planRepository.findAllByTitleContainsOrDescriptionContains(keyword, keyword, pageable);
+                planRepository.findAllByTitleContainsOrDescriptionContainsAndProjectId(keyword, keyword, projectId, pageable);
         };
 
         return searchedPlans.map(PlanResponse::from);

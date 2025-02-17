@@ -89,6 +89,7 @@ public class DoController implements DoApi {
     @GetMapping("/search")
     public ResponseEntity<Page<DoResponse>> searchDo(
         @RequestParam String keyword,
+        //@RequestParam Long projectId,
         @RequestParam(defaultValue = "1") @Min(1) int page,
         @RequestParam(defaultValue = "10") @Min(1) int size
     ) {

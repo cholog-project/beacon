@@ -105,6 +105,7 @@ public interface PlanApi {
     @PatchMapping("/search")
     ResponseEntity<Page<PlanResponse>> searchPlan(
         @RequestParam String keyword,
+        @RequestParam Long projectId,
         PlanSearchFilter filter,
         @RequestParam(defaultValue = "1") @Min(1) int page,
         @RequestParam(defaultValue = "10") @Min(1) int size

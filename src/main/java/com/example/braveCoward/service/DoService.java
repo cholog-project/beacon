@@ -50,7 +50,7 @@ public class DoService {
     @Transactional
     public void deleteDo(Long doId) {
         Do deletedDo = doRepository.findById(doId)
-                .orElseThrow(() -> new IllegalArgumentException("Do를 찾을 수 없습니다."));
+            .orElseThrow(() -> new IllegalArgumentException("Do를 찾을 수 없습니다."));
 
         doRepository.deleteById(doId);
     }
