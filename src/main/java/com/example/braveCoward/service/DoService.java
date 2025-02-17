@@ -36,7 +36,6 @@ public class DoService {
         Plan plan = planRepository.findById(planId)
             .orElseThrow(() -> new IllegalArgumentException("Plan을 찾을 수 없습니다."));
 
-        System.out.println(request.startDate() + "날짜 로깅");
         Do doEntity = Do.builder()
             .date(request.startDate())
             .description(request.description())
@@ -50,6 +49,9 @@ public class DoService {
 
     @Transactional
     public void deleteDo(Long doId) {
+        Do deletedDo = doRepository.findById(doId)
+                .orElseThrow(() -> new IllegalArgumentException("Do를 찾을 수 없습니다."));
+
         doRepository.deleteById(doId);
     }
 
@@ -101,13 +103,13 @@ public class DoService {
     }
 
     @Transactional
-    public Page<DoResponse> searchPlan(String keyword, PageDTO pageDTO) {
-        Pageable pageable = PageRequest.of(pageDTO.page(), pageDTO.pageSize(),
+    public Page<DoResponse> searchDo(String keyword, PageDTO pageDTO) {
+        Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(),
             Sort.by(Sort.Direction.DESC, "id"));
 
-        Page<Do> searchedPlans = doRepository.findAllByDescriptionContains(keyword, pageable);
+        Page<Do> searchedDos = doRepository.findAllByDescriptionContains(keyword, pageable);
 
-        return searchedPlans.map(DoResponse::from);
+        return searchedDos.map(DoResponse::from);
     }
 
     @Transactional
