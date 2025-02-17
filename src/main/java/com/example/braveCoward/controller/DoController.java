@@ -93,7 +93,7 @@ public class DoController implements DoApi {
         @RequestParam(defaultValue = "10") @Min(1) int size
     ) {
         PageDTO pageDTO = new PageDTO(page, size);
-        Page<DoResponse> responses = doService.searchPlan(keyword, pageDTO);
+        Page<DoResponse> responses = doService.searchDo(keyword, pageDTO);
         return ResponseEntity.ok(responses);
     }
 
