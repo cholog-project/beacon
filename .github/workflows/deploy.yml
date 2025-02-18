@@ -38,15 +38,22 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build  # 빌드 작업 완료 후 실행
+    needs: build
 
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
 
+      - name: Configure SSH Key  # 🔥 SSH 키 설정 추가
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/backend_key.pem
+          chmod 600 ~/.ssh/backend_key.pem
+          ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+
       - name: Deploy application
         run: |
-          ssh -i ~/.ssh/backend_key.pem -o StrictHostKeyChecking=no ubuntu@52.79.81.55 <<EOF
+          ssh -i ~/.ssh/backend_key.pem -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} <<EOF
             cd /home/ubuntu/beacon
             git pull origin main
             nohup java -jar build/libs/braveCoward-0.0.1-SNAPSHOT.jar > logs/deploy.log 2>&1 &
@@ -61,3 +68,5 @@ jobs:
       MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
       REDIS_HOST: ${{ secrets.REDIS_HOST }}
       REDIS_PORT: ${{ secrets.REDIS_PORT }}
+      SERVER_USER: ${{ secrets.SERVER_USER }}
+      SERVER_HOST: ${{ secrets.SERVER_HOST }}
