@@ -2,7 +2,6 @@ package com.example.braveCoward.model;
 
 import static lombok.AccessLevel.PROTECTED;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -33,11 +32,16 @@ public class Do extends BaseEntity {
     @JoinColumn(name = "plan_id", nullable = false)
     private Plan plan;
 
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project project;
+
     @Builder
     public Do(LocalDate date,  String description, Plan plan) {
         this.date = date;
         this.description = description;
         this.plan = plan;
+        this.project = plan.getProject();
     }
 
     public void setDate(LocalDate date){

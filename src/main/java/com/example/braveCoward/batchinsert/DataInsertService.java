@@ -124,16 +124,18 @@ public class DataInsertService {
 
         // 🔹 Step 8: `do` 데이터 삽입
         for (Long planId : planIds) {
+            Long projectId = getProjectIdForPlan(planId); // ✅ Plan에 해당하는 Project ID 가져오기
+
             for (int d = 0; d < 6; d++) {
                 LocalDate date = LocalDate.now().minusDays(random.nextInt(30));
                 String description = "Do " + UUID.randomUUID().toString().substring(0, 5);
                 LocalDateTime createdAt = randomDateTime();
                 LocalDateTime updatedAt = createdAt.plusDays(random.nextInt(30));
 
-                doBatch.add(new Object[]{planId, date, description, false, createdAt, updatedAt});
+                doBatch.add(new Object[]{projectId, planId, date, description, false, createdAt, updatedAt});
             }
         }
-        batchInsert("INSERT INTO do (plan_id, date, description, is_completed, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)", doBatch);
+        batchInsert("INSERT INTO do (project_id, plan_id, date, description, is_completed, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)", doBatch);
         doBatch.clear();
 
         System.out.println("랜덤 데이터 삽입 완료!");
@@ -163,5 +165,10 @@ public class DataInsertService {
     // 특정 프로젝트가 속한 팀 ID 가져오기
     private Long getTeamIdForProject(Long projectId) {
         return jdbcTemplate.queryForObject("SELECT team_id FROM project WHERE id = ?", Long.class, projectId);
+    }
+
+    // 특정 Plan이 속한 Project의 ID 가져오기
+    private Long getProjectIdForPlan(Long planId) {
+        return jdbcTemplate.queryForObject("SELECT project_id FROM plan WHERE id = ?", Long.class, planId);
     }
 }

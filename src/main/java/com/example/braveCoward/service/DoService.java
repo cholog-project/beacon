@@ -103,11 +103,11 @@ public class DoService {
     }
 
     @Transactional
-    public Page<DoResponse> searchDo(String keyword, PageDTO pageDTO) {
+    public Page<DoResponse> searchDo(String keyword, Long projectId, PageDTO pageDTO) {
         Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(),
             Sort.by(Sort.Direction.DESC, "id"));
 
-        Page<Do> searchedDos = doRepository.findAllByDescriptionContains(keyword, pageable);
+        Page<Do> searchedDos = doRepository.findAllByDescriptionContainsAndProjectId(keyword, projectId, pageable);
 
         return searchedDos.map(DoResponse::from);
     }
