@@ -3,7 +3,7 @@ name: Backend CI/CD
 on:
   push:
     branches:
-      - main  # main 브랜치에 푸시될 때만 실행
+      - feature/79-add-github-actions
 
 jobs:
   build:
