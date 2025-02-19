@@ -25,6 +25,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 
 @RequestMapping("/plan")
 @Tag(name = "(Normal) Plan", description = "Plan 관련 API")
@@ -104,7 +105,9 @@ public interface PlanApi {
     @PatchMapping("/search")
     ResponseEntity<Page<PlanResponse>> searchPlan(
         @RequestParam String keyword,
+        @RequestParam Long projectId,
         PlanSearchFilter filter,
-        PageDTO pageDTO
+        @RequestParam(defaultValue = "1") @Min(1) int page,
+        @RequestParam(defaultValue = "10") @Min(1) int size
     );
 }

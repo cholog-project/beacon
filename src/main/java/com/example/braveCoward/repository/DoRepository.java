@@ -27,5 +27,5 @@ public interface DoRepository extends JpaRepository<Do, Long> {
 
     Page<Do> findAllByPlanId(Long planId, Pageable pageable);
 
-    Page<Do> findAllByDescriptionContains(String keyword, Pageable pageable);
+    Page<Do> findAllByDescriptionContainsAndProjectId(String keyword, Long projectId, Pageable pageable);
 }

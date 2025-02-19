@@ -24,7 +24,8 @@ public class DataInitializer {
     private final TeamMemberRepository teamMemberRepository;
     private final ProjectRepository projectRepository;
 
-    public DataInitializer(UserRepository userRepository, TeamRepository teamRepository, TeamMemberRepository teamMemberRepository, ProjectRepository projectRepository) {
+    public DataInitializer(UserRepository userRepository, TeamRepository teamRepository,
+        TeamMemberRepository teamMemberRepository, ProjectRepository projectRepository) {
         this.userRepository = userRepository;
         this.teamRepository = teamRepository;
         this.teamMemberRepository = teamMemberRepository;
@@ -73,38 +74,29 @@ public class DataInitializer {
                 return teamRepository.save(newTeam);
             });
 
-        TeamMember teamMember1 = teamMemberRepository.findByTeamAndUser(team, user1)
-            .orElseGet(() -> {
-                TeamMember newTeamMember = TeamMember.builder()
-                    .role("백엔드")
-                    .position("팀장")
-                    .team(team)
-                    .user(user1)
-                    .build();
-                return teamMemberRepository.save(newTeamMember);
-            });
+        TeamMember newTeamMember = TeamMember.builder()
+            .role("백엔드")
+            .position("팀장")
+            .team(team)
+            .user(user1)
+            .build();
+        teamMemberRepository.save(newTeamMember);
 
-        TeamMember teamMember2 = teamMemberRepository.findByTeamAndUser(team, user2)
-            .orElseGet(() -> {
-                TeamMember newTeamMember2 = TeamMember.builder()
-                    .role("프론트엔드")
-                    .position("팀원")
-                    .team(team)
-                    .user(user2)
-                    .build();
-                return teamMemberRepository.save(newTeamMember2);
-            });
+        TeamMember newTeamMember2 = TeamMember.builder()
+            .role("프론트엔드")
+            .position("팀원")
+            .team(team)
+            .user(user2)
+            .build();
+        teamMemberRepository.save(newTeamMember2);
 
-        TeamMember teamMember3 = teamMemberRepository.findByTeamAndUser(team, user3)
-            .orElseGet(() -> {
-                TeamMember newTeamMember3 = TeamMember.builder()
-                    .role("PM")
-                    .position("팀원")
-                    .team(team)
-                    .user(user3)
-                    .build();
-                return teamMemberRepository.save(newTeamMember3);
-            });
+        TeamMember newTeamMember3 = TeamMember.builder()
+            .role("PM")
+            .position("팀원")
+            .team(team)
+            .user(user3)
+            .build();
+        teamMemberRepository.save(newTeamMember3);
 
         Project project = projectRepository.findById(1L)
             .orElseGet(() -> {

@@ -25,6 +25,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 
 @RequestMapping("/dos")
 @Tag(name = "(Normal) Do", description = "Do 관련 API")
@@ -110,7 +111,9 @@ public interface DoApi {
     @GetMapping("/search")
     ResponseEntity<Page<DoResponse>> searchDo(
         @RequestParam String keyword,
-        PageDTO pageDTO
+        @RequestParam Long projectId,
+        @RequestParam(defaultValue = "1") @Min(1) int page,
+        @RequestParam(defaultValue = "10") @Min(1) int size
     );
 
     @ApiResponses(

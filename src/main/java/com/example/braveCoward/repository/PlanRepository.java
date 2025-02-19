@@ -29,11 +29,11 @@ public interface PlanRepository extends Repository<Plan, Long> {
 
     List<Plan> findByEndDate(LocalDate endDate);
 
-    Page<Plan> findAllByTitleContainsOrDescriptionContains(String keyword, String keyword2, Pageable pageable);
+    Page<Plan> findAllByTitleContainsOrDescriptionContainsAndProjectId(String keyword, String keyword2, Long projectId, Pageable pageable);
 
-    Page<Plan> findAllByTitleContains(String keyword, Pageable pageable);
+    Page<Plan> findAllByTitleContainsAndProjectId(String keyword, Long projectId, Pageable pageable);
 
-    Page<Plan> findAllByDescriptionContains(String keyword, Pageable pageable);
+    Page<Plan> findAllByDescriptionContainsAndProjectId(String keyword, Long projectId, Pageable pageable);
 
     long countByProjectId(Long projectId);
     long countByProjectIdAndStatus(Long projectId, Plan.Status status);

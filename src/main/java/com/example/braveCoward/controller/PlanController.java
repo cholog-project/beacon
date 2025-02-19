@@ -24,6 +24,7 @@ import com.example.braveCoward.swagger.PlanApi;
 import com.example.braveCoward.util.enums.plan.PlanSearchFilter;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -79,10 +80,14 @@ public class PlanController implements PlanApi {
     @GetMapping("/search")
     public ResponseEntity<Page<PlanResponse>> searchPlan(
         @RequestParam String keyword,
+        @RequestParam Long projectId,
         @RequestParam PlanSearchFilter filter,
-        @Valid PageDTO pageDTO
+        @RequestParam(defaultValue = "1") @Min(1) int page,
+        @RequestParam(defaultValue = "10") @Min(1) int size
     ) {
-        Page<PlanResponse> responses = planService.searchPlan(keyword, filter, pageDTO);
+        PageDTO pageDTO = new PageDTO(page, size);
+
+        Page<PlanResponse> responses = planService.searchPlan(keyword, projectId, filter, pageDTO);
         return ResponseEntity.ok(responses);
     }
 }
