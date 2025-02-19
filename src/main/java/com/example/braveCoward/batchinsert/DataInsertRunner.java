@@ -1,3 +1,4 @@
+/*
 package com.example.braveCoward.batchinsert;
 
 import lombok.RequiredArgsConstructor;
@@ -38,3 +39,4 @@ public class DataInsertRunner implements CommandLineRunner {
         System.out.println("✅ 데이터 삽입 완료! 실행 시간: " + durationMs + " ms (" + durationSec + " 초)");
     }
 }
+*/
