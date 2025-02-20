@@ -1,9 +1,12 @@
 package com.example.braveCoward.util;
 
 import com.auth0.jwt.exceptions.JWTDecodeException;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+
 import com.auth0.jwt.JWT;
 
 import java.util.concurrent.TimeUnit;

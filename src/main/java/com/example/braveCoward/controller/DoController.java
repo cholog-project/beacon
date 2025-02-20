@@ -101,7 +101,7 @@ public class DoController implements DoApi {
     @PatchMapping("/complete/{doId}")
     public ResponseEntity<Void> completeDo(
         @PathVariable Long doId
-    ){
+    ) {
         doService.completeDo(doId);
         return ResponseEntity.ok().build();
     }

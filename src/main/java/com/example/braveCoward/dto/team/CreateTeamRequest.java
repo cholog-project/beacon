@@ -11,5 +11,6 @@ public record CreateTeamRequest(
         String email,
         String role,
         String position
-    ) {}
+    ) {
+    }
 }

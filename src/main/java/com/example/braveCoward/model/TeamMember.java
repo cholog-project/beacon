@@ -21,7 +21,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "team_member")
 @NoArgsConstructor(access = PROTECTED)
-public class TeamMember extends BaseEntity{
+public class TeamMember extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +48,7 @@ public class TeamMember extends BaseEntity{
         String position,
         Team team,
         User user
-    ){
+    ) {
         this.role = role;
         this.position = position;
         this.team = team;

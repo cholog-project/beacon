@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "project")
 @NoArgsConstructor(access = PROTECTED)
-public class Project extends BaseEntity{
+public class Project extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +42,7 @@ public class Project extends BaseEntity{
     @Column(name = "end_date")
     private LocalDate endDate;
 
-//    @Column(name = "progress", nullable = false)
+    //    @Column(name = "progress", nullable = false)
     @Column(name = "progress")
     private Double progress = 0.0; // 초기값은 0.0 (0%)
 
@@ -61,12 +61,12 @@ public class Project extends BaseEntity{
         LocalDate endDate,
         Double progress,
         Team team
-    ){
+    ) {
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.progress=progress;
+        this.progress = progress;
         this.team = team;
     }
 

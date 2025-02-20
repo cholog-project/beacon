@@ -3,6 +3,7 @@ package com.example.braveCoward.controller;
 import com.example.braveCoward.dto.team.AddMemberRequest;
 import com.example.braveCoward.dto.team.AddMemberResponse;
 import com.example.braveCoward.service.TeamMemberService;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class TeamController implements TeamApi {
 
     @PostMapping("")
     public ResponseEntity<CreateTeamResponse> createTeams(
-            @Valid @RequestBody CreateTeamRequest request
+        @Valid @RequestBody CreateTeamRequest request
     ) {
         CreateTeamResponse response = teamService.createTeam(request);
 
@@ -33,7 +34,7 @@ public class TeamController implements TeamApi {
 
     @DeleteMapping("/{teamId}")
     public ResponseEntity<Void> deleteTeam(
-            @PathVariable Long teamId
+        @PathVariable Long teamId
     ) {
         teamService.deleteTeam(teamId);
         return ResponseEntity.noContent().build(); // 204 No Content 응답
@@ -41,7 +42,7 @@ public class TeamController implements TeamApi {
 
     @PostMapping("/{teamId}/members")
     public ResponseEntity<AddMemberResponse> addMemberToTeam(
-            @Valid @RequestBody AddMemberRequest request
+        @Valid @RequestBody AddMemberRequest request
     ) {
         AddMemberResponse response = teamMemberService.addMember(request);
         return ResponseEntity.ok(response);

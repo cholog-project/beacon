@@ -12,7 +12,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Table(name = "alarm")
 @NoArgsConstructor(access = PROTECTED)
-public class Alarm extends BaseEntity{
+public class Alarm extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,7 +28,7 @@ public class Alarm extends BaseEntity{
     public Alarm(
         String description,
         User user
-    ){
+    ) {
         this.description = description;
         this.user = user;
     }

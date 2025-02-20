@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.example.braveCoward.model.TeamMember;
 
-public record MembersResponse (
+public record MembersResponse(
     List<InnerMembersResponse> projectMembers
 ) {
     public record InnerMembersResponse(

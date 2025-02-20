@@ -7,7 +7,7 @@ public enum PlanSearchFilter {
 
     private final String name;
 
-    PlanSearchFilter(String name){
+    PlanSearchFilter(String name) {
         this.name = name;
     }
 }

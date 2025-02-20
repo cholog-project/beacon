@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "team")
 @NoArgsConstructor(access = PROTECTED)
-public class Team extends BaseEntity{
+public class Team extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +48,7 @@ public class Team extends BaseEntity{
         String description,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
-    ){
+    ) {
         this.name = name;
         this.description = description;
         this.createdAt = createdAt;
