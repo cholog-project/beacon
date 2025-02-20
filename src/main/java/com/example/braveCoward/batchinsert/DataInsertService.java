@@ -142,7 +142,13 @@ public class DataInsertService {
     }
 
     private void batchInsert(String sql, List<Object[]> batchList) {
-        jdbcTemplate.batchUpdate(sql, batchList);
+        int batchSize = 500; // 한 번에 500개씩 삽입
+
+        for (int i = 0; i < batchList.size(); i += batchSize) {
+            int endIndex = Math.min(i + batchSize, batchList.size());
+            List<Object[]> batchSubList = batchList.subList(i, endIndex);
+            jdbcTemplate.batchUpdate(sql, batchSubList);
+        }
     }
 
     private List<Long> getInsertedIds(String tableName, int limit) {
