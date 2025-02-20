@@ -76,8 +76,14 @@ public class Plan extends BaseEntity {
 
         @JsonCreator
         public static Status fromString(String value) {
+            if (value == null || value.isEmpty()) {
+                throw new IllegalArgumentException("Status 값이 비어있습니다!");
+            }
+
+            String normalizedValue = value.toLowerCase().replace(" ", "_");
+
             for (Status status : values()) {
-                if (status.jsonValue.equalsIgnoreCase(value)) {
+                if (status.jsonValue.equals(normalizedValue)) {
                     return status;
                 }
             }
