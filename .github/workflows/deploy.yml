@@ -1,4 +1,4 @@
-name: Backend CI/CD
+name: beacon CI/CD
 
 on:
   push:
@@ -63,6 +63,8 @@ jobs:
     env:
       JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
       DB_URL: ${{ secrets.DB_URL }}
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_PORT: ${{ secrets.DB_PORT }}
       DB_USERNAME: ${{ secrets.DB_USERNAME }}
       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
