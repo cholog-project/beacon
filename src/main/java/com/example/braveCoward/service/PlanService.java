@@ -104,7 +104,8 @@ public class PlanService {
             case TITLE -> planRepository.findAllByTitleContainsAndProjectId(keyword, projectId, pageable);
             case DESCRIPTION -> planRepository.findAllByDescriptionContainsAndProjectId(keyword, projectId, pageable);
             case TITLE_AND_DESCRIPTION ->
-                planRepository.findAllByTitleContainsOrDescriptionContainsAndProjectId(keyword, keyword, projectId, pageable);
+                planRepository.findAllByTitleContainsOrDescriptionContainsAndProjectId(keyword, keyword, projectId,
+                    pageable);
         };
 
         return searchedPlans.map(PlanResponse::from);

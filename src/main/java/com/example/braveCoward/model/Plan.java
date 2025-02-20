@@ -110,7 +110,7 @@ public class Plan extends BaseEntity {
         this.teamMember = teamMember;
     }
 
-    public void setStatus(Status status){
+    public void setStatus(Status status) {
         this.status = status;
     }
 }

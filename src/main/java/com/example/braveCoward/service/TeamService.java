@@ -7,6 +7,7 @@ import com.example.braveCoward.dto.team.AddMemberRequest;
 import com.example.braveCoward.dto.team.AddMemberResponse;
 import com.example.braveCoward.exception.CustomException;
 import com.example.braveCoward.exception.ErrorStatus;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,7 +68,7 @@ public class TeamService {
     // 팀 삭제
     public void deleteTeam(Long teamId) {
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new CustomException(ErrorStatus.TEAM_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ErrorStatus.TEAM_NOT_FOUND));
 
         // 팀원 먼저 삭제
         teamMemberRepository.deleteByTeamId(teamId);

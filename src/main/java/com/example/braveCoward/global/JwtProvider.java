@@ -11,9 +11,11 @@ import java.util.concurrent.TimeUnit;
 import javax.crypto.SecretKey;
 
 import com.example.braveCoward.util.JwtTokenUtil;
+
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -27,12 +29,11 @@ public class JwtProvider {
     private final Long refreshExpiration;
     private final JwtTokenUtil redisUtil;
 
-
     public JwtProvider(
-            @Value("${jwt.secret-key}") String secretKey,
-            @Value("${jwt.access-token-expiration-time}") Long accessExpiration,
-            @Value("${jwt.refresh-token-expiration-mills}") Long refreshExpiration,
-            JwtTokenUtil redisUtil
+        @Value("${jwt.secret-key}") String secretKey,
+        @Value("${jwt.access-token-expiration-time}") Long accessExpiration,
+        @Value("${jwt.refresh-token-expiration-mills}") Long refreshExpiration,
+        JwtTokenUtil redisUtil
     ) {
         this.secretKey = secretKey;
         this.accessExpiration = accessExpiration;
@@ -46,14 +47,14 @@ public class JwtProvider {
         }
         Key key = getSecretKey();
         return Jwts.builder()
-                .signWith(key)
-                .header()
-                .add("typ", "JWT")
-                .add("alg", key.getAlgorithm())
-                .and()
-                .claim("id", user.getId())
-                .expiration(Date.from(Instant.now().plusMillis(accessExpiration)))
-                .compact();
+            .signWith(key)
+            .header()
+            .add("typ", "JWT")
+            .add("alg", key.getAlgorithm())
+            .and()
+            .claim("id", user.getId())
+            .expiration(Date.from(Instant.now().plusMillis(accessExpiration)))
+            .compact();
     }
 
     public LocalDateTime getExpirationTime() {
@@ -88,20 +89,20 @@ public class JwtProvider {
         Key key = getSecretKey();
 
         String refreshToken = Jwts.builder()
-                .signWith(key)
-                .header()
-                .add("typ", "JWT")
-                .add("alg", key.getAlgorithm())
-                .and()
-                .claim("id", user.getId())
-                .expiration(Date.from(Instant.now().plusMillis(refreshExpiration)))
-                .compact();
+            .signWith(key)
+            .header()
+            .add("typ", "JWT")
+            .add("alg", key.getAlgorithm())
+            .and()
+            .claim("id", user.getId())
+            .expiration(Date.from(Instant.now().plusMillis(refreshExpiration)))
+            .compact();
 
         redisUtil.set(user.getEmail(), refreshToken);
         redisUtil.expire(user.getEmail(), refreshExpiration, TimeUnit.MILLISECONDS);
 
         // Redis에 저장된 값 확인을 위한 로그 출력
-        String storedToken = (String) redisUtil.get(user.getEmail());
+        String storedToken = (String)redisUtil.get(user.getEmail());
         if (storedToken != null) {
             System.out.println("Redis에 저장된 refreshToken: " + storedToken);
         } else {

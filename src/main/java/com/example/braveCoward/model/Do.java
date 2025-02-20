@@ -37,22 +37,22 @@ public class Do extends BaseEntity {
     private Project project;
 
     @Builder
-    public Do(LocalDate date,  String description, Plan plan) {
+    public Do(LocalDate date, String description, Plan plan) {
         this.date = date;
         this.description = description;
         this.plan = plan;
         this.project = plan.getProject();
     }
 
-    public void setDate(LocalDate date){
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public void setDescription(String description){
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public void setCompleted(boolean iscompleted){
+    public void setCompleted(boolean iscompleted) {
         this.isCompleted = iscompleted;
     }
 }

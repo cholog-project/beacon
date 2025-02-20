@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "user")
 @Where(clause = "is_deleted=0")
 @NoArgsConstructor(access = PROTECTED)
-public class User extends BaseEntity{
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,7 +52,7 @@ public class User extends BaseEntity{
         String email,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
-    ){
+    ) {
         this.password = password;
         this.name = name;
         this.email = email;

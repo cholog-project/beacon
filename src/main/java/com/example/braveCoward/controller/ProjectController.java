@@ -38,12 +38,11 @@ public class ProjectController implements ProjectApi {
     }
 
     @DeleteMapping("/{projectId}")
-    public ResponseEntity<Void> deleteProject (
-            @PathVariable Long projectId
-    ){
+    public ResponseEntity<Void> deleteProject(
+        @PathVariable Long projectId
+    ) {
         projectService.deleteProject(projectId);
         return ResponseEntity.noContent().build();
     }
-
 
 }

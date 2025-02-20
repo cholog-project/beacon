@@ -1,13 +1,17 @@
 package com.example.braveCoward.service;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.JavaMailSender;
+
 import com.example.braveCoward.repository.AlarmRepository;
 import com.example.braveCoward.model.Alarm;
 import com.example.braveCoward.model.User;
+
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 @Service
@@ -37,8 +41,8 @@ public class AlarmService {
             helper.setTo(user.getEmail());
             helper.setSubject("📢 Plan 마감 알림");
             helper.setText("안녕하세요, " + user.getName() + "님!\n\n" +
-                    "Plan '" + description + "' 이(가) 내일 마감됩니다. \n\n" +
-                    "기한 내에 확인해주세요!");
+                "Plan '" + description + "' 이(가) 내일 마감됩니다. \n\n" +
+                "기한 내에 확인해주세요!");
 
             mailSender.send(message);
             return true;
@@ -50,9 +54,9 @@ public class AlarmService {
 
     private void saveAlarm(User user, String description) {
         Alarm alarm = Alarm.builder()
-                .description(description)
-                .user(user)
-                .build();
+            .description(description)
+            .user(user)
+            .build();
         alarmRepository.save(alarm);
     }
 }

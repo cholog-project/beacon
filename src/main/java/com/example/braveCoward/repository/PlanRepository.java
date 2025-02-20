@@ -22,19 +22,23 @@ public interface PlanRepository extends Repository<Plan, Long> {
     Optional<Plan> findById(Long planId);
 
     void delete(Plan plan);
+
     @Query("SELECT p FROM Plan p WHERE p.endDate = :targetDate AND p.status IN :statuses")
-    List<Plan> findByEndDateAndStatusIn(@Param("targetDate") LocalDate targetDate, @Param("statuses") List<Plan.Status> statuses);
+    List<Plan> findByEndDateAndStatusIn(@Param("targetDate") LocalDate targetDate,
+        @Param("statuses") List<Plan.Status> statuses);
 
     Page<Plan> findAllByProjectId(Long projectId, Pageable pageable);
 
     List<Plan> findByEndDate(LocalDate endDate);
 
-    Page<Plan> findAllByTitleContainsOrDescriptionContainsAndProjectId(String keyword, String keyword2, Long projectId, Pageable pageable);
+    Page<Plan> findAllByTitleContainsOrDescriptionContainsAndProjectId(String keyword, String keyword2, Long projectId,
+        Pageable pageable);
 
     Page<Plan> findAllByTitleContainsAndProjectId(String keyword, Long projectId, Pageable pageable);
 
     Page<Plan> findAllByDescriptionContainsAndProjectId(String keyword, Long projectId, Pageable pageable);
 
     long countByProjectId(Long projectId);
+
     long countByProjectIdAndStatus(Long projectId, Plan.Status status);
 }
