@@ -28,7 +28,7 @@ jobs:
             ${{ runner.os }}-gradle
 
       - name: Build with Gradle
-        run: ./gradlew build -x test
+        run: ./gradlew clean build -x test
 
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
@@ -56,16 +56,6 @@ jobs:
         with:
           name: backend-jar
           path: build/libs/
-
-      - name: Check environment variables
-        run: |
-          echo "🔍 DB_HOST is set: $([[ -n "$DB_HOST" ]] && echo '✅ YES' || echo '❌ NO')"
-          echo "🔍 DB_PORT is set: $([[ -n "$DB_PORT" ]] && echo '✅ YES' || echo '❌ NO')"
-          echo "🔍 DB_USERNAME is set: $([[ -n "$DB_USERNAME" ]] && echo '✅ YES' || echo '❌ NO')"
-          echo "🔍 DB_PASSWORD is set: $([[ -n "$DB_PASSWORD" ]] && echo '✅ YES' || echo '❌ NO')"
-          echo "🔍 REDIS_HOST is set: $([[ -n "$REDIS_HOST" ]] && echo '✅ YES' || echo '❌ NO')"
-          echo "🔍 REDIS_PORT is set: $([[ -n "$REDIS_PORT" ]] && echo '✅ YES' || echo '❌ NO')"
-          echo "🔍 SERVER_HOST is set: $([[ -n "$SERVER_HOST" ]] && echo '✅ YES' || echo '❌ NO')"
 
       - name: Remove old JAR files from server
         run: |
