@@ -86,7 +86,14 @@ jobs:
             cd /home/ubuntu/beacon
             git pull origin main
             sudo fuser -k 8080/tcp || true
-            nohup java -jar -Dspring.profiles.active=prod build/libs/braveCoward-0.0.1-SNAPSHOT.jar > logs/deploy.log 2>&1 &
+            export SPRING_PROFILES_ACTIVE=prod
+            export DB_HOST=${{ secrets.DB_HOST }}
+            export DB_PORT=${{ secrets.DB_PORT }}
+            export DB_USERNAME=${{ secrets.DB_USERNAME }}
+            export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            export REDIS_HOST=${{ secrets.REDIS_HOST }}
+            export REDIS_PORT=${{ secrets.REDIS_PORT }}
+            nohup java -jar build/libs/braveCoward-0.0.1-SNAPSHOT.jar > logs/deploy.log 2>&1 &
           EOF
 
     env:
