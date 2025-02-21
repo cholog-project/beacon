@@ -54,7 +54,6 @@ public class DoController implements DoApi {
         return ResponseEntity.noContent().build();
     }
 
-    @ExecutionTimeLogger
     @GetMapping("/plan/{planId}")
     public ResponseEntity<Page<DoResponse>> getDoList(
         @PathVariable Long planId,
@@ -66,7 +65,6 @@ public class DoController implements DoApi {
         return ResponseEntity.ok(response);
     }
 
-    @ExecutionTimeLogger
     @GetMapping("/{doId}")
     public ResponseEntity<DoResponse> getDo(
         @PathVariable Long doId
