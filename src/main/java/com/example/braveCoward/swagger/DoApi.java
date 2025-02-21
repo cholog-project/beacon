@@ -17,6 +17,7 @@ import com.example.braveCoward.dto.Do.CreateDoResponse;
 import com.example.braveCoward.dto.Do.DoResponse;
 import com.example.braveCoward.dto.Do.DosResponse;
 import com.example.braveCoward.dto.PageDTO;
+import com.example.braveCoward.global.exectime.ExecutionTimeLogger;
 import com.example.braveCoward.model.Do;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -64,6 +65,7 @@ public interface DoApi {
         }
     )
     @Operation(summary = "Do 목록 조회")
+    @ExecutionTimeLogger
     @GetMapping("/plan/{planId}")
     ResponseEntity<Page<DoResponse>> getDoList(
         @PathVariable Long planId,

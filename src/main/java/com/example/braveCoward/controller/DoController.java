@@ -18,6 +18,7 @@ import com.example.braveCoward.dto.Do.CreateDoResponse;
 import com.example.braveCoward.dto.Do.DoResponse;
 import com.example.braveCoward.dto.Do.DosResponse;
 import com.example.braveCoward.dto.PageDTO;
+import com.example.braveCoward.global.exectime.ExecutionTimeLogger;
 import com.example.braveCoward.model.Do;
 import com.example.braveCoward.service.DoService;
 import com.example.braveCoward.swagger.DoApi;
@@ -53,6 +54,7 @@ public class DoController implements DoApi {
         return ResponseEntity.noContent().build();
     }
 
+    @ExecutionTimeLogger
     @GetMapping("/plan/{planId}")
     public ResponseEntity<Page<DoResponse>> getDoList(
         @PathVariable Long planId,
@@ -64,6 +66,7 @@ public class DoController implements DoApi {
         return ResponseEntity.ok(response);
     }
 
+    @ExecutionTimeLogger
     @GetMapping("/{doId}")
     public ResponseEntity<DoResponse> getDo(
         @PathVariable Long doId

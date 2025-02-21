@@ -2,7 +2,7 @@ package com.example.braveCoward.swagger;
 
 import com.example.braveCoward.dto.project.ProjectCreateRequest;
 import com.example.braveCoward.dto.project.ProjectCreateResponse;
-import com.example.braveCoward.global.UserId;
+import com.example.braveCoward.global.extractuserid.UserId;
 import com.example.braveCoward.dto.project.ProjectResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

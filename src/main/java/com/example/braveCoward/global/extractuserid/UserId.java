@@ -1,4 +1,4 @@
-package com.example.braveCoward.global;
+package com.example.braveCoward.global.extractuserid;
 
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
