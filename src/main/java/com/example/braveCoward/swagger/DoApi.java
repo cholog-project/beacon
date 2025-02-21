@@ -65,7 +65,6 @@ public interface DoApi {
         }
     )
     @Operation(summary = "Do 목록 조회")
-    @ExecutionTimeLogger
     @GetMapping("/plan/{planId}")
     ResponseEntity<Page<DoResponse>> getDoList(
         @PathVariable Long planId,
