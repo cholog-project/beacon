@@ -55,21 +55,13 @@ public class DoService {
         doRepository.deleteById(doId);
     }
 
-    public DosResponse getDos(Long planId, PageDTO pageDTO) {
-        Pageable pageable = PageRequest.of(pageDTO.page(), pageDTO.pageSize(),
+    public Page<DoResponse> getDos(Long planId, PageDTO pageDTO) {
+        Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(),
             Sort.by(Sort.Direction.DESC, "id"));
 
-        List<DoResponse> doResponses = doRepository.findAllByPlanId(planId, pageable).stream()
-            .map(doEntity -> new DoResponse(
-                doEntity.getId(),
-                doEntity.getDate(),
-                doEntity.getDescription(),
-                planId
-            ))
-            .toList();
+        Page<Do> dos = doRepository.findAllByPlanId(planId, pageable);
 
-        int totalCount = doResponses.size();
-        return new DosResponse(totalCount, doResponses);
+        return dos.map(DoResponse::from);
     }
 
     public DoResponse getDo(Long doId) {

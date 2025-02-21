@@ -18,6 +18,7 @@ import com.example.braveCoward.dto.Do.CreateDoResponse;
 import com.example.braveCoward.dto.Do.DoResponse;
 import com.example.braveCoward.dto.Do.DosResponse;
 import com.example.braveCoward.dto.PageDTO;
+import com.example.braveCoward.model.Do;
 import com.example.braveCoward.service.DoService;
 import com.example.braveCoward.swagger.DoApi;
 
@@ -53,11 +54,13 @@ public class DoController implements DoApi {
     }
 
     @GetMapping("/plan/{planId}")
-    public ResponseEntity<DosResponse> getDoList(
+    public ResponseEntity<Page<DoResponse>> getDoList(
         @PathVariable Long planId,
-        PageDTO pageDTO
+        @RequestParam(defaultValue = "1") @Min(1) int page,
+        @RequestParam(defaultValue = "10") @Min(1) int size
     ) {
-        DosResponse response = doService.getDos(planId, pageDTO);
+        PageDTO pageDTO = new PageDTO(page, size);
+        Page<DoResponse> response = doService.getDos(planId, pageDTO);
         return ResponseEntity.ok(response);
     }
 

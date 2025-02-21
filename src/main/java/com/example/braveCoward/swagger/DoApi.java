@@ -17,6 +17,7 @@ import com.example.braveCoward.dto.Do.CreateDoResponse;
 import com.example.braveCoward.dto.Do.DoResponse;
 import com.example.braveCoward.dto.Do.DosResponse;
 import com.example.braveCoward.dto.PageDTO;
+import com.example.braveCoward.model.Do;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -64,9 +65,10 @@ public interface DoApi {
     )
     @Operation(summary = "Do 목록 조회")
     @GetMapping("/plan/{planId}")
-    ResponseEntity<DosResponse> getDoList(
+    ResponseEntity<Page<DoResponse>> getDoList(
         @PathVariable Long planId,
-        PageDTO pageDTO
+        @RequestParam(defaultValue = "1") @Min(1) int page,
+        @RequestParam(defaultValue = "10") @Min(1) int size
     );
 
     @ApiResponses(
