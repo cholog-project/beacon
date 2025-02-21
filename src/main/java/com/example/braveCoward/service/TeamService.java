@@ -3,8 +3,6 @@ package com.example.braveCoward.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.example.braveCoward.dto.team.AddMemberRequest;
-import com.example.braveCoward.dto.team.AddMemberResponse;
 import com.example.braveCoward.exception.CustomException;
 import com.example.braveCoward.exception.ErrorStatus;
 
@@ -13,11 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.braveCoward.dto.team.CreateTeamRequest;
 import com.example.braveCoward.dto.team.CreateTeamResponse;
-import com.example.braveCoward.model.Project;
 import com.example.braveCoward.model.Team;
 import com.example.braveCoward.model.TeamMember;
 import com.example.braveCoward.model.User;
-import com.example.braveCoward.repository.ProjectRepository;
 import com.example.braveCoward.repository.TeamMemberRepository;
 import com.example.braveCoward.repository.TeamRepository;
 import com.example.braveCoward.repository.UserRepository;
