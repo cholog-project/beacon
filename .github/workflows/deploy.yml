@@ -69,7 +69,7 @@ jobs:
             cd /home/ubuntu/beacon
             git pull origin main
             sudo fuser -k 8080/tcp || true
-            nohup java -jar build/libs/*.jar > logs/deploy.log 2>&1 &
+            nohup java -jar build/libs/braveCoward-0.0.1-SNAPSHOT.jar > logs/deploy.log 2>&1 &
           EOF
 
     env:
