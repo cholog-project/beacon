@@ -3,7 +3,7 @@ package com.example.braveCoward.controller;
 import com.example.braveCoward.dto.project.ProjectCreateRequest;
 import com.example.braveCoward.dto.project.ProjectCreateResponse;
 
-import com.example.braveCoward.global.UserId;
+import com.example.braveCoward.global.extractuserid.UserId;
 import com.example.braveCoward.dto.project.ProjectResponse;
 
 import com.example.braveCoward.service.ProjectService;

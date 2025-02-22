@@ -1,4 +1,4 @@
-package com.example.braveCoward.global;
+package com.example.braveCoward.global.extractuserid;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;

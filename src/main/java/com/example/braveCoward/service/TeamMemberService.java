@@ -7,7 +7,6 @@ import com.example.braveCoward.exception.ErrorStatus;
 import com.example.braveCoward.model.Team;
 import com.example.braveCoward.model.TeamMember;
 import com.example.braveCoward.model.User;
-import com.example.braveCoward.repository.ProjectRepository;
 import com.example.braveCoward.repository.TeamMemberRepository;
 import com.example.braveCoward.repository.TeamRepository;
 import com.example.braveCoward.repository.UserRepository;

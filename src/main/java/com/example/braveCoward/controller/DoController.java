@@ -18,7 +18,6 @@ import com.example.braveCoward.dto.Do.CreateDoResponse;
 import com.example.braveCoward.dto.Do.DoResponse;
 import com.example.braveCoward.dto.Do.DosResponse;
 import com.example.braveCoward.dto.PageDTO;
-import com.example.braveCoward.model.Do;
 import com.example.braveCoward.service.DoService;
 import com.example.braveCoward.swagger.DoApi;
 

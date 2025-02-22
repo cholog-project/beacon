@@ -1,4 +1,4 @@
-package com.example.braveCoward.global;
+package com.example.braveCoward.global.extractuserid;
 
 import java.security.Key;
 import java.sql.Date;
