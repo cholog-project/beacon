@@ -53,6 +53,8 @@ dependencies {
 	// health check
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
+	// redisson
+	implementation 'org.redisson:redisson-spring-boot-starter:3.35.0'
 }
 
 tasks.named('test') {
