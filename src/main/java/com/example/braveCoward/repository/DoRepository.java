@@ -28,4 +28,23 @@ public interface DoRepository extends JpaRepository<Do, Long> {
     Page<Do> findAllByPlanId(Long planId, Pageable pageable);
 
     Page<Do> findAllByDescriptionContainsAndProjectId(String keyword, Long projectId, Pageable pageable);
+
+    @Query("SELECT d FROM Do d WHERE d.description LIKE CONCAT(:keyword, '%') AND d.project.id = :projectId ORDER BY d.id DESC")
+    Page<Do> findAllByDescriptionStartsWithAndProjectId(@Param("keyword") String keyword,
+                                                        @Param("projectId") Long projectId,
+                                                        Pageable pageable);
+    @Query(
+            value = "SELECT d.id as id, d.date as date, d.description as description, d.plan_id as planId " +
+                    "FROM do d " +
+                    "WHERE MATCH(d.description) AGAINST(:keyword IN BOOLEAN MODE) " +
+                    "AND d.project_id = :projectId " +
+                    "ORDER BY d.id DESC",
+            countQuery = "SELECT COUNT(*) " +
+                    "FROM do d " +
+                    "WHERE MATCH(d.description) AGAINST(:keyword IN BOOLEAN MODE) " +
+                    "AND d.project_id = :projectId",
+            nativeQuery = true)
+    Page<DoProjection> searchDoFullText(@Param("keyword") String keyword,
+                                        @Param("projectId") Long projectId,
+                                        Pageable pageable);
 }

@@ -2,6 +2,7 @@ package com.example.braveCoward.service;
 
 import java.util.List;
 
+import com.example.braveCoward.repository.DoProjection;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -105,6 +106,27 @@ public class DoService {
         Page<Do> searchedDos = doRepository.findAllByDescriptionContainsAndProjectId(keyword, projectId, pageable);
 
         return searchedDos.map(DoResponse::from);
+    }
+
+    @Transactional
+    public Page<DoResponse> searchDoStartsWith(String keyword, Long projectId, PageDTO pageDTO) {
+        Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(),
+                Sort.by(Sort.Direction.DESC, "id"));
+        Page<Do> searchedDos = doRepository.findAllByDescriptionStartsWithAndProjectId(keyword, projectId, pageable);
+        return searchedDos.map(DoResponse::from);
+    }
+
+    @Transactional
+    public Page<DoResponse> searchDoFullText(String keyword, Long projectId, PageDTO pageDTO) {
+        Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(),
+                Sort.by(Sort.Direction.DESC, "id"));
+        Page<DoProjection> projections = doRepository.searchDoFullText(keyword, projectId, pageable);
+        return projections.map(proj -> new DoResponse(
+                proj.getId(),
+                proj.getDate(),
+                proj.getDescription(),
+                proj.getPlanId()
+        ));
     }
 
     @Transactional

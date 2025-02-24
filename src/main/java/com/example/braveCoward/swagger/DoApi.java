@@ -1,5 +1,6 @@
 package com.example.braveCoward.swagger;
 
+import com.example.braveCoward.global.exectime.ExecutionTimeLogger;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -62,6 +63,7 @@ public interface DoApi {
         }
     )
     @Operation(summary = "Do 목록 조회")
+    @ExecutionTimeLogger
     @GetMapping("/plan/{planId}")
     ResponseEntity<Page<DoResponse>> getDoList(
         @PathVariable Long planId,
@@ -76,6 +78,7 @@ public interface DoApi {
         }
     )
     @Operation(summary = "Do 단일 조회")
+    @ExecutionTimeLogger
     @GetMapping("/{doId}")
     ResponseEntity<DoResponse> getDo(
         @PathVariable Long doId
@@ -108,12 +111,45 @@ public interface DoApi {
         }
     )
     @Operation(summary = "Do 검색")
+    @ExecutionTimeLogger
     @GetMapping("/search")
     ResponseEntity<Page<DoResponse>> searchDo(
         @RequestParam String keyword,
         @RequestParam Long projectId,
         @RequestParam(defaultValue = "1") @Min(1) int page,
         @RequestParam(defaultValue = "10") @Min(1) int size
+    );
+
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "앞쪽 일치 검색 결과",
+                    content = @Content(schema = @Schema(implementation = DoResponse.class))),
+            @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+    })
+    @Operation(summary = "Do 검색 (앞쪽 일치)")
+    @ExecutionTimeLogger
+    @GetMapping("/searchStartsWith")
+    ResponseEntity<Page<DoResponse>> searchDoStartsWith(
+            @RequestParam String keyword,
+            @RequestParam Long projectId,
+            @RequestParam(defaultValue = "1") @Min(1) int page,
+            @RequestParam(defaultValue = "10") @Min(1) int size
+    );
+
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "FullText 검색 결과",
+                            content = @Content(schema = @Schema(implementation = DoResponse.class))),
+                    @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+            }
+    )
+    @Operation(summary = "Do 검색 (FullText)")
+    @ExecutionTimeLogger
+    @GetMapping("/searchFullText")
+    ResponseEntity<Page<DoResponse>> searchDoFullText(
+            @RequestParam String keyword,
+            @RequestParam Long projectId,
+            @RequestParam(defaultValue = "1") @Min(1) int page,
+            @RequestParam(defaultValue = "10") @Min(1) int size
     );
 
     @ApiResponses(

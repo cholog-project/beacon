@@ -3,6 +3,7 @@ package com.example.braveCoward.batchinsert;
 import java.time.Duration;
 import java.time.Instant;
 
+import com.example.braveCoward.global.exectime.ExecutionTimeLogger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ public class DataInsertController implements DataInsertApi {
     private final DataInsertService dataInsertService;
 
     @PostMapping("batch-insert")
+    @ExecutionTimeLogger
     public ResponseEntity<String> insertData(@RequestParam(defaultValue = "1743") int numTeams) {
         Instant start = Instant.now(); // ✅ 시작 시간 기록
 
