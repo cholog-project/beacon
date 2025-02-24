@@ -3,7 +3,7 @@ name: beacon CI/CD
 on:
   push:
     branches:
-      - main
+      - fix/github-action-cicd
 
 jobs:
   build:
@@ -28,13 +28,13 @@ jobs:
             ${{ runner.os }}-gradle
 
       - name: Build with Gradle
-        run: ./gradlew build -x test
+        run: ./gradlew clean build -x test
 
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
           name: backend-jar
-          path: build/libs/*.jar
+          path: build/libs/braveCoward-0.0.1-SNAPSHOT.jar
 
   deploy:
     runs-on: ubuntu-latest
@@ -51,12 +51,44 @@ jobs:
           chmod 600 ~/.ssh/backend_key.pem
           ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
 
+      - name: Download JAR artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-jar
+          path: build/libs/
+
+      - name: Remove old JAR files from server
+        run: |
+          ssh -i ~/.ssh/backend_key.pem -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} <<EOF
+            rm -f /home/ubuntu/beacon/build/libs/braveCoward-0.0.1-SNAPSHOT.jar
+          EOF
+
+      - name: Copy JAR to server
+        run: |
+          scp -i ~/.ssh/backend_key.pem -o StrictHostKeyChecking=no \
+            build/libs/braveCoward-0.0.1-SNAPSHOT.jar \
+            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/ubuntu/beacon/build/libs/
+
       - name: Deploy application
         run: |
           ssh -i ~/.ssh/backend_key.pem -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} <<EOF
             cd /home/ubuntu/beacon
             git pull origin main
             sudo fuser -k 8080/tcp || true
+
+            # 환경 변수 저장
+            echo "DB_HOST=${{ secrets.DB_HOST }}" > .env
+            echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+            echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+            echo "REDIS_HOST=${{ secrets.REDIS_HOST }}" >> .env
+            echo "REDIS_PORT=${{ secrets.REDIS_PORT }}" >> .env
+            echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> .env
+            echo "MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" >> .env
+            echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> .env
+
+            # 환경 변수 적용 후 실행
+            export \$(grep -v '^#' .env | xargs)
             nohup java -jar build/libs/braveCoward-0.0.1-SNAPSHOT.jar > logs/deploy.log 2>&1 &
           EOF
 
