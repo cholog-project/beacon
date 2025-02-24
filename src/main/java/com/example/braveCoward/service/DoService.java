@@ -2,6 +2,7 @@ package com.example.braveCoward.service;
 
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ import com.example.braveCoward.repository.PlanRepository;
 
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -56,11 +58,12 @@ public class DoService {
     }
 
     public Page<DoResponse> getDos(Long planId, PageDTO pageDTO) {
+        long startTime = System.currentTimeMillis();
         Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(),
             Sort.by(Sort.Direction.DESC, "id"));
-
         Page<Do> dos = doRepository.findAllByPlanId(planId, pageable);
-
+        long endTime = System.currentTimeMillis();
+        log.info("DB Query execution time: {} ms", (endTime - startTime));
         return dos.map(DoResponse::from);
     }
 

@@ -12,6 +12,9 @@ import java.time.LocalDate;
 
 @Getter
 @Entity
+@Table(name = "do", indexes = {
+        @Index(name = "idx_description", columnList = "description")
+})
 @NoArgsConstructor(access = PROTECTED)
 public class Do extends BaseEntity {
     @Id
@@ -21,7 +24,7 @@ public class Do extends BaseEntity {
     @Column(nullable = false)
     private LocalDate date;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(length = 255, nullable = false)
     private String description;
 
     @NotNull
