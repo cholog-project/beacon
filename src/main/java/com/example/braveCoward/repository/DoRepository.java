@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.example.braveCoward.model.Do;
 
-public interface DoRepository extends JpaRepository<Do, Long> {
+public interface DoRepository extends JpaRepository<Do, Long>, DoRepositoryCustom  {
     Do save(Do doEntity);
 
     void deleteById(Long doId);

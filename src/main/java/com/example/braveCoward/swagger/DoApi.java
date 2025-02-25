@@ -120,6 +120,23 @@ public interface DoApi {
         @RequestParam(defaultValue = "10") @Min(1) int size
     );
 
+
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200"),
+                    @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
+            }
+    )
+    @Operation(summary = "Do QueryDSL 검색")
+    @ExecutionTimeLogger
+    @GetMapping("/searchQueryDSL")
+    ResponseEntity<Page<DoResponse>> searchDoWithQueryDSL(
+            @RequestParam String keyword,
+            @RequestParam Long projectId,
+            @RequestParam(defaultValue = "1") @Min(1) int page,
+            @RequestParam(defaultValue = "10") @Min(1) int size
+    );
+
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "앞쪽 일치 검색 결과",
                     content = @Content(schema = @Schema(implementation = DoResponse.class))),

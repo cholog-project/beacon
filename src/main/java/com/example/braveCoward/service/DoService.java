@@ -98,21 +98,35 @@ public class DoService {
         doEntity.setDate(request.date());
     }
 
+
     @Transactional
     public Page<DoResponse> searchDo(String keyword, Long projectId, PageDTO pageDTO) {
         Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(),
-            Sort.by(Sort.Direction.DESC, "id"));
+                Sort.by(Sort.Direction.DESC, "id"));
 
+        //  기존 JPA 방식
         Page<Do> searchedDos = doRepository.findAllByDescriptionContainsAndProjectId(keyword, projectId, pageable);
 
         return searchedDos.map(DoResponse::from);
     }
 
     @Transactional
+    public Page<DoResponse> searchDoWithQueryDSL(String keyword, Long projectId, PageDTO pageDTO) {
+        Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(), Sort.by(Sort.Direction.DESC, "id"));
+
+        // ✅ QueryDSL 기반 검색 적용
+        Page<Do> searchedDos = doRepository.searchByDescriptionContains(projectId, keyword, pageable);
+
+        return searchedDos.map(DoResponse::from);
+    }
+
+    @Transactional
     public Page<DoResponse> searchDoStartsWith(String keyword, Long projectId, PageDTO pageDTO) {
-        Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(),
-                Sort.by(Sort.Direction.DESC, "id"));
-        Page<Do> searchedDos = doRepository.findAllByDescriptionStartsWithAndProjectId(keyword, projectId, pageable);
+        Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(), Sort.by(Sort.Direction.DESC, "id"));
+
+        // ✅ QueryDSL 기반 검색 적용
+        Page<Do> searchedDos = doRepository.searchByDescriptionStartsWith(projectId, keyword, pageable);
+
         return searchedDos.map(DoResponse::from);
     }
 

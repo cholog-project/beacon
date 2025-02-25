@@ -104,6 +104,20 @@ public class DoController implements DoApi {
         return ResponseEntity.ok(responses);
     }
 
+
+    @GetMapping("/searchQueryDSL")
+    @ExecutionTimeLogger
+    public ResponseEntity<Page<DoResponse>> searchDoWithQueryDSL(
+            @RequestParam String keyword,
+            @RequestParam Long projectId,
+            @RequestParam(defaultValue = "1") @Min(1) int page,
+            @RequestParam(defaultValue = "10") @Min(1) int size
+    ) {
+        PageDTO pageDTO = new PageDTO(page, size);
+        Page<DoResponse> responses = doService.searchDoWithQueryDSL(keyword, projectId, pageDTO);
+        return ResponseEntity.ok(responses);
+    }
+
     @GetMapping("/searchStartsWith")
     @ExecutionTimeLogger
     public ResponseEntity<Page<DoResponse>> searchDoStartsWith(
