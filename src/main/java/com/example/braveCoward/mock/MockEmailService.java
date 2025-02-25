@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class MockEmailService {
     private static final Logger logger = LoggerFactory.getLogger(MockEmailService.class);
 
-    @Async //("emailExecutor")
+    @Async ("emailBatchExecutor")
     public void sendMockEmail(String email) {
         try {
             TimeUnit.MILLISECONDS.sleep(4500); // 4.5초 대기
