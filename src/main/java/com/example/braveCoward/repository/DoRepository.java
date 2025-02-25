@@ -3,11 +3,13 @@ package com.example.braveCoward.repository;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.persistence.QueryHint;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 
 import com.example.braveCoward.model.Do;
@@ -36,15 +38,17 @@ public interface DoRepository extends JpaRepository<Do, Long>, DoRepositoryCusto
     @Query(
             value = "SELECT d.id as id, d.date as date, d.description as description, d.plan_id as planId " +
                     "FROM do d " +
-                    "WHERE MATCH(d.description) AGAINST(:keyword IN BOOLEAN MODE) " +
+//                    "WHERE MATCH(d.description) AGAINST(:keyword IN BOOLEAN MODE) " +
+                    "WHERE MATCH(d.description) AGAINST(:keyword IN NATURAL LANGUAGE MODE) " +
                     "AND d.project_id = :projectId " +
-                    "ORDER BY d.id DESC",
-            countQuery = "SELECT COUNT(*) " +
-                    "FROM do d " +
-                    "WHERE MATCH(d.description) AGAINST(:keyword IN BOOLEAN MODE) " +
-                    "AND d.project_id = :projectId",
+                    "LIMIT 10",   // FULLTEXT 검색 후 바로 LIMIT 적용
             nativeQuery = true)
-    Page<DoProjection> searchDoFullText(@Param("keyword") String keyword,
-                                        @Param("projectId") Long projectId,
-                                        Pageable pageable);
+    List<DoProjection> searchDoFullText(@Param("keyword") String keyword,
+                                        @Param("projectId") Long projectId);
+    
+    @Modifying
+    @Query(value = "OPTIMIZE TABLE do", nativeQuery = true)
+    void optimizeTable();
+
+
 }

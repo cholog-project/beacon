@@ -1,6 +1,7 @@
 package com.example.braveCoward.swagger;
 
 import com.example.braveCoward.global.exectime.ExecutionTimeLogger;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +27,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+
+import java.util.List;
 
 @RequestMapping("/dos")
 @Tag(name = "(Normal) Do", description = "Do 관련 API")
@@ -155,19 +158,29 @@ public interface DoApi {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "FullText 검색 결과",
-                            content = @Content(schema = @Schema(implementation = DoResponse.class))),
+                            content = @Content(array = @ArraySchema(schema = @Schema(implementation = DoResponse.class)))),
                     @ApiResponse(responseCode = "404", content = @Content(schema = @Schema(hidden = true)))
             }
     )
     @Operation(summary = "Do 검색 (FullText)")
     @ExecutionTimeLogger
     @GetMapping("/searchFullText")
-    ResponseEntity<Page<DoResponse>> searchDoFullText(
+    ResponseEntity<List<DoResponse>> searchDoFullText(
             @RequestParam String keyword,
-            @RequestParam Long projectId,
-            @RequestParam(defaultValue = "1") @Min(1) int page,
-            @RequestParam(defaultValue = "10") @Min(1) int size
+            @RequestParam Long projectId
     );
+
+
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "FULLTEXT 인덱스 최적화 실행 성공"),
+                    @ApiResponse(responseCode = "500", description = "서버 오류 발생",
+                            content = @Content(schema = @Schema(hidden = true)))
+            }
+    )
+    @Operation(summary = "FULLTEXT 인덱스 최적화", description = "MySQL 테이블 인덱스 최적화 (OPTIMIZE TABLE do 실행)")
+    @PostMapping("/optimizeFullTextIndex")
+    ResponseEntity<Void> optimizeFullTextIndex();
 
     @ApiResponses(
         value = {
