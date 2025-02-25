@@ -55,6 +55,8 @@ dependencies {
 
 	// redisson
 	implementation 'org.redisson:redisson-spring-boot-starter:3.35.0'
+	// batch
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
 }
 
 tasks.named('test') {
