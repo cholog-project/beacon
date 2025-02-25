@@ -2,6 +2,8 @@ package com.example.braveCoward.service;
 
 import java.util.List;
 
+import com.example.braveCoward.repository.DoProjection;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +24,7 @@ import com.example.braveCoward.repository.PlanRepository;
 
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -56,11 +59,12 @@ public class DoService {
     }
 
     public Page<DoResponse> getDos(Long planId, PageDTO pageDTO) {
+        long startTime = System.currentTimeMillis();
         Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(),
             Sort.by(Sort.Direction.DESC, "id"));
-
         Page<Do> dos = doRepository.findAllByPlanId(planId, pageable);
-
+        long endTime = System.currentTimeMillis();
+        log.info("DB Query execution time: {} ms", (endTime - startTime));
         return dos.map(DoResponse::from);
     }
 
@@ -94,14 +98,49 @@ public class DoService {
         doEntity.setDate(request.date());
     }
 
+
     @Transactional
     public Page<DoResponse> searchDo(String keyword, Long projectId, PageDTO pageDTO) {
         Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(),
-            Sort.by(Sort.Direction.DESC, "id"));
+                Sort.by(Sort.Direction.DESC, "id"));
 
+        //  기존 JPA 방식
         Page<Do> searchedDos = doRepository.findAllByDescriptionContainsAndProjectId(keyword, projectId, pageable);
 
         return searchedDos.map(DoResponse::from);
+    }
+
+    @Transactional
+    public Page<DoResponse> searchDoWithQueryDSL(String keyword, Long projectId, PageDTO pageDTO) {
+        Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(), Sort.by(Sort.Direction.DESC, "id"));
+
+        // ✅ QueryDSL 기반 검색 적용
+        Page<Do> searchedDos = doRepository.searchByDescriptionContains(projectId, keyword, pageable);
+
+        return searchedDos.map(DoResponse::from);
+    }
+
+    @Transactional
+    public Page<DoResponse> searchDoStartsWith(String keyword, Long projectId, PageDTO pageDTO) {
+        Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(), Sort.by(Sort.Direction.DESC, "id"));
+
+        // ✅ QueryDSL 기반 검색 적용
+        Page<Do> searchedDos = doRepository.searchByDescriptionStartsWith(projectId, keyword, pageable);
+
+        return searchedDos.map(DoResponse::from);
+    }
+
+    @Transactional
+    public Page<DoResponse> searchDoFullText(String keyword, Long projectId, PageDTO pageDTO) {
+        Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(),
+                Sort.by(Sort.Direction.DESC, "id"));
+        Page<DoProjection> projections = doRepository.searchDoFullText(keyword, projectId, pageable);
+        return projections.map(proj -> new DoResponse(
+                proj.getId(),
+                proj.getDate(),
+                proj.getDescription(),
+                proj.getPlanId()
+        ));
     }
 
     @Transactional
