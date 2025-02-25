@@ -39,7 +39,7 @@ public class User extends BaseEntity {
     private String name;
 
     @Size(max = 50)
-    @Column(name = "email", length = 50)
+    @Column(name = "email", length = 50, nullable = false)
     private String email;
 
     @Column(name = "is_deleted", nullable = false)

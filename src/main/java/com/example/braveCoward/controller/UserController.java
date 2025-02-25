@@ -13,6 +13,7 @@ import com.example.braveCoward.dto.MembersResponse;
 import com.example.braveCoward.dto.UserRegisterRequest;
 import com.example.braveCoward.dto.UserLoginRequest;
 import com.example.braveCoward.dto.UserLoginResponse;
+import com.example.braveCoward.global.concurrencyguard.ConcurrencyGuard;
 import com.example.braveCoward.service.UserService;
 import com.example.braveCoward.swagger.UserApi;
 
@@ -33,11 +34,28 @@ public class UserController implements UserApi {
         return ResponseEntity.ok(response);
     }
 
+    @ConcurrencyGuard(lockName = "registerRedisson")
     @PostMapping("user/register")
     public ResponseEntity<Void> userRegister(
         @Valid @RequestBody UserRegisterRequest request
     ) {
         userService.userRegister(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("user/register/pessimistic")
+    public ResponseEntity<Void> userRegisterPessimistic(
+        @Valid @RequestBody UserRegisterRequest request
+    ) {
+        userService.userRegisterPessimistic(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("user/register/named-lock")
+    public ResponseEntity<Void> userRegisterNamedLock(
+        @Valid @RequestBody UserRegisterRequest request
+    ) {
+        userService.userRegisterNamedLock(request);
         return ResponseEntity.ok().build();
     }
 

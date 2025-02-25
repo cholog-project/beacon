@@ -1,6 +1,7 @@
 package com.example.braveCoward.global.concurrencyguard;
 
 import java.lang.reflect.Method;
+import java.util.UUID;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -59,11 +60,13 @@ public class ConcurrencyGuardAspect {
 
         String relevantParameter;
         if (args.length > 0) {
-            relevantParameter = args[0].toString();
+            relevantParameter = args[0].toString(); // 첫 번째 인자(email)
         } else {
             relevantParameter = "default";
         }
 
-        return String.format(lockNameFormat, annotation.lockName(), relevantParameter);
+        String uniqueId = java.util.UUID.randomUUID().toString(); // 매 요청마다 랜덤 UUID 추가
+
+        return String.format(lockNameFormat, annotation.lockName(), uniqueId);
     }
 }

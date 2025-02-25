@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.example.braveCoward.dto.*;
+import com.example.braveCoward.global.concurrencyguard.ConcurrencyGuard;
 import com.example.braveCoward.global.extractuserid.JwtProvider;
 import com.example.braveCoward.model.*;
 
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.example.braveCoward.repository.ProjectRepository;
 import com.example.braveCoward.repository.UserRepository;
@@ -40,18 +43,44 @@ public class UserService {
         return MembersResponse.from(teamMembers);
     }
 
-    @Transactional
+    @ConcurrencyGuard(lockName = "register")
     public void userRegister(UserRegisterRequest request) {
-        if (userRepository.findByEmail(request.email()).isPresent()) {
-            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
-        }
+        User user = User.builder()
+            .password(passwordEncoder.encode(request.password()))
+            .name(request.name())
+            .email(request.email()) // 이메일 중복 검사 삭제
+            .build();
+        userRepository.save(user);
+    }
 
+    @Transactional
+    public void userRegisterPessimistic(UserRegisterRequest request) {
+        // user_lock 테이블에서 해당 이메일에 대해 비관적 락 획득
+        userRepository.getLockOnUser(request.email());
+
+        // 이제 실제 user 테이블에 INSERT
         User user = User.builder()
             .password(passwordEncoder.encode(request.password()))
             .name(request.name())
             .email(request.email())
             .build();
         userRepository.save(user);
+    }
+
+    @Transactional
+    public void userRegisterNamedLock(UserRegisterRequest request) {
+        userRepository.getLock(request.email()); // DB Named Lock 적용
+
+        try {
+            User user = User.builder()
+                .password(passwordEncoder.encode(request.password()))
+                .name(request.name())
+                .email(request.email()) // 중복 검사 삭제
+                .build();
+            userRepository.save(user);
+        } finally {
+            userRepository.releaseLock(request.email()); // 락 해제
+        }
     }
 
     @Transactional
