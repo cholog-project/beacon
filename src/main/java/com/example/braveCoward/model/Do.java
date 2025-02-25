@@ -21,7 +21,7 @@ public class Do extends BaseEntity {
     @Column(nullable = false)
     private LocalDate date;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(length = 255, nullable = false)
     private String description;
 
     @NotNull

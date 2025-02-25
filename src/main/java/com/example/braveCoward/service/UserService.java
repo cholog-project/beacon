@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.example.braveCoward.dto.*;
-import com.example.braveCoward.global.JwtProvider;
+import com.example.braveCoward.global.extractuserid.JwtProvider;
 import com.example.braveCoward.model.*;
 
 import org.springframework.beans.factory.annotation.Value;

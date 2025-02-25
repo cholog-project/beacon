@@ -8,8 +8,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.example.braveCoward.global.ExtractAuthenticationInterceptor;
-import com.example.braveCoward.global.UserIdArgumentResolver;
+import com.example.braveCoward.global.extractuserid.ExtractAuthenticationInterceptor;
+import com.example.braveCoward.global.extractuserid.UserIdArgumentResolver;
 
 import lombok.RequiredArgsConstructor;
 

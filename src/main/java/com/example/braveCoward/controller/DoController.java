@@ -1,5 +1,6 @@
 package com.example.braveCoward.controller;
 
+import com.example.braveCoward.global.exectime.ExecutionTimeLogger;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -53,15 +54,19 @@ public class DoController implements DoApi {
     }
 
     @GetMapping("/plan/{planId}")
-    public ResponseEntity<DosResponse> getDoList(
+    @ExecutionTimeLogger
+    public ResponseEntity<Page<DoResponse>> getDoList(
         @PathVariable Long planId,
-        PageDTO pageDTO
+        @RequestParam(defaultValue = "1") @Min(1) int page,
+        @RequestParam(defaultValue = "10") @Min(1) int size
     ) {
-        DosResponse response = doService.getDos(planId, pageDTO);
+        PageDTO pageDTO = new PageDTO(page, size);
+        Page<DoResponse> response = doService.getDos(planId, pageDTO);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{doId}")
+    @ExecutionTimeLogger
     public ResponseEntity<DoResponse> getDo(
         @PathVariable Long doId
     ) {
@@ -87,6 +92,7 @@ public class DoController implements DoApi {
     }
 
     @GetMapping("/search")
+    @ExecutionTimeLogger
     public ResponseEntity<Page<DoResponse>> searchDo(
         @RequestParam String keyword,
         @RequestParam Long projectId,
@@ -95,6 +101,46 @@ public class DoController implements DoApi {
     ) {
         PageDTO pageDTO = new PageDTO(page, size);
         Page<DoResponse> responses = doService.searchDo(keyword, projectId, pageDTO);
+        return ResponseEntity.ok(responses);
+    }
+
+
+    @GetMapping("/searchQueryDSL")
+    @ExecutionTimeLogger
+    public ResponseEntity<Page<DoResponse>> searchDoWithQueryDSL(
+            @RequestParam String keyword,
+            @RequestParam Long projectId,
+            @RequestParam(defaultValue = "1") @Min(1) int page,
+            @RequestParam(defaultValue = "10") @Min(1) int size
+    ) {
+        PageDTO pageDTO = new PageDTO(page, size);
+        Page<DoResponse> responses = doService.searchDoWithQueryDSL(keyword, projectId, pageDTO);
+        return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/searchStartsWith")
+    @ExecutionTimeLogger
+    public ResponseEntity<Page<DoResponse>> searchDoStartsWith(
+            @RequestParam String keyword,
+            @RequestParam Long projectId,
+            @RequestParam(defaultValue = "1") @Min(1) int page,
+            @RequestParam(defaultValue = "10") @Min(1) int size
+    ) {
+        PageDTO pageDTO = new PageDTO(page, size);
+        Page<DoResponse> responses = doService.searchDoStartsWith(keyword, projectId, pageDTO);
+        return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/searchFullText")
+    @ExecutionTimeLogger
+    public ResponseEntity<Page<DoResponse>> searchDoFullText(
+            @RequestParam String keyword,
+            @RequestParam Long projectId,
+            @RequestParam(defaultValue = "1") @Min(1) int page,
+            @RequestParam(defaultValue = "10") @Min(1) int size
+    ) {
+        PageDTO pageDTO = new PageDTO(page, size);
+        Page<DoResponse> responses = doService.searchDoFullText(keyword, projectId, pageDTO);
         return ResponseEntity.ok(responses);
     }
 

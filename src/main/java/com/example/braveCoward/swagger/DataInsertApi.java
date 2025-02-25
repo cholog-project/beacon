@@ -1,5 +1,6 @@
 package com.example.braveCoward.swagger;
 
+import com.example.braveCoward.global.exectime.ExecutionTimeLogger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ public interface DataInsertApi {
         }
     )
     @Operation(summary = "100만 데이터 집어넣기")
+    @ExecutionTimeLogger
     @PostMapping("batch-insert")
     ResponseEntity<String> insertData(
         @RequestParam(defaultValue = "1743") int numTeams
