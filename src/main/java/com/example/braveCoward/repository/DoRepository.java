@@ -38,9 +38,10 @@ public interface DoRepository extends JpaRepository<Do, Long>, DoRepositoryCusto
     @Query(
             value = "SELECT d.id as id, d.date as date, d.description as description, d.plan_id as planId " +
                     "FROM do d " +
+//                    "WHERE MATCH(d.description) AGAINST(:keyword IN BOOLEAN MODE) " +
                     "WHERE MATCH(d.description) AGAINST(:keyword IN NATURAL LANGUAGE MODE) " +
                     "AND d.project_id = :projectId " +
-                    "LIMIT 100",   // FULLTEXT 검색 후 바로 LIMIT 적용
+                    "LIMIT 10",   // FULLTEXT 검색 후 바로 LIMIT 적용
             nativeQuery = true)
     List<DoProjection> searchDoFullText(@Param("keyword") String keyword,
                                         @Param("projectId") Long projectId);

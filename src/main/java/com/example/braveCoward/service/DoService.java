@@ -157,7 +157,7 @@ public class DoService {
         Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(), Sort.by(Sort.Direction.DESC, "id"));
 
         // ✅ QueryDSL 기반 검색 적용
-        Page<Do> searchedDos = doRepository.searchByDescriptionStartsWith(projectId, keyword, pageable);
+        Page<Do> searchedDos = doRepository.findAllByDescriptionStartsWithAndProjectId(keyword, projectId, pageable);
 
         return searchedDos.map(DoResponse::from);
     }
