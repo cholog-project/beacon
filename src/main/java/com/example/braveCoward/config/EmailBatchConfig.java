@@ -33,7 +33,6 @@ public class EmailBatchConfig {
     @Bean
     public Job emailJob(
         JobRepository jobRepository,
-        PlatformTransactionManager transactionManager,
         Step emailStep
     ) {
         return new JobBuilder(JOB_NAME, jobRepository)
@@ -53,7 +52,7 @@ public class EmailBatchConfig {
         @Qualifier("emailBatchExecutor") TaskExecutor emailBatchExecutor
     ) {
         return new StepBuilder(STEP_NAME, jobRepository)
-            .<Plan, String>chunk(100, transactionManager) // 10개씩 처리
+            .<Plan, String>chunk(4, transactionManager) // 10개씩 처리
             .reader(emailReader)
             .processor(emailProcessor)
             .writer(emailWriter)
@@ -64,9 +63,9 @@ public class EmailBatchConfig {
     @Bean(name = "emailBatchExecutor")
     public TaskExecutor emailBatchExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(100);
-        executor.setMaxPoolSize(200);
-        executor.setQueueCapacity(400);
+        executor.setCorePoolSize(8);
+        executor.setMaxPoolSize(16);
+        executor.setQueueCapacity(40);
         executor.setThreadNamePrefix("EmailBatchThread-");
         executor.initialize();
         return executor;
