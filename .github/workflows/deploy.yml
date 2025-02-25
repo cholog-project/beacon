@@ -69,6 +69,12 @@ jobs:
             build/libs/braveCoward-0.0.1-SNAPSHOT.jar \
             ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/ubuntu/beacon/build/libs/
 
+      - name: Set execute permission on JAR file
+        run: |
+          ssh -i ~/.ssh/backend_key.pem -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} <<EOF
+            chmod +x /home/ubuntu/beacon/build/libs/braveCoward-0.0.1-SNAPSHOT.jar
+          EOF
+
       - name: Deploy application
         run: |
           ssh -i ~/.ssh/backend_key.pem -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} <<EOF
