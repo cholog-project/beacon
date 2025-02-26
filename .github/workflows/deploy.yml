@@ -38,12 +38,8 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build
 
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v3
-
       - name: Configure SSH Key
         run: |
           mkdir -p ~/.ssh
@@ -51,36 +47,12 @@ jobs:
           chmod 600 ~/.ssh/backend_key.pem
           ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
 
-      - name: Download JAR artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: backend-jar
-          path: build/libs/
-
-      - name: Remove old JAR files from server
-        run: |
-          ssh -i ~/.ssh/backend_key.pem -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} <<EOF
-            rm -f /home/ubuntu/beacon/build/libs/braveCoward-0.0.1-SNAPSHOT.jar
-          EOF
-
-      - name: Copy JAR to server
-        run: |
-          scp -i ~/.ssh/backend_key.pem -o StrictHostKeyChecking=no \
-            build/libs/braveCoward-0.0.1-SNAPSHOT.jar \
-            ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/ubuntu/beacon/build/libs/
-
-      - name: Set execute permission on JAR file
-        run: |
-          ssh -i ~/.ssh/backend_key.pem -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} <<EOF
-            chmod +x /home/ubuntu/beacon/build/libs/braveCoward-0.0.1-SNAPSHOT.jar
-          EOF
-
-      - name: Deploy application
+      - name: Deploy application (Server builds & runs)
         run: |
           ssh -i ~/.ssh/backend_key.pem -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} <<EOF
             cd /home/ubuntu/beacon
-            git pull origin main
-            sudo fuser -k 8080/tcp || true
+            git pull origin main  # 최신 소스 가져오기
+            sudo fuser -k 8080/tcp || true  # 기존 프로세스 종료
 
             # 환경 변수 저장
             echo "DB_HOST=${{ secrets.DB_HOST }}" > .env
@@ -93,10 +65,17 @@ jobs:
             echo "MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" >> .env
             echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> .env
 
+            # Gradle 빌드 수행
+            ./gradlew clean build -x test  # 서버에서 직접 빌드
+
+            # 실행 권한 부여
+            chmod +x build/libs/braveCoward-0.0.1-SNAPSHOT.jar
+
             # 환경 변수 적용 후 실행
             export \$(grep -v '^#' .env | xargs)
-            nohup java -jar build/libs/braveCoward-0.0.1-SNAPSHOT.jar > logs/deploy.log 2>&1 &
-          EOF
+            nohup java -jar -Dspring.config.location=file:/home/ubuntu/beacon/src/main/resources/application.yml \
+                        build/libs/braveCoward-0.0.1-SNAPSHOT.jar > logs/deploy.log 2>&1 &
+          EOF  
 
     env:
       JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
