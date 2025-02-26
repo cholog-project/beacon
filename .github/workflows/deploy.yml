@@ -3,7 +3,7 @@ name: beacon CI/CD
 on:
   push:
     branches:
-      - fix/github-action-cicd
+      - main
 
 jobs:
   deploy:
