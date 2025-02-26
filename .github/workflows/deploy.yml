@@ -48,5 +48,5 @@ jobs:
 
           # 헬스 체크 (5초 대기 후)
           sleep 5
-          curl -X GET http://localhost:8080/actuator/health || echo "⚠️ Health check failed!"
+          curl -X GET http://${{ secrets.SERVER_HOST }}:8080/actuator/health || echo "⚠️ Health check failed!"
           EOF
