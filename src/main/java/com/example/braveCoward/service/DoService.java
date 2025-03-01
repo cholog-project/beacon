@@ -1,16 +1,22 @@
 package com.example.braveCoward.service;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import com.example.braveCoward.repository.DoProjection;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import javax.sql.DataSource;
 import com.example.braveCoward.dto.Do.ChangeDoRequest;
 import com.example.braveCoward.dto.Do.CreateDoRequest;
 import com.example.braveCoward.dto.Do.CreateDoResponse;
@@ -30,8 +36,34 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class DoService {
 
+    private final DataSource dataSource;
+
+
     private final DoRepository doRepository;
     private final PlanRepository planRepository;
+
+
+    public void optimizeFullTextIndex() {
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement()) {
+
+            log.info("🚀 MySQL `OPTIMIZE TABLE do` 실행 중...");
+
+            // 🔥 현재 세션이 read-only 모드일 경우 강제 해제
+            connection.setReadOnly(false);
+            connection.setAutoCommit(true);
+
+            statement.execute("OPTIMIZE TABLE do");
+
+            statement.execute("ANALYZE TABLE do");
+
+            log.info("✅ 인덱스 최적화 완료!");
+        } catch (SQLException e) {
+            log.error("❌ FULLTEXT 인덱스 최적화 실패", e);
+            throw new RuntimeException("❌ FULLTEXT 인덱스 최적화 실패", e);
+        }
+    }
+
 
     @Transactional(readOnly = false)
     public CreateDoResponse createDo(Long planId, CreateDoRequest request) {
@@ -125,23 +157,24 @@ public class DoService {
         Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(), Sort.by(Sort.Direction.DESC, "id"));
 
         // ✅ QueryDSL 기반 검색 적용
-        Page<Do> searchedDos = doRepository.searchByDescriptionStartsWith(projectId, keyword, pageable);
+        Page<Do> searchedDos = doRepository.findAllByDescriptionStartsWithAndProjectId(keyword, projectId, pageable);
 
         return searchedDos.map(DoResponse::from);
     }
 
     @Transactional
-    public Page<DoResponse> searchDoFullText(String keyword, Long projectId, PageDTO pageDTO) {
-        Pageable pageable = PageRequest.of(pageDTO.page() - 1, pageDTO.pageSize(),
-                Sort.by(Sort.Direction.DESC, "id"));
-        Page<DoProjection> projections = doRepository.searchDoFullText(keyword, projectId, pageable);
-        return projections.map(proj -> new DoResponse(
-                proj.getId(),
-                proj.getDate(),
-                proj.getDescription(),
-                proj.getPlanId()
-        ));
+    public List<DoResponse> searchDoFullText(String keyword, Long projectId) {
+        List<DoProjection> projections = doRepository.searchDoFullText(keyword, projectId);
+        return projections.stream()
+                .map(proj -> new DoResponse(
+                        proj.getId(),
+                        proj.getDate(),
+                        proj.getDescription(),
+                        proj.getPlanId()
+                ))
+                .toList();
     }
+
 
     @Transactional
     public void completeDo(Long doId) {
@@ -158,4 +191,6 @@ public class DoService {
             plan.setStatus(Plan.Status.COMPLETED);
         }
     }
+
+
 }
