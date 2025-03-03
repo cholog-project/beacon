@@ -1,5 +1,6 @@
 package com.example.braveCoward.service;
 
+import com.example.braveCoward.mock.MockEmailService;
 import com.example.braveCoward.model.Plan;
 import com.example.braveCoward.model.User;
 import com.example.braveCoward.repository.PlanRepository;
@@ -18,6 +19,7 @@ import java.util.List;
 public class PlanNotificationScheduler {
     private final PlanRepository planRepository;
     private final AlarmService alarmService;
+    private final MockEmailService mockEmailService;
 
     private static final List<Plan.Status> VALID_STATUSES = Arrays.asList(Plan.Status.NOT_STARTED,
         Plan.Status.IN_PROGRESS);
@@ -42,7 +44,7 @@ public class PlanNotificationScheduler {
 
     // plan 마감 알림 전송 공통 메서드
     private void sendEmailNotification(LocalDate date, String messageTemplate) {
-        List<Plan> plans = planRepository.findByEndDateAndStatusIn(date, VALID_STATUSES);
+        List<Plan> plans = planRepository.findPlansWithUsers(date, VALID_STATUSES);
 
         for (Plan plan : plans) {
             User user = plan.getTeamMember().getUser();
@@ -61,6 +63,39 @@ public class PlanNotificationScheduler {
 
         for (NotificationRule rule : NOTIFICATION_RULES) {
             sendEmailNotification(today.plusDays(rule.daysOffset), rule.messageTemplate);
+        }
+    }
+
+    public void sendOneEmail() {
+        Plan plan = planRepository.findById(2L)
+            .orElseThrow(() -> new IllegalArgumentException("Plan을 찾을 수 없습니다!"));
+
+        String messageTemplate = "시간 측정용 메일 전송";
+        User user = plan.getTeamMember().getUser();
+        String description = messageTemplate
+            .replace("{title}", plan.getTitle())
+            .replace("{date}", plan.getEndDate().toString());
+
+        alarmService.sendEmailToUser(user, description);
+    }
+
+    public void sendTenEmail(){
+        for(int i = 0; i < 10; i++){
+            sendOneEmail();
+        }
+    }
+
+    public void sendMockEmailNotification() {
+        LocalDate date = LocalDate.now();
+        long start = System.currentTimeMillis();
+        List<Plan> plans = planRepository.findPlansWithUsers(date, VALID_STATUSES);
+        System.out.println(plans.size());
+        long end = System.currentTimeMillis();
+        System.out.println("plan 조회 시간 : " + (end - start) + "ms");
+
+        for (Plan plan : plans) {
+            User user = plan.getTeamMember().getUser();
+            mockEmailService.sendMockEmail(user.getEmail());
         }
     }
 }

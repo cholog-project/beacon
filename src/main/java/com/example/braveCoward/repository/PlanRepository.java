@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.repository.Repository;
 
 import com.example.braveCoward.model.Plan;
@@ -25,6 +26,11 @@ public interface PlanRepository extends Repository<Plan, Long> {
 
     @Query("SELECT p FROM Plan p WHERE p.endDate = :targetDate AND p.status IN :statuses")
     List<Plan> findByEndDateAndStatusIn(@Param("targetDate") LocalDate targetDate,
+        @Param("statuses") List<Plan.Status> statuses);
+
+    @EntityGraph(attributePaths = {"teamMember.user"})
+    @Query("SELECT p FROM Plan p WHERE p.endDate = :targetDate AND p.status IN :statuses")
+    List<Plan> findPlansWithUsers(@Param("targetDate") LocalDate targetDate,
         @Param("statuses") List<Plan.Status> statuses);
 
     Page<Plan> findAllByProjectId(Long projectId, Pageable pageable);
