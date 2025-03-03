@@ -128,7 +128,7 @@ public class DataInsertService {
 
             for (int d = 0; d < 6; d++) {
                 LocalDate date = LocalDate.now().minusDays(random.nextInt(30));
-                String description = "Do " + UUID.randomUUID().toString().substring(0, 5);
+                String description = "DoDescriptionTest " + UUID.randomUUID().toString().substring(0, 5);
                 LocalDateTime createdAt = randomDateTime();
                 LocalDateTime updatedAt = createdAt.plusDays(random.nextInt(30));
 
