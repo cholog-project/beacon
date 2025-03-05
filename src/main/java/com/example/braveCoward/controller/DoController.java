@@ -27,6 +27,8 @@ import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 @Slf4j  // Lombok을 사용한 로깅
 @RestController
 @RequiredArgsConstructor
@@ -133,15 +135,22 @@ public class DoController implements DoApi {
 
     @GetMapping("/searchFullText")
     @ExecutionTimeLogger
-    public ResponseEntity<Page<DoResponse>> searchDoFullText(
+    public ResponseEntity<List<DoResponse>> searchDoFullText(
             @RequestParam String keyword,
-            @RequestParam Long projectId,
-            @RequestParam(defaultValue = "1") @Min(1) int page,
-            @RequestParam(defaultValue = "10") @Min(1) int size
+            @RequestParam Long projectId
     ) {
-        PageDTO pageDTO = new PageDTO(page, size);
-        Page<DoResponse> responses = doService.searchDoFullText(keyword, projectId, pageDTO);
+        List<DoResponse> responses = doService.searchDoFullText(keyword, projectId);
         return ResponseEntity.ok(responses);
+    }
+
+
+
+
+    @PostMapping("/optimizeFullTextIndex")
+    @ExecutionTimeLogger
+    public ResponseEntity<Void> optimizeFullTextIndex() {
+        doService.optimizeFullTextIndex();
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/complete/{doId}")
